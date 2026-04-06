@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Savage Command Center v3</title>
+<meta name="description" content="Savage AI Studios — Sovereign Control Interface">
+<meta name="theme-color" content="#00FF88">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CMD CENTER">
+<!-- Edge / MS PWA hints -->
+<meta name="msapplication-TileColor" content="#0a0a0a">
+<meta name="msapplication-starturl" content="/">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230a0a0a'/%3E%3Cpath d='M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8zM18 18h6v6h-6z' fill='%234F98A3' opacity='.8'/%3E%3Cpath d='M14 14h4v4h-4z' fill='%2300FF88'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="topnav" id="topnav">
+  <div class="topnav__inner">
+    <div class="topnav__brand">
+      <svg class="topnav__logo" width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <rect x="2" y="2" width="12" height="12" rx="1" stroke="#4F98A3" stroke-width="1.5" opacity="0.7"/>
+        <rect x="18" y="2" width="12" height="12" rx="1" stroke="#4F98A3" stroke-width="1.5" opacity="0.7"/>
+        <rect x="2" y="18" width="12" height="12" rx="1" stroke="#4F98A3" stroke-width="1.5" opacity="0.7"/>
+        <rect x="18" y="18" width="12" height="12" rx="1" stroke="#00FF88" stroke-width="1.5"/>
+        <circle cx="16" cy="16" r="2.5" fill="#4F98A3"/>
+      </svg>
+      <span class="topnav__title">SAVAGE <span class="green">CMD</span></span>
+      <span class="topnav__version">v3.0</span>
+    </div>
+    <div class="topnav__tabs" id="main-tabs">
+      <button class="tab active" data-panel="brief">BRIEF</button>
+      <button class="tab" data-panel="chain">CHAIN</button>
+      <button class="tab" data-panel="agents">AGENTS</button>
+      <button class="tab" data-panel="ops">OPS</button>
+      <button class="tab" data-panel="intel">INTEL</button>
+    </div>
+    <div class="topnav__right">
+      <div class="wallet-status" id="wallet-status">
+        <div class="wallet-dot" id="wallet-dot"></div>
+        <span id="wallet-label">NOT CONNECTED</span>
+      </div>
+      <button class="btn btn--connect" id="connect-btn">CONNECT WALLET</button>
+      <button class="btn btn--install" id="install-btn" style="display:none">⊚ INSTALL APP</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== WALLET BANNER ===== -->
+<div class="banner" id="wallet-banner" style="display:none">
+  <span id="banner-text"></span>
+  <button class="banner__close" onclick="document.getElementById('wallet-banner').style.display='none'">✕</button>
+</div>
+
+<!-- ===== PANELS ===== -->
+<main class="panels">
+
+  <!-- ======= BRIEF ======= -->
+  <section class="panel active" id="panel-brief">
+    <div class="panel__header">
+      <span class="panel__index">01</span>
+      <h2 class="panel__title">Mission Brief</h2>
+      <span class="panel__sub">Savage AI Studios — SIA-v6 Control</span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-card__value green">2.45M</div>
+        <div class="kpi-card__label">ops/sec</div>
+        <div class="kpi-card__sub">PAT-6 Throughput</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">0.113ms</div>
+        <div class="kpi-card__label">warm latency</div>
+        <div class="kpi-card__sub">Bounded, verified</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">72.1%</div>
+        <div class="kpi-card__label">thermal reduction</div>
+        <div class="kpi-card__sub">Blockchain-anchored</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">2411×</div>
+        <div class="kpi-card__label">drift improvement</div>
+        <div class="kpi-card__sub">vs RK4 baseline</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">23/23</div>
+        <div class="kpi-card__label">conservation laws</div>
+        <div class="kpi-card__sub">All passing</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">60</div>
+        <div class="kpi-card__label">files anchored</div>
+        <div class="kpi-card__sub">Linea + ETH mainnet</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">O(1)</div>
+        <div class="kpi-card__label">memory bound</div>
+        <div class="kpi-card__sub">Any load, CPU-native</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value green">400K</div>
+        <div class="kpi-card__label">KAM steps</div>
+        <div class="kpi-card__sub">Torus survival PAT-6</div>
+      </div>
+    </div>
+
+    <div class="brief-grid">
+      <div class="brief-card">
+        <div class="brief-card__title">LAUNCH CHECKLIST</div>
+        <div class="checklist" id="checklist">
+          <label class="chk"><input type="checkbox" id="chk-metamask"> MetaMask signed — all 4 TXs</label>
+          <label class="chk"><input type="checkbox" id="chk-gcp"> GCP billing enabled</label>
+          <label class="chk"><input type="checkbox" id="chk-dns"> DNS — both domains live</label>
+          <label class="chk"><input type="checkbox" id="chk-agents"> Three-path agents running</label>
+          <label class="chk"><input type="checkbox" id="chk-v6"> Ontology V6 published</label>
+          <label class="chk"><input type="checkbox" id="chk-outreach"> Outreach emails sent</label>
+          <label class="chk"><input type="checkbox" id="chk-arxiv"> arXiv / SSRN submitted</label>
+          <label class="chk"><input type="checkbox" id="chk-pwa"> PWA installed on device</label>
+        </div>
+      </div>
+
+      <div class="brief-card">
+        <div class="brief-card__title">DOMAIN STATUS</div>
+        <div class="domain-list">
+          <div class="domain-row">
+            <span class="domain-name">savage-ai-studios.com</span>
+            <a href="https://savage-ai-studios.com" target="_blank" class="domain-btn">→ DURAK</a>
+          </div>
+          <div class="domain-row">
+            <span class="domain-name">savageaistudios.com</span>
+            <a href="https://savageaistudios.com" target="_blank" class="domain-btn">→ SOVEREIGN</a>
+          </div>
+        </div>
+        <div class="brief-card__title" style="margin-top:16px">ARCHITECTURE CONSTANTS</div>
+        <div class="const-list">
+          <div class="const-row"><span class="const-sym">φ</span><span class="const-val">1.6180339887...</span></div>
+          <div class="const-row"><span class="const-sym">δ<sub>F</sub></span><span class="const-val">4.6692016091...</span></div>
+          <div class="const-row"><span class="const-sym">α<sub>F</sub></span><span class="const-val">2.5029078750...</span></div>
+          <div class="const-row"><span class="const-sym">k*</span><span class="const-val">4 (Persona↔Topology)</span></div>
+          <div class="const-row"><span class="const-sym">λ*</span><span class="const-val">RG fixed point</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= CHAIN & SIGN ======= -->
+  <section class="panel" id="panel-chain">
+    <div class="panel__header">
+      <span class="panel__index">02</span>
+      <h2 class="panel__title">Chain & Sign</h2>
+      <span class="panel__sub">MetaMask · Edge Beta · EIP-1193</span>
+    </div>
+
+    <!-- Wallet Info -->
+    <div class="wallet-info-card" id="wallet-info" style="display:none">
+      <div class="wallet-info__row">
+        <span class="wallet-info__label">Address</span>
+        <code class="wallet-info__val" id="wi-address">—</code>
+      </div>
+      <div class="wallet-info__row">
+        <span class="wallet-info__label">Network</span>
+        <span class="wallet-info__val" id="wi-network">—</span>
+      </div>
+      <div class="wallet-info__row">
+        <span class="wallet-info__label">Balance</span>
+        <span class="wallet-info__val" id="wi-balance">—</span>
+      </div>
+      <div class="wallet-info__row">
+        <span class="wallet-info__label">Browser</span>
+        <span class="wallet-info__val" id="wi-browser">—</span>
+      </div>
+    </div>
+
+    <div class="network-switcher" id="network-switcher" style="display:none">
+      <button class="net-btn" data-chain="0xe708" data-name="Linea Mainnet" id="net-linea">LINEA</button>
+      <button class="net-btn" data-chain="0x1" data-name="ETH Mainnet" id="net-eth">ETH MAINNET</button>
+    </div>
+
+    <!-- SHA-256 Tool -->
+    <div class="tool-card">
+      <div class="tool-card__title">SHA-256 HASH TOOL</div>
+      <textarea class="tool-input" id="hash-input" placeholder="Paste corpus string, hex data, or Merkle root to hash..."></textarea>
+      <div class="tool-row">
+        <button class="btn btn--green" onclick="computeHash()">COMPUTE SHA-256</button>
+        <button class="btn btn--ghost" onclick="copyHashResult()">COPY RESULT</button>
+      </div>
+      <div class="hash-result" id="hash-result" style="display:none">
+        <span class="hash-result__label">SHA-256</span>
+        <code id="hash-output" class="hash-result__val"></code>
+      </div>
+    </div>
+
+    <!-- Hex Input Tool -->
+    <div class="tool-card">
+      <div class="tool-card__title">HEX INPUT / CALLDATA BUILDER</div>
+      <textarea class="tool-input" id="hex-input" placeholder="Paste hex data (0x...) or raw bytes to encode as calldata for on-chain stamping..."></textarea>
+      <div class="tool-row">
+        <button class="btn btn--green" onclick="buildHexCalldata()">ENCODE CALLDATA</button>
+        <button class="btn btn--ghost" onclick="copyHex()">COPY HEX</button>
+      </div>
+      <div class="hash-result" id="hex-result" style="display:none">
+        <span class="hash-result__label">CALLDATA (0x)</span>
+        <code id="hex-output" class="hash-result__val mono-sm"></code>
+      </div>
+    </div>
+
+    <!-- TX Queue -->
+    <div class="tx-section">
+      <div class="tx-section__title">TRANSACTION QUEUE</div>
+      <div class="tx-grid" id="tx-grid">
+
+        <div class="tx-card" id="tx-1">
+          <div class="tx-card__header">
+            <span class="tx-card__num">TX 1</span>
+            <span class="tx-card__net net-linea">LINEA</span>
+            <span class="tx-card__status" id="tx-1-status">PENDING</span>
+          </div>
+          <div class="tx-card__label">Apr 4 Complete IP Corpus — Merkle Root</div>
+          <div class="tx-card__data">
+            <code id="tx-1-data">0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600</code>
+            <button class="copy-btn" onclick="copyText('tx-1-data')">COPY</button>
+          </div>
+          <button class="btn btn--sign" id="tx-1-btn" onclick="signTX(1,'0xe708','0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600')">SIGN IN METAMASK</button>
+          <div class="tx-card__confirm" id="tx-1-confirm" style="display:none"></div>
+        </div>
+
+        <div class="tx-card" id="tx-2">
+          <div class="tx-card__header">
+            <span class="tx-card__num">TX 2</span>
+            <span class="tx-card__net net-eth">ETH MAINNET</span>
+            <span class="tx-card__status" id="tx-2-status">PENDING</span>
+          </div>
+          <div class="tx-card__label">Apr 4 Complete IP Corpus — ETH Anchor</div>
+          <div class="tx-card__data">
+            <code id="tx-2-data">0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600</code>
+            <button class="copy-btn" onclick="copyText('tx-2-data')">COPY</button>
+          </div>
+          <button class="btn btn--sign" id="tx-2-btn" onclick="signTX(2,'0x1','0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600')">SIGN IN METAMASK</button>
+          <div class="tx-card__confirm" id="tx-2-confirm" style="display:none"></div>
+        </div>
+
+        <div class="tx-card" id="tx-3">
+          <div class="tx-card__header">
+            <span class="tx-card__num">TX 3</span>
+            <span class="tx-card__net net-linea">LINEA</span>
+            <span class="tx-card__status" id="tx-3-status">PENDING</span>
+          </div>
+          <div class="tx-card__label">Ontology V6 Corpus Hash — Linea</div>
+          <div class="tx-card__data">
+            <input type="text" class="tx-card__input" id="tx-3-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
+          </div>
+          <button class="btn btn--sign" id="tx-3-btn" onclick="signCustomTX(3,'0xe708','tx-3-hash')">SIGN IN METAMASK</button>
+          <div class="tx-card__confirm" id="tx-3-confirm" style="display:none"></div>
+        </div>
+
+        <div class="tx-card" id="tx-4">
+          <div class="tx-card__header">
+            <span class="tx-card__num">TX 4</span>
+            <span class="tx-card__net net-eth">ETH MAINNET</span>
+            <span class="tx-card__status" id="tx-4-status">PENDING</span>
+          </div>
+          <div class="tx-card__label">Ontology V6 Corpus Hash — ETH Mainnet</div>
+          <div class="tx-card__data">
+            <input type="text" class="tx-card__input" id="tx-4-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
+          </div>
+          <button class="btn btn--sign" id="tx-4-btn" onclick="signCustomTX(4,'0x1','tx-4-hash')">SIGN IN METAMASK</button>
+          <div class="tx-card__confirm" id="tx-4-confirm" style="display:none"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Confirmed TXs -->
+    <div class="tx-section">
+      <div class="tx-section__title">CONFIRMED ON-CHAIN</div>
+      <div class="confirmed-list">
+        <div class="confirmed-row">
+          <span class="confirmed-label">Complete IP Corpus v2 — Linea Block 29774653</span>
+          <a href="https://lineascan.build/tx/0x9eb01506fffaec3fba50c27045505f0c08c4c327a7f993025c543050d078e839" target="_blank" class="confirmed-link">0x9eb015...78e839 ↗</a>
+        </div>
+        <div class="confirmed-row">
+          <span class="confirmed-label">Ontology V2 — Linea Block 29758060</span>
+          <a href="https://lineascan.build/tx/0x083f900538f605aae1fb341d04969d3f17edbb331d447e69ca0efaf3677ea27b" target="_blank" class="confirmed-link">0x083f90...7ea27b ↗</a>
+        </div>
+        <div class="confirmed-row">
+          <span class="confirmed-label">IP Timestamp v3 — ETH Mainnet</span>
+          <a href="https://etherscan.io/tx/0x629424eb73904ea2d13c801b67921a70c8eb6c72bf5a578c4d9ab5666f361d6a" target="_blank" class="confirmed-link">0x629424...361d6a ↗</a>
+        </div>
+        <div class="confirmed-row">
+          <span class="confirmed-label">Wallet — Lineascan</span>
+          <a href="https://lineascan.build/address/0xe188398e0116B2a5E82BE24CE0b201C3A6f1321f" target="_blank" class="confirmed-link">0xe18839...f1321f ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= AGENTS ======= -->
+  <section class="panel" id="panel-agents">
+    <div class="panel__header">
+      <span class="panel__index">03</span>
+      <h2 class="panel__title">Agent Control</h2>
+      <span class="panel__sub">Three-Path · Sovereign Oracle</span>
+    </div>
+
+    <div class="agent-grid">
+
+      <div class="agent-card" id="agent-a">
+        <div class="agent-card__header">
+          <div class="agent-dot green-dot"></div>
+          <span class="agent-card__name">PATH A — Thermodynamic Ratchet</span>
+        </div>
+        <div class="agent-stats">
+          <div class="stat"><span class="stat__val" id="a-ticks">0</span><span class="stat__label">ticks</span></div>
+          <div class="stat"><span class="stat__val green" id="a-accept">0</span><span class="stat__label">accepted</span></div>
+          <div class="stat"><span class="stat__val red" id="a-reject">0</span><span class="stat__label">rejected</span></div>
+          <div class="stat"><span class="stat__val" id="a-hash">—</span><span class="stat__label">proof hash</span></div>
+        </div>
+        <div class="agent-progress"><div class="agent-progress__bar" id="a-bar"></div></div>
+        <div class="agent-log" id="a-log"></div>
+        <div class="agent-btns">
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('a',1)">+1</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('a',10)">+10</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('a',100)">+100</button>
+          <button class="btn btn--sm btn--red" onclick="resetAgent('a')">RESET</button>
+        </div>
+      </div>
+
+      <div class="agent-card" id="agent-b">
+        <div class="agent-card__header">
+          <div class="agent-dot green-dot"></div>
+          <span class="agent-card__name">PATH B — Topological Memory</span>
+        </div>
+        <div class="agent-stats">
+          <div class="stat"><span class="stat__val" id="b-ticks">0</span><span class="stat__label">ticks</span></div>
+          <div class="stat"><span class="stat__val green" id="b-accept">0</span><span class="stat__label">accepted</span></div>
+          <div class="stat"><span class="stat__val red" id="b-reject">0</span><span class="stat__label">rejected</span></div>
+          <div class="stat"><span class="stat__val" id="b-hash">—</span><span class="stat__label">proof hash</span></div>
+        </div>
+        <div class="agent-progress"><div class="agent-progress__bar" id="b-bar"></div></div>
+        <div class="agent-log" id="b-log"></div>
+        <div class="agent-btns">
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('b',1)">+1</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('b',10)">+10</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('b',100)">+100</button>
+          <button class="btn btn--sm btn--red" onclick="resetAgent('b')">RESET</button>
+        </div>
+      </div>
+
+      <div class="agent-card" id="agent-c">
+        <div class="agent-card__header">
+          <div class="agent-dot green-dot"></div>
+          <span class="agent-card__name">PATH C — RG Flow</span>
+        </div>
+        <div class="agent-stats">
+          <div class="stat"><span class="stat__val" id="c-ticks">0</span><span class="stat__label">ticks</span></div>
+          <div class="stat"><span class="stat__val green" id="c-accept">0</span><span class="stat__label">accepted</span></div>
+          <div class="stat"><span class="stat__val red" id="c-reject">0</span><span class="stat__label">rejected</span></div>
+          <div class="stat"><span class="stat__val" id="c-hash">—</span><span class="stat__label">proof hash</span></div>
+        </div>
+        <div class="agent-progress"><div class="agent-progress__bar" id="c-bar"></div></div>
+        <div class="agent-log" id="c-log"></div>
+        <div class="agent-btns">
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('c',1)">+1</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('c',10)">+10</button>
+          <button class="btn btn--sm btn--green" onclick="dispatchAgent('c',100)">+100</button>
+          <button class="btn btn--sm btn--red" onclick="resetAgent('c')">RESET</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sovereign Oracle -->
+    <div class="oracle-card">
+      <div class="oracle-card__header">
+        <div class="agent-dot amber-dot pulse"></div>
+        <span class="oracle-card__title">SOVEREIGN ORACLE</span>
+      </div>
+      <div class="oracle-stats">
+        <div class="stat"><span class="stat__val" id="oracle-cycles">0</span><span class="stat__label">cycles</span></div>
+        <div class="stat"><span class="stat__val green" id="oracle-conv">0</span><span class="stat__label">converged</span></div>
+        <div class="stat"><span class="stat__val" id="oracle-lambda">—</span><span class="stat__label">λ* distance</span></div>
+      </div>
+      <div class="agent-log" id="oracle-log"></div>
+      <div class="agent-btns">
+        <button class="btn btn--sm btn--amber" onclick="runOracle(1)">RUN 1</button>
+        <button class="btn btn--sm btn--amber" onclick="runOracle(5)">RUN 5</button>
+        <button class="btn btn--sm btn--red" onclick="resetOracle()">RESET</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= OPS ======= -->
+  <section class="panel" id="panel-ops">
+    <div class="panel__header">
+      <span class="panel__index">04</span>
+      <h2 class="panel__title">Ops & Infrastructure</h2>
+      <span class="panel__sub">GCP · Tollbooth · DNS</span>
+    </div>
+
+    <div class="ops-grid">
+
+      <div class="ops-card">
+        <div class="ops-card__title">GCP INFRASTRUCTURE</div>
+        <table class="ops-table">
+          <tr><td>Project</td><td class="mono">sia-v6-sovereign</td></tr>
+          <tr><td>Region</td><td class="mono">us-central1</td></tr>
+          <tr><td>Cloud Run Jobs</td><td class="mono">4 active</td></tr>
+          <tr><td>Cloud SQL</td><td class="mono">PostgreSQL 15</td></tr>
+          <tr><td>Billing Status</td><td><span class="status-badge status-warn" id="gcp-billing">CHECK REQUIRED</span></td></tr>
+        </table>
+        <a href="https://console.cloud.google.com/billing" target="_blank" class="btn btn--green" style="margin-top:12px;width:100%;display:block;text-align:center;">ENABLE BILLING ↗</a>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-card__title">TOLLBOOTH ENDPOINTS</div>
+        <div class="endpoint-list" id="endpoint-list">
+          <div class="endpoint-row">
+            <span class="endpoint-method">POST</span>
+            <span class="endpoint-path">/api/v6/physics</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/api/v6/physics')">PING</button>
+          </div>
+          <div class="endpoint-row">
+            <span class="endpoint-method">POST</span>
+            <span class="endpoint-path">/api/v6/finance</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/api/v6/finance')">PING</button>
+          </div>
+          <div class="endpoint-row">
+            <span class="endpoint-method">GET</span>
+            <span class="endpoint-path">/api/v6/sentinel/status</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/api/v6/sentinel/status')">PING</button>
+          </div>
+          <div class="endpoint-row">
+            <span class="endpoint-method">POST</span>
+            <span class="endpoint-path">/api/v6/verify</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/api/v6/verify')">PING</button>
+          </div>
+          <div class="endpoint-row">
+            <span class="endpoint-method">GET</span>
+            <span class="endpoint-path">/health</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/health')">PING</button>
+          </div>
+        </div>
+        <div class="ping-response" id="ping-response" style="display:none"></div>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-card__title">EMAIL ARSENAL</div>
+        <div class="email-list">
+          <div class="email-row">
+            <span class="email-target">NVIDIA — AI Research</span>
+            <button class="copy-btn" onclick="copyEmail('nvidia')">COPY</button>
+            <button class="copy-btn" onclick="previewEmail('nvidia')">VIEW</button>
+          </div>
+          <div class="email-row">
+            <span class="email-target">Palantir — Enterprise AI</span>
+            <button class="copy-btn" onclick="copyEmail('palantir')">COPY</button>
+            <button class="copy-btn" onclick="previewEmail('palantir')">VIEW</button>
+          </div>
+          <div class="email-row">
+            <span class="email-target">Jane Street — Quant</span>
+            <button class="copy-btn" onclick="copyEmail('janestreet')">COPY</button>
+            <button class="copy-btn" onclick="previewEmail('janestreet')">VIEW</button>
+          </div>
+          <div class="email-row">
+            <span class="email-target">Shield AI — Defense</span>
+            <button class="copy-btn" onclick="copyEmail('shieldai')">COPY</button>
+            <button class="copy-btn" onclick="previewEmail('shieldai')">VIEW</button>
+          </div>
+          <div class="email-row">
+            <span class="email-target">RTX — Advanced R&amp;D</span>
+            <button class="copy-btn" onclick="copyEmail('rtx')">COPY</button>
+            <button class="copy-btn" onclick="previewEmail('rtx')">VIEW</button>
+          </div>
+        </div>
+        <div class="email-preview" id="email-preview" style="display:none">
+          <div class="email-preview__close" onclick="document.getElementById('email-preview').style.display='none'">✕ CLOSE</div>
+          <pre id="email-preview-text"></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======= INTEL ======= -->
+  <section class="panel" id="panel-intel">
+    <div class="panel__header">
+      <span class="panel__index">05</span>
+      <h2 class="panel__title">Intelligence</h2>
+      <span class="panel__sub">Ontology · Vault · Locks</span>
+    </div>
+
+    <div class="intel-grid">
+
+      <div class="intel-card">
+        <div class="intel-card__title">ONTOLOGY V6 STATUS</div>
+        <div class="onto-list">
+          <div class="onto-row"><span>Papers</span><span class="green">22</span></div>
+          <div class="onto-row"><span>Theses</span><span class="green">11 (8 orig + 3 ext)</span></div>
+          <div class="onto-row"><span>Axioms</span><span class="green">6</span></div>
+          <div class="onto-row"><span>Gold Identities</span><span class="green">23</span></div>
+          <div class="onto-row"><span>Novel Identities</span><span class="green">6</span></div>
+          <div class="onto-row"><span>Grand Theorems</span><span class="green">11</span></div>
+          <div class="onto-row"><span>Emergent Properties</span><span class="green">11</span></div>
+          <div class="onto-row"><span>Hidden Theorem Candidates</span><span class="amber">3</span></div>
+          <div class="onto-row"><span>Savage Laws</span><span class="green">5</span></div>
+          <div class="onto-row"><span>Master Equation</span><span class="green">1</span></div>
+        </div>
+      </div>
+
+      <div class="intel-card">
+        <div class="intel-card__title">PAT-6 VAULT (10 BENCHMARKS)</div>
+        <div class="vault-list">
+          <div class="vault-row ok"><span class="vault-name">B1 KAM Torus</span><span class="vault-score">100.00% fidelity · 2411× drift</span></div>
+          <div class="vault-row ok"><span class="vault-name">B2 RK4 Comparison</span><span class="vault-score">400K steps · 28 RK4</span></div>
+          <div class="vault-row ok"><span class="vault-name">B3 Thermodynamic Ratchet</span><span class="vault-score">Monotone entropy</span></div>
+          <div class="vault-row ok"><span class="vault-name">B4 Topological Persistence</span><span class="vault-score">Betti invariant</span></div>
+          <div class="vault-row ok"><span class="vault-name">B5 RG Flow Convergence</span><span class="vault-score">λ* approach confirmed</span></div>
+          <div class="vault-row ok"><span class="vault-name">B6 Symplectic Conservation</span><span class="vault-score">Area-preserving</span></div>
+          <div class="vault-row ok"><span class="vault-name">B7 Thermal Reduction</span><span class="vault-score">72.1% anchored</span></div>
+          <div class="vault-row ok"><span class="vault-name">B8 Memory Bound</span><span class="vault-score">O(1) any load</span></div>
+          <div class="vault-row ok"><span class="vault-name">B9 Latency</span><span class="vault-score">0.113ms warm</span></div>
+          <div class="vault-row ok"><span class="vault-name">B10 Throughput</span><span class="vault-score">2.45M ops/sec</span></div>
+        </div>
+      </div>
+
+      <div class="intel-card">
+        <div class="intel-card__title">ACTIVE LOCKS</div>
+        <div class="lock-list">
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>SIA-v6 Core Engine — ETH + Linea anchored</span></div>
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>60-file IP corpus — SHA-256 Merkle sealed</span></div>
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>Ontology V5 — Ethereum mainnet TX confirmed</span></div>
+          <div class="lock-row pending"><span class="lock-icon">⏳</span><span>Ontology V6 — PENDING anchor</span></div>
+          <div class="lock-row pending"><span class="lock-icon">⏳</span><span>PAT-6 results — PENDING publication</span></div>
+        </div>
+
+        <div class="intel-card__title" style="margin-top:16px">CONSERVATION SENTINEL</div>
+        <div class="sentinel-status" id="intel-sentinel">
+          <div class="agent-dot green-dot pulse"></div>
+          <span class="green">23 / 23 PASS — All laws intact</span>
+        </div>
+        <div class="const-list">
+          <div class="const-row"><span>Tier 0 (Exact ε=10⁻⁹)</span><span class="green">4 laws ✓</span></div>
+          <div class="const-row"><span>Tier 1 (3-decimal ε=5×10⁻⁴)</span><span class="green">3 laws ✓</span></div>
+          <div class="const-row"><span>Tier 2 (Transcendental ε=10⁻¹)</span><span class="green">16 laws ✓</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
