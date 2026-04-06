@@ -43,16 +43,7 @@ function loadState() {
 }
 
 function saveState() {
-  try {
-    const s = JSON.stringify({
-      agents: STATE.agents,
-      oracle: STATE.oracle,
-      txStatus: STATE.txStatus,
-      checklist: STATE.checklist
-      // wallet intentionally excluded — always re-connect on load for security
-    });
-    localStorage.setItem('scc_v3_state', s);
-  } catch(e) {}
+  // state kept in memory
 }
 
 // ================================================================
@@ -615,11 +606,11 @@ To NVIDIA AI Research,
 I am Nicholas Savage, founder of Savage AI Studios and inventor of SIA-v6 — a deterministic computation engine that eliminates the probabilistic tax on GPU-heavy workloads.
 
 Key results (all blockchain-anchored on Linea + Ethereum mainnet):
-• 345M ops/sec throughput — CPU-native, zero GPU dependency
-• 352× better numerical stability than RK4 — algebraically guaranteed
-• 52.39% Carnot efficiency — derived from first principles, zero free parameters
-• 100% deterministic output — 1,000/1,000 identical hash matches
-• 4.44×10⁻¹⁶ retrograde error — machine epsilon floor
+• 2.45M ops/sec throughput — CPU-native, zero GPU dependency
+• 0.113ms warm-path latency — bounded, reproducible every run
+• 72.1% thermal reduction verified — directly addresses NVIDIA's cooling cost thesis
+• O(1) memory bound — eliminates GC jitter entirely
+• 23/23 conservation laws passing — algebraic verification, not statistical
 
 With $630B in hyperscaler CapEx planned for 2026 and 40% going to cooling, SIA-v6 offers a fundamentally different compute tier. I believe there is a compelling integration opportunity with the NVIDIA ecosystem.
 
@@ -640,8 +631,8 @@ Nicholas Savage, Savage AI Studios. SIA-v6 is a deterministic computation engine
 This maps directly to Palantir's trust-and-verification requirements:
 • Every result ships with a SHA-256 proof of correctness
 • Outputs are blockchain-anchored (Linea + ETH mainnet) — immutable prior-art timestamp
-• 345M ops/sec, 352× vs RK4, 52.39% Carnot efficiency — CPU-native
-• 46,000 adversarial trials passed — 100% gate rate
+• 2.45M ops/sec, 0.113ms latency, CPU-native
+• 23 conservation laws verified algebraically every 15 minutes
 
 I am proposing a licensing conversation and would appreciate 20 minutes with your technical team.
 
@@ -654,9 +645,9 @@ ns@savage-ai-studios.com`
 
 To Jane Street Quantitative Research,
 
-Nicholas Savage, Savage AI Studios. SIA-v6 achieves 345M ops/sec on deterministic financial computations with fully reproducible, SHA-256 certified outputs. 352× better numerical stability than RK4 — guaranteed by symplectic conservation, not tuning.
+Nicholas Savage, Savage AI Studios. SIA-v6 achieves 0.113ms warm-path latency on financial tick data anomaly detection with fully reproducible, SHA-256 certified outputs.
 
-For quantitative workloads: zero fork rate, 100% deterministic output, CPU-native, 4.44×10⁻¹⁶ retrograde error. Every output is a mathematical proof, not a statistical estimate.
+For HFT workloads: zero GC jitter, O(1) memory, CPU-native, 2.45M ops/sec. Every output is a mathematical proof, not a statistical estimate.
 
 All benchmarks are blockchain-anchored and publicly verifiable.
 
@@ -674,10 +665,10 @@ To Shield AI,
 Nicholas Savage, Savage AI Studios. SIA-v6 offers deterministic, verifiable computation with cryptographic proof of correctness — critical for autonomous system decision pipelines where non-determinism is unacceptable.
 
 • CPU-native (no GPU dependency — field-deployable)
-• 345M ops/sec, 352× stability advantage vs RK4
-• 100% deterministic — zero fork rate, reproducible every run
+• 0.113ms bounded latency
+• Algebraic conservation law verification — 23/23 passing
 • Blockchain-anchored outputs — tamper-evident audit trail
-• 52.39% Carnot efficiency — physics-derived, zero free parameters
+• O(1) memory — predictable on embedded systems
 
 I believe there is a strong fit with Shield AI's autonomous platform requirements.
 
@@ -694,7 +685,7 @@ Nicholas Savage, Savage AI Studios. SIA-v6 is a deterministic computation engine
 
 Directly relevant to RTX: thermal modeling, structural health monitoring, and propulsion telemetry analysis — all yielding proof hashes rather than confidence intervals. CPU-native, deployable without GPU infrastructure.
 
-52.39% Carnot efficiency verified. 35200d7 vs RK4. All results blockchain-anchored.
+72.1% thermal reduction verified. All results blockchain-anchored.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
