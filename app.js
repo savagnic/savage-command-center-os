@@ -694,7 +694,7 @@ Nicholas Savage, Savage AI Studios. SIA-v6 is a deterministic computation engine
 
 Directly relevant to RTX: thermal modeling, structural health monitoring, and propulsion telemetry analysis — all yielding proof hashes rather than confidence intervals. CPU-native, deployable without GPU infrastructure.
 
-52.39% Carnot efficiency verified. 35200d7 vs RK4. All results blockchain-anchored.
+52.39% Carnot efficiency verified. 352× vs RK4. All results blockchain-anchored.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
