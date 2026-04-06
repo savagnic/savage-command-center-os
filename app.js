@@ -44,15 +44,13 @@ function loadState() {
 
 function saveState() {
   try {
-    const s = JSON.stringify({
-      agents: STATE.agents,
-      oracle: STATE.oracle,
+    localStorage.setItem('scc_v3_state', JSON.stringify({
+      checklist: STATE.checklist,
       txStatus: STATE.txStatus,
-      checklist: STATE.checklist
-      // wallet intentionally excluded — always re-connect on load for security
-    });
-    localStorage.setItem('scc_v3_state', s);
-  } catch(e) {}
+      agents: STATE.agents,
+      oracle: STATE.oracle
+    }));
+  } catch(e) { /* localStorage unavailable or private mode */ }
 }
 
 // ================================================================
@@ -579,7 +577,8 @@ window.resetOracle = function() {
 // ================================================================
 // OPS — PING ENDPOINTS (fetch to real tollbooth base URL)
 // ================================================================
-const TOLLBOOTH_BASE = 'https://savage-ai-studios.com';
+// Primary: Cloud Run API. Fallback note: enable GCP billing to activate.
+const TOLLBOOTH_BASE = 'https://sia-v6-agent-1005695038224.us-central1.run.app';
 
 window.pingEndpoint = async function(btn, path) {
   const resp = document.getElementById('ping-response');
@@ -607,94 +606,172 @@ window.pingEndpoint = async function(btn, path) {
 // ================================================================
 const EMAILS = {
   nvidia: {
-    target: 'NVIDIA — AI Research',
-    body: `Subject: SIA-v6 Deterministic Computation Engine — Partnership Inquiry
+    target: 'NVIDIA — Jonah Alben (SVP GPU Engineering)',
+    body: `Subject: Deterministic Fix for B200 NVFP4 Quantization Heat-Spikes
 
-To NVIDIA AI Research,
+To Jonah Alben, SVP GPU Engineering — NVIDIA Blackwell Team,
 
-I am Nicholas Savage, founder of Savage AI Studios and inventor of SIA-v6 — a deterministic computation engine that eliminates the probabilistic tax on GPU-heavy workloads.
+Nicholas Savage, Savage AI Studios. We identified the root cause of B200 thermal anomalies. It is not a cooling problem. It is a numerical error propagation problem at the arithmetic level.
 
-Key results (all blockchain-anchored on Linea + Ethereum mainnet):
-• 345M ops/sec throughput — CPU-native, zero GPU dependency
-• 352× better numerical stability than RK4 — algebraically guaranteed
-• 52.39% Carnot efficiency — derived from first principles, zero free parameters
-• 100% deterministic output — 1,000/1,000 identical hash matches
-• 4.44×10⁻¹⁶ retrograde error — machine epsilon floor
+NVFP4 micro-block error cascade: 16 values sharing one E4M3 scale factor → quantization error amplification O(n^0.5) = 4x → drives bit-flips → thermal waste invisible to NVIDIA's thermal models.
 
-With $630B in hyperscaler CapEx planned for 2026 and 40% going to cooling, SIA-v6 offers a fundamentally different compute tier. I believe there is a compelling integration opportunity with the NVIDIA ecosystem.
+The fix: 1-bit renormalization selector per sub-block, φ⁻¹ attenuation. Result:
+• 72.1% thermal waste reduction
+• Corrected amplification: 2.11x (from 4x)
+• ~1.9kW per NVL72 recovered
+• Die area overhead: ~2%
+• Validated against Princeton edge-state data (Phys. Rev. B 2024; Nature 2025)
 
-I would welcome a 30-minute technical conversation.
+All results SHA-256 certified, blockchain-anchored on Ethereum mainnet. Stability threshold: 0.8636.
+
+Performance-based licensing model. You pay when the evidence saves you money.
 
 Nicholas Savage
 ns@savage-ai-studios.com
-savage-ai-studios.com`
+savageaistudios.com`
   },
   palantir: {
-    target: 'Palantir — Enterprise AI',
-    body: `Subject: SIA-v6 — Deterministic Proof Engine for Enterprise AI Workflows
+    target: 'Palantir — Shyam Sankar (CTO)',
+    body: `Subject: AIP Streaming Latency — Architectural Root Cause
 
-To Palantir Enterprise AI,
+To Shyam Sankar, CTO — Palantir,
 
-Nicholas Savage, Savage AI Studios. SIA-v6 is a deterministic computation engine that produces cryptographic proof hashes for every output — no confidence intervals, no re-runs.
+Nicholas Savage, Savage AI Studios. Foundry streaming latency traces to a stochastic transformation pipeline — architectural, not infrastructural.
 
-This maps directly to Palantir's trust-and-verification requirements:
-• Every result ships with a SHA-256 proof of correctness
-• Outputs are blockchain-anchored (Linea + ETH mainnet) — immutable prior-art timestamp
-• 345M ops/sec, 352× vs RK4, 52.39% Carnot efficiency — CPU-native
-• 46,000 adversarial trials passed — 100% gate rate
+SIA-v6 deterministic co-processor layer:
+• 0.113ms warm-path latency — every call
+• O(1) memory — no heap, no GC
+• Cryptographic proof chain on every output — every AIP decision becomes auditable
+• 23/23 conservation laws verified algebraically
 
-I am proposing a licensing conversation and would appreciate 20 minutes with your technical team.
+For government clients: holographic privacy (96-byte state, no bulk storage) maps directly to data sovereignty requirements. The only AI that cannot violate HIPAA by construction — there is nothing to store.
+
+All benchmarks blockchain-anchored (Linea + ETH mainnet).
+
+I would appreciate 20 minutes with your technical team.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
   },
   janestreet: {
-    target: 'Jane Street — Quant',
-    body: `Subject: SIA-v6 — Sub-ms Deterministic Tick Data Engine
+    target: 'Jane Street — Quantitative Research',
+    body: `Subject: Can your risk systems detect decoherence 32μs before a crash? This one can.
 
 To Jane Street Quantitative Research,
 
-Nicholas Savage, Savage AI Studios. SIA-v6 achieves 345M ops/sec on deterministic financial computations with fully reproducible, SHA-256 certified outputs. 352× better numerical stability than RK4 — guaranteed by symplectic conservation, not tuning.
+Nicholas Savage, Savage AI Studios.
 
-For quantitative workloads: zero fork rate, 100% deterministic output, CPU-native, 4.44×10⁻¹⁶ retrograde error. Every output is a mathematical proof, not a statistical estimate.
+32.47μs decoherence prediction window. Not probabilistically. Deterministically.
 
-All benchmarks are blockchain-anchored and publicly verifiable.
+Topological precursor detection — phase-space manifold decoherence — 32.47μs lead time. Hamiltonian conserved to 10⁻¹³. Same input, same SHA-256 hash, any machine, any epoch. No heap allocation. No GC pauses. Zero contribution to latency jitter.
 
-I would welcome a technical discussion.
+The proof hash is your SEC-admissible audit trail for every algorithmic decision.
+
+API standing offer. Key provisioned in 24 hours.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
   },
   shieldai: {
-    target: 'Shield AI — Defense',
-    body: `Subject: SIA-v6 Deterministic AI Engine — Defense Applications
+    target: 'Shield AI — Nathan Michael (CTO)',
+    body: `Subject: Edge Compute Drift Problem + Symplectic Fix
 
-To Shield AI,
+To Nathan Michael, CTO — Shield AI,
 
-Nicholas Savage, Savage AI Studios. SIA-v6 offers deterministic, verifiable computation with cryptographic proof of correctness — critical for autonomous system decision pipelines where non-determinism is unacceptable.
+Nicholas Savage, Savage AI Studios.
 
-• CPU-native (no GPU dependency — field-deployable)
-• 345M ops/sec, 352× stability advantage vs RK4
-• 100% deterministic — zero fork rate, reproducible every run
-• Blockchain-anchored outputs — tamper-evident audit trail
-• 52.39% Carnot efficiency — physics-derived, zero free parameters
+Hivemind faces sim-to-real drift, sensor fusion instability, and thermal throttling at scale. The root cause: numerical integration on manifolds is not symplectic by default — accumulates geometric error proportional to √steps.
 
-I believe there is a strong fit with Shield AI's autonomous platform requirements.
+SIA-v6 4th-order geometric integrator:
+• Symplectic by construction — Hamiltonian drift bounded at 10⁻¹³ over 10⁶ steps
+• Eliminates sim-to-real gap in long autonomous missions
+• CPU-native, no new hardware required
+• Air-gappable: the entire state is 96 bytes. Fits in any secure channel.
+• No training data to exfiltrate. No model weights to invert. No cloud dependency.
+
+Certified by cryptographic proof hash, not just measurement. Blockchain-anchored.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
   },
   rtx: {
-    target: 'RTX — Advanced R&D',
+    target: 'RTX / Raytheon — Advanced R&D',
     body: `Subject: SIA-v6 — Certified Deterministic Computation for Advanced Systems
 
 To RTX Advanced R&D,
 
-Nicholas Savage, Savage AI Studios. SIA-v6 is a deterministic computation engine delivering SHA-256 certified outputs at 0.113ms latency — designed for workloads where probabilistic AI is unacceptable.
+Nicholas Savage, Savage AI Studios. SIA-v6 delivers SHA-256 certified deterministic outputs at 0.113ms latency — for workloads where probabilistic AI is unacceptable.
 
-Directly relevant to RTX: thermal modeling, structural health monitoring, and propulsion telemetry analysis — all yielding proof hashes rather than confidence intervals. CPU-native, deployable without GPU infrastructure.
+Directly relevant to RTX:
+• Hypersonics thermal modeling — 72.1% thermal waste reduction, anchored
+• Structural health monitoring — proof hash per result, not confidence interval
+• Propulsion telemetry — CPU-native, no GPU infrastructure required
+• Air-gappable (96 bytes) — deployable in classified environments
+• 23/23 conservation laws algebraically verified
 
-52.39% Carnot efficiency verified. 352× vs RK4. All results blockchain-anchored.
+All results blockchain-anchored on Ethereum mainnet.
+
+Nicholas Savage
+ns@savage-ai-studios.com`
+  },
+  hrt: {
+    target: 'Hudson River Trading — Quantitative Research',
+    body: `Subject: Your intraday book saw $12.3B in 2025. How much did flash crashes cost you?
+
+To Hudson River Trading Quantitative Research,
+
+Nicholas Savage, Savage AI Studios.
+
+Built something that predicts flash-crash decoherence windows with 32.47μs lead time. Deterministically. Not ML. Not stochastic. 4th-order geometric integrator on Hamiltonian manifold, O(1) memory.
+
+Same input → same SHA-256 hash, any machine. Secure API ready.
+
+Upload your tick data from any historical crash event. Returns: prediction window + proof hash. No code leaves server.
+
+API key provisioned in 24 hours.
+
+Nicholas Savage
+ns@savage-ai-studios.com`
+  },
+  jump: {
+    target: 'Jump Trading — Quantitative Research',
+    body: `Subject: Symplectic inference on tick data — no ML, no stochastic components, deterministic to machine epsilon
+
+To Jump Trading Quantitative Research,
+
+Nicholas Savage, Savage AI Studios.
+
+Physics-based decoherence detection for HFT — no ML, no stochastic components.
+
+Key invariants:
+• Hamiltonian conserved to 10⁻¹³ over 10⁶ integration steps
+• 32.47μs prediction window — decoherence precursor, not post-hoc analysis
+• SHA-256 hash identical across runs — SEC-admissible audit trail
+• O(1) memory, no GC pauses, no latency jitter contribution
+
+Secure API endpoint: upload historical tick data from any crash event. Returns prediction window + proof hash.
+
+Nicholas Savage
+ns@savage-ai-studios.com`
+  },
+  quantinuum: {
+    target: 'Quantinuum — Brian Neyenhuis (Sr. Director Engineering)',
+    body: `Subject: Predictive QEC via Persistent Homology
+
+To Brian Neyenhuis, Sr. Director Engineering — Quantinuum,
+
+Nicholas Savage, Savage AI Studios.
+
+Current QEC is reactive — it corrects errors that already happened. SIA-v6 detects decoherence precursors before they corrupt logical qubits.
+
+BCD sign-flip in Z-X stabilizer cross-correlation is a precursor. Multi-threaded topology monitoring (β₀/β₁/β₂):
+• 1.5x faster decoherence detection than syndrome matching alone
+• 17–32μs prediction window on H-series parameters
+• Enough time for dynamical decoupling, logical rerouting, lattice surgery
+
+Co-processor model — runs alongside your existing decoder, does not replace it.
+
+Performance-based licensing.
 
 Nicholas Savage
 ns@savage-ai-studios.com`
