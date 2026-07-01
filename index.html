@@ -10,7 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CMD CENTER">
-<!-- Edge / MS PWA hints -->
 <meta name="msapplication-TileColor" content="#0a0a0a">
 <meta name="msapplication-starturl" content="/">
 
@@ -120,14 +119,16 @@
       <div class="brief-card">
         <div class="brief-card__title">LAUNCH CHECKLIST</div>
         <div class="checklist" id="checklist">
-          <label class="chk"><input type="checkbox" id="chk-metamask"> MetaMask signed — all 4 TXs</label>
-          <label class="chk"><input type="checkbox" id="chk-gcp"> GCP billing enabled</label>
+          <label class="chk"><input type="checkbox" id="chk-metamask"> MetaMask signed — TX 1 &amp; TX 2</label>
+          <label class="chk"><input type="checkbox" id="chk-backend"> Backend live — api.savage-ai-studios.com</label>
+          <label class="chk"><input type="checkbox" id="chk-ceros"> CEROS stream connected</label>
           <label class="chk"><input type="checkbox" id="chk-dns"> DNS — both domains live</label>
           <label class="chk"><input type="checkbox" id="chk-agents"> Three-path agents running</label>
           <label class="chk"><input type="checkbox" id="chk-v6"> Ontology V6 published</label>
           <label class="chk"><input type="checkbox" id="chk-outreach"> Outreach emails sent</label>
           <label class="chk"><input type="checkbox" id="chk-arxiv"> arXiv / SSRN submitted</label>
           <label class="chk"><input type="checkbox" id="chk-pwa"> PWA installed on device</label>
+          <label class="chk chk--later"><input type="checkbox" id="chk-v15" disabled> 🕒 Savage Ontology V15 — TX 3 &amp; TX 4 (coming later)</label>
         </div>
       </div>
 
@@ -159,7 +160,7 @@
   <section class="panel" id="panel-chain">
     <div class="panel__header">
       <span class="panel__index">02</span>
-      <h2 class="panel__title">Chain & Sign</h2>
+      <h2 class="panel__title">Chain &amp; Sign</h2>
       <span class="panel__sub">MetaMask · Edge Beta · EIP-1193</span>
     </div>
 
@@ -251,31 +252,32 @@
           <div class="tx-card__confirm" id="tx-2-confirm" style="display:none"></div>
         </div>
 
-        <div class="tx-card" id="tx-3">
+        <!-- TX 3 & TX 4: Reserved for Savage Ontology V15 -->
+        <div class="tx-card tx-card--later" id="tx-3">
           <div class="tx-card__header">
             <span class="tx-card__num">TX 3</span>
             <span class="tx-card__net net-linea">LINEA</span>
-            <span class="tx-card__status" id="tx-3-status">PENDING</span>
+            <span class="tx-card__status tx-card__status--later" id="tx-3-status">COMING LATER</span>
           </div>
-          <div class="tx-card__label">Ontology V6 Corpus Hash — Linea</div>
-          <div class="tx-card__data">
-            <input type="text" class="tx-card__input" id="tx-3-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
+          <div class="tx-card__label">Savage Ontology V15 — Linea Anchor</div>
+          <div class="tx-card__data tx-card__data--later">
+            <span class="tx-later-note">🕒 Reserved — Savage Ontology V15 not yet written. TX 3 will anchor the V15 corpus hash on Linea when ready.</span>
           </div>
-          <button class="btn btn--sign" id="tx-3-btn" onclick="signCustomTX(3,'0xe708','tx-3-hash')">SIGN IN METAMASK</button>
+          <button class="btn btn--sign" id="tx-3-btn" disabled style="opacity:0.35;cursor:not-allowed">LOCKED — V15 PENDING</button>
           <div class="tx-card__confirm" id="tx-3-confirm" style="display:none"></div>
         </div>
 
-        <div class="tx-card" id="tx-4">
+        <div class="tx-card tx-card--later" id="tx-4">
           <div class="tx-card__header">
             <span class="tx-card__num">TX 4</span>
             <span class="tx-card__net net-eth">ETH MAINNET</span>
-            <span class="tx-card__status" id="tx-4-status">PENDING</span>
+            <span class="tx-card__status tx-card__status--later" id="tx-4-status">COMING LATER</span>
           </div>
-          <div class="tx-card__label">Ontology V6 Corpus Hash — ETH Mainnet</div>
-          <div class="tx-card__data">
-            <input type="text" class="tx-card__input" id="tx-4-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
+          <div class="tx-card__label">Savage Ontology V15 — ETH Mainnet Anchor</div>
+          <div class="tx-card__data tx-card__data--later">
+            <span class="tx-later-note">🕒 Reserved — Savage Ontology V15 not yet written. TX 4 will anchor the V15 corpus hash on ETH Mainnet when ready.</span>
           </div>
-          <button class="btn btn--sign" id="tx-4-btn" onclick="signCustomTX(4,'0x1','tx-4-hash')">SIGN IN METAMASK</button>
+          <button class="btn btn--sign" id="tx-4-btn" disabled style="opacity:0.35;cursor:not-allowed">LOCKED — V15 PENDING</button>
           <div class="tx-card__confirm" id="tx-4-confirm" style="display:none"></div>
         </div>
 
@@ -405,27 +407,34 @@
   <section class="panel" id="panel-ops">
     <div class="panel__header">
       <span class="panel__index">04</span>
-      <h2 class="panel__title">Ops & Infrastructure</h2>
-      <span class="panel__sub">GCP · Tollbooth · DNS</span>
+      <h2 class="panel__title">Ops &amp; Infrastructure</h2>
+      <span class="panel__sub">Backend · Endpoints · DNS</span>
     </div>
 
     <div class="ops-grid">
 
       <div class="ops-card">
-        <div class="ops-card__title">GCP INFRASTRUCTURE</div>
+        <div class="ops-card__title">BACKEND STATUS</div>
         <table class="ops-table">
-          <tr><td>Project</td><td class="mono">sia-v6-sovereign</td></tr>
-          <tr><td>Region</td><td class="mono">us-central1</td></tr>
-          <tr><td>Cloud Run Jobs</td><td class="mono">4 active</td></tr>
-          <tr><td>Cloud SQL</td><td class="mono">PostgreSQL 15</td></tr>
-          <tr><td>Billing Status</td><td><span class="status-badge status-warn" id="gcp-billing">CHECK REQUIRED</span></td></tr>
+          <tr><td>Host</td><td class="mono">api.savage-ai-studios.com</td></tr>
+          <tr><td>Runtime</td><td class="mono">TBD — configure when ready</td></tr>
+          <tr><td>CEROS Stream</td><td class="mono">/api/v6/ceros/stream (SSE)</td></tr>
+          <tr><td>Physics</td><td class="mono">/api/v6/physics</td></tr>
+          <tr><td>Finance</td><td class="mono">/api/v6/finance</td></tr>
+          <tr><td>Sentinel</td><td class="mono">/api/v6/sentinel/status</td></tr>
+          <tr><td>Verify</td><td class="mono">/api/v6/verify</td></tr>
+          <tr><td>Health</td><td class="mono">/health</td></tr>
         </table>
-        <a href="https://console.cloud.google.com/billing" target="_blank" class="btn btn--green" style="margin-top:12px;width:100%;display:block;text-align:center;">ENABLE BILLING ↗</a>
       </div>
 
       <div class="ops-card">
-        <div class="ops-card__title">TOLLBOOTH ENDPOINTS</div>
+        <div class="ops-card__title">ENDPOINT PING</div>
         <div class="endpoint-list" id="endpoint-list">
+          <div class="endpoint-row">
+            <span class="endpoint-method">GET</span>
+            <span class="endpoint-path">/api/v6/ceros/stream</span>
+            <button class="ping-btn" onclick="pingEndpoint(this,'/api/v6/ceros/stream')">PING</button>
+          </div>
           <div class="endpoint-row">
             <span class="endpoint-method">POST</span>
             <span class="endpoint-path">/api/v6/physics</span>
@@ -558,6 +567,7 @@
           <div class="lock-row locked"><span class="lock-icon">🔒</span><span>Ontology V5 — Ethereum mainnet TX confirmed</span></div>
           <div class="lock-row pending"><span class="lock-icon">⏳</span><span>Ontology V6 — PENDING anchor</span></div>
           <div class="lock-row pending"><span class="lock-icon">⏳</span><span>PAT-6 results — PENDING publication</span></div>
+          <div class="lock-row later"><span class="lock-icon">🕒</span><span>Savage Ontology V15 — TX 3 &amp; TX 4 reserved (coming later)</span></div>
         </div>
 
         <div class="intel-card__title" style="margin-top:16px">CONSERVATION SENTINEL</div>
@@ -579,46 +589,54 @@
   <section class="panel" id="panel-ceros">
     <div class="panel__header">
       <span class="panel__index">06</span>
-      <h2 class="panel__title">CEROS</h2>
-      <span class="panel__sub">Continuous Evolutionary Recursive Optimization System</span>
+      <h2 class="panel__title">CEROS Stream</h2>
+      <span class="panel__sub">Cognitive Event &amp; Response Orchestration</span>
     </div>
 
-    <!-- Connection status bar -->
-    <div class="ceros-connect-bar">
-      <div class="ceros-dot ceros-dot--connecting" id="ceros-connect-dot"></div>
-      <span class="ceros-connect-label" id="ceros-connect-label">CONNECTING…</span>
-      <span class="ceros-status-val" id="ceros-status"></span>
-      <span class="ceros-stream-stats" id="ceros-stream-stats"></span>
+    <div class="ceros-controls">
+      <div class="ceros-status">
+        <div class="ceros-dot dot-off" id="ceros-dot"></div>
+        <span id="ceros-heartbeat" class="ceros-heartbeat">♥ —</span>
+      </div>
+      <button class="btn btn--green" id="ceros-connect-btn" onclick="cerosConnect()">CONNECT STREAM</button>
+      <button class="btn btn--red" id="ceros-disconnect-btn" onclick="cerosDisconnect()" disabled>DISCONNECT</button>
     </div>
 
     <div class="ceros-grid">
 
-      <!-- CRI + Cycle stream -->
       <div class="ceros-card">
-        <div class="ceros-card__title">CYCLE STREAM
-          <span class="ceros-cri-val" id="ceros-cri-value">—</span>
-          <span class="ceros-cri-label">CRI</span>
+        <div class="ceros-card__title">COGNITIVE READINESS INDEX</div>
+        <div class="cri-track">
+          <div class="cri-fill dot-off" id="ceros-cri-bar" style="width:0%"></div>
         </div>
-        <div class="agent-log" id="ceros-stream-log"></div>
+        <div class="cri-meta">
+          <span class="cri-val" id="ceros-cri-val">0.0000</span>
+          <span class="cri-label" id="ceros-cri-label">—</span>
+        </div>
       </div>
 
-      <!-- Spine promotions -->
       <div class="ceros-card">
-        <div class="ceros-card__title">SPINE PROMOTIONS</div>
-        <div class="ceros-diamond-feed" id="ceros-diamond-feed"></div>
-        <div class="agent-log" id="ceros-spine-log"></div>
+        <div class="ceros-card__title">ORACLE STATUS</div>
+        <div class="const-list">
+          <div class="const-row"><span>λ* distance</span><span id="ceros-lambda">—</span></div>
+          <div class="const-row"><span>Cycles</span><span id="ceros-cycles">—</span></div>
+          <div class="const-row"><span>Converged</span><span id="ceros-converged">—</span></div>
+        </div>
       </div>
 
-      <!-- Fault log -->
-      <div class="ceros-card ceros-card--fault">
-        <div class="ceros-card__title">FAULT LOG</div>
-        <div class="agent-log" id="ceros-fault-log"></div>
+      <div class="ceros-card ceros-card--wide">
+        <div class="ceros-card__title">FAULT FEED</div>
+        <div class="fault-feed" id="ceros-fault-feed"></div>
       </div>
 
-      <!-- Founder decision queue -->
-      <div class="ceros-card">
-        <div class="ceros-card__title">FOUNDER QUEUE</div>
-        <div class="agent-log" id="ceros-founder-queue"></div>
+      <div class="ceros-card ceros-card--wide">
+        <div class="ceros-card__title">DIAMOND FEED</div>
+        <div class="diamond-feed" id="ceros-diamond-feed"></div>
+      </div>
+
+      <div class="ceros-card ceros-card--full">
+        <div class="ceros-card__title">EVENT LOG</div>
+        <div class="agent-log" id="ceros-log"></div>
       </div>
 
     </div>
@@ -626,7 +644,7 @@
 
 </main>
 
-<script src="app.js"></script>
 <script src="ceros-stream.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
