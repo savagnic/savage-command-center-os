@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="diamond-feed.css">
 </head>
 <body>
 
@@ -43,6 +44,7 @@
       <button class="tab" data-panel="agents">AGENTS</button>
       <button class="tab" data-panel="ops">OPS</button>
       <button class="tab" data-panel="intel">INTEL</button>
+      <button class="tab" data-panel="diamond">💎 FEED <span class="df-tab-badge" id="df-tab-badge">0</span></button>
     </div>
     <div class="topnav__right">
       <div class="wallet-status" id="wallet-status">
@@ -574,8 +576,67 @@
     </div>
   </section>
 
+  <!-- ======= DIAMOND FEED ======= -->
+  <section class="panel" id="panel-diamond">
+    <div class="panel__header">
+      <span class="panel__index">06</span>
+      <h2 class="panel__title">💎 Diamond Feed</h2>
+      <span class="panel__sub">Constitutional Promotions · Organism Health</span>
+    </div>
+
+    <div class="df-panel">
+
+      <!-- Health ticker + refresh -->
+      <div class="df-header-row">
+        <div class="df-health-block">
+          <div class="df-health-label">Organism Health</div>
+          <div class="df-health-value" id="df-health-value">—</div>
+          <div class="df-health-ts" id="df-health-ts">not polled yet</div>
+        </div>
+        <div class="df-health-block">
+          <div class="df-health-label">Promotions Live</div>
+          <div class="df-health-value" id="df-count-value" style="color:#88aaff">0</div>
+          <div class="df-health-ts">since session start</div>
+        </div>
+        <button class="df-refresh-btn" id="df-refresh-btn" onclick="refreshDiamondFeed()">↻ REFRESH</button>
+      </div>
+
+      <!-- Constitutional law reference -->
+      <div style="background:#0d0d0d;border:1px solid #222;border-radius:8px;padding:10px 14px;font-size:11px;font-family:monospace;color:#666;line-height:1.8;">
+        <span style="color:#00ff88;font-weight:700;">CONSTITUTIONAL LAWS ACTIVE:</span>
+        LAW_001 composite≥40 &nbsp;·&nbsp;
+        LAW_002 novelty≥30 &nbsp;·&nbsp;
+        LAW_003 utility≥35 &nbsp;·&nbsp;
+        LAW_004 origin declared &nbsp;·&nbsp;
+        LAW_005 domain declared &nbsp;&nbsp;
+        <span style="color:#ffcc44;">TIERS: ROUGH&lt;55 · CUT 55–69 · POLISHED 70–84 · FLAWLESS 85+</span>
+      </div>
+
+      <!-- Live feed list -->
+      <div class="df-feed-list" id="df-feed-list">
+        <div class="df-empty">Initializing feed...</div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <script src="app.js"></script>
+<script src="diamond-feed.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initDiamondFeed === 'function') {
+      initDiamondFeed();
+      // Keep promotion count badge in sync
+      setInterval(function() {
+        var c = document.getElementById('df-count-value');
+        var b = document.getElementById('df-tab-badge');
+        if (c && window.DIAMOND_STATE) c.textContent = window.DIAMOND_STATE.promotions.length;
+        if (b && window.DIAMOND_STATE) b.textContent = window.DIAMOND_STATE.promotions.length;
+      }, 2000);
+    }
+  });
+</script>
 </body>
 </html>
