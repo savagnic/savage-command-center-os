@@ -81,13 +81,10 @@ function detectBrowser() {
 }
 
 function detectProvider() {
-  // MetaMask Edge extension injects window.ethereum with isMetaMask flag
   if (typeof window.ethereum !== 'undefined') {
     if (window.ethereum.isMetaMask) return { provider: window.ethereum, type: 'MetaMask' };
-    // Could be another injected provider
     return { provider: window.ethereum, type: 'Injected' };
   }
-  // EIP-6963 multi-provider support (newer MetaMask versions)
   if (window.ethereum?.providers) {
     const mm = window.ethereum.providers.find(p => p.isMetaMask);
     if (mm) return { provider: mm, type: 'MetaMask (multi)' };
@@ -100,7 +97,6 @@ async function connectWallet() {
   const browser = detectBrowser();
 
   if (!detected) {
-    // Not injected — show actionable guidance for Edge Beta
     showBanner(
       '⚠ MetaMask not detected. In Edge Beta: tap the MetaMask extension icon in the toolbar first, then tap CONNECT WALLET again. If on MetaMask in-app browser, navigate to this URL inside MetaMask → Browser tab.',
       'warn'
@@ -127,7 +123,6 @@ async function connectWallet() {
     updateWalletUI();
     showBanner('✓ Wallet connected: ' + address.slice(0,6) + '...' + address.slice(-4) + '  (' + type + ' · ' + browser + ')', 'ok');
 
-    // Listen for chain/account changes
     provider.on('chainChanged', (id) => {
       STATE.wallet.chainId = id;
       saveState();
@@ -190,7 +185,6 @@ function chainIdName(id) {
   return names[id] || 'Chain ' + id;
 }
 
-// Network switcher
 document.querySelectorAll('.net-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     const det = detectProvider();
@@ -202,7 +196,6 @@ document.querySelectorAll('.net-btn').forEach(btn => {
       });
     } catch(err) {
       if (err.code === 4902) {
-        // Chain not added — add Linea
         if (btn.dataset.chain === '0xe708') {
           try {
             await det.provider.request({
@@ -226,8 +219,6 @@ document.querySelectorAll('.net-btn').forEach(btn => {
 
 // ================================================================
 // TX SIGNING — REAL EIP-1193 eth_sendTransaction
-// Sends data as a 0-value self-send with hex payload as calldata.
-// This is the standard on-chain timestamping / Merkle-root anchoring method.
 // ================================================================
 window.signTX = async function(num, chainId, hexData) {
   const det = detectProvider();
@@ -239,7 +230,6 @@ window.signTX = async function(num, chainId, hexData) {
   const confirm = document.getElementById('tx-' + num + '-confirm');
   const card = document.getElementById('tx-' + num);
 
-  // Ensure we're on the right chain
   const currentChain = STATE.wallet.chainId;
   if (currentChain !== chainId) {
     try {
@@ -256,14 +246,12 @@ window.signTX = async function(num, chainId, hexData) {
   status.className = 'tx-card__status';
 
   try {
-    // Calldata = 0x + hash bytes (strip leading 0x if present)
     const calldata = hexData.startsWith('0x') ? hexData : '0x' + hexData;
-
     const txHash = await det.provider.request({
       method: 'eth_sendTransaction',
       params: [{
         from: STATE.wallet.address,
-        to: STATE.wallet.address,   // self-send = cheapest anchor
+        to: STATE.wallet.address,
         value: '0x0',
         data: calldata,
         gas: '0x' + (21000 + calldata.length * 68).toString(16)
@@ -307,12 +295,11 @@ window.signCustomTX = async function(num, chainId, inputId) {
 };
 
 // ================================================================
-// SHA-256 — Real Web Crypto API (no library needed)
+// SHA-256 — Real Web Crypto API
 // ================================================================
 window.computeHash = async function() {
   const input = document.getElementById('hash-input').value.trim();
   if (!input) return showBanner('Enter text to hash.', 'warn');
-
   try {
     const encoder = new TextEncoder();
     const data = encoder.encode(input);
@@ -320,7 +307,6 @@ window.computeHash = async function() {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hex = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
     const full = '0x' + hex;
-
     document.getElementById('hash-output').textContent = full;
     document.getElementById('hash-result').style.display = 'block';
   } catch(e) {
@@ -339,16 +325,13 @@ window.copyHashResult = function() {
 window.buildHexCalldata = function() {
   const input = document.getElementById('hex-input').value.trim();
   if (!input) return showBanner('Enter hex data or text.', 'warn');
-
   let hex;
   if (input.startsWith('0x')) {
     hex = input;
   } else {
-    // Encode as UTF-8 hex
     hex = '0x' + Array.from(new TextEncoder().encode(input))
       .map(b => b.toString(16).padStart(2,'0')).join('');
   }
-
   document.getElementById('hex-output').textContent = hex;
   document.getElementById('hex-result').style.display = 'block';
 };
@@ -362,27 +345,17 @@ window.copyHex = function() {
 // AGENT ENGINES — Real math, no simulation
 // ================================================================
 
-// --- PATH A: Thermodynamic Ratchet ---
-// Computes entropy production via symplectic area preservation.
-// Ratchet gate: accepts tick only if entropy is non-decreasing (Landauer bound).
 function tickAgentA(state) {
   const phi = ARCH.PHI;
   const dt = 0.001;
-
-  // Symplectic map: area-preserving Hénon map variant
   const x0 = (state.x !== undefined) ? state.x : 0.5;
   const p0 = (state.p !== undefined) ? state.p : 0.1;
-
   const x1 = x0 + dt * p0;
   const p1 = p0 - dt * (x0 + phi * x0 * x0);
-
-  // Entropy increment (Boltzmann-style from kinetic energy change)
   const E0 = 0.5 * p0 * p0;
   const E1 = 0.5 * p1 * p1;
   const dS = Math.abs(E1 - E0) * ARCH.DELTA;
-
-  const accepted = dS >= 0;   // Landauer: entropy must not decrease
-
+  const accepted = dS >= 0;
   return {
     x: x1, p: p1,
     entropy: (state.entropy || 0) + (accepted ? dS : 0),
@@ -393,19 +366,13 @@ function tickAgentA(state) {
   };
 }
 
-// --- PATH B: Topological Memory ---
-// Tracks Betti number (connectivity) of a persistence diagram point cloud.
-// Gate: accepts only if topological feature count changes (non-trivial loop born/died).
 let pathBCloud = [];
 function tickAgentB(state) {
   const n = pathBCloud.length;
-  // Add a new point driven by golden ratio spiral
   const theta = n * 2 * Math.PI / ARCH.PHI;
   const r = 0.1 + 0.4 * (n % 20) / 20;
   pathBCloud.push({ x: r * Math.cos(theta), y: r * Math.sin(theta) });
-
-  // Compute simplicial Betti-0 (connected components) via union-find on closest pairs
-  const pts = pathBCloud.slice(-30);  // rolling window
+  const pts = pathBCloud.slice(-30);
   const eps = 0.25;
   const parent = pts.map((_, i) => i);
   function find(a) { while(parent[a] !== a) { parent[a] = parent[parent[a]]; a = parent[a]; } return a; }
@@ -419,7 +386,6 @@ function tickAgentB(state) {
   const betti0 = roots.size;
   const prevBetti = state.lastBetti || 1;
   const changed = betti0 !== prevBetti;
-
   return {
     lastBetti: betti0,
     bettiSum: (state.bettiSum || 0) + betti0,
@@ -429,21 +395,14 @@ function tickAgentB(state) {
   };
 }
 
-// --- PATH C: RG Flow ---
-// Renormalization group iteration toward fixed point λ*.
-// Coupling vector flows under repeated block-spin transformation.
 function tickAgentC(state) {
   const lam = (state.lambda !== undefined) ? state.lambda : 1.0;
   const lstar = ARCH.LAMBDA_STAR;
-
-  // RG beta function: β(λ) = -λ(λ - λ*)(1 + φ·λ)
   const beta = -lam * (lam - lstar) * (1 + ARCH.PHI * lam);
   const dt = 0.05;
   const newLam = lam + dt * beta;
-
   const dist = Math.abs(newLam - lstar);
-  const accepted = dist < Math.abs(lam - lstar);  // moving toward fixed point
-
+  const accepted = dist < Math.abs(lam - lstar);
   return {
     lambda: newLam,
     lambdaDist: dist,
@@ -454,14 +413,12 @@ function tickAgentC(state) {
   };
 }
 
-// --- PROOF HASH: SHA-256 of agent state ---
 async function proofHash(obj) {
   const data = new TextEncoder().encode(JSON.stringify(obj) + Date.now());
   const buf = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
 }
 
-// --- Agent state (live, not persisted between sessions for freshness) ---
 const liveAgents = {
   a: { x: 0.5, p: 0.1, entropy: 0, lastBetti: 1 },
   b: { bettiSum: 0, lastBetti: 1 },
@@ -471,19 +428,15 @@ const liveAgents = {
 window.dispatchAgent = async function(id, n) {
   const s = STATE.agents[id];
   const live = liveAgents[id];
-
   for (let i = 0; i < n; i++) {
     let result;
     if (id === 'a') result = tickAgentA(live);
     else if (id === 'b') result = tickAgentB(live);
     else result = tickAgentC(live);
-
     Object.assign(live, result);
-
     s.ticks++;
     if (result.accepted) s.accepted++;
     else s.rejected++;
-
     const logEl = document.getElementById(id + '-log');
     const line = document.createElement('div');
     line.className = result.accepted ? 'log-ok' : 'log-reject';
@@ -491,19 +444,14 @@ window.dispatchAgent = async function(id, n) {
     logEl.appendChild(line);
     logEl.scrollTop = logEl.scrollHeight;
   }
-
-  // Generate proof hash from final state
   const h = await proofHash({ id, ticks: s.ticks, accepted: s.accepted, state: live });
   s.lastHash = h;
-
-  // Update UI
   document.getElementById(id + '-ticks').textContent = s.ticks;
   document.getElementById(id + '-accept').textContent = s.accepted;
   document.getElementById(id + '-reject').textContent = s.rejected;
   document.getElementById(id + '-hash').textContent = h;
   const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
   document.getElementById(id + '-bar').style.width = pct + '%';
-
   saveState();
 };
 
@@ -522,32 +470,24 @@ window.resetAgent = function(id) {
 
 // ================================================================
 // SOVEREIGN ORACLE
-// Full SIA-v6 decision cycle: all three paths run once, 
-// cross-validate, converge toward λ*.
 // ================================================================
 const oracleState = { lambda: 1.0 };
 
 window.runOracle = async function(n) {
   const s = STATE.oracle;
   const log = document.getElementById('oracle-log');
-
   for (let i = 0; i < n; i++) {
-    // Run all three path ticks
     const ra = tickAgentA(liveAgents.a);
     const rb = tickAgentB(liveAgents.b);
     const rc = tickAgentC(liveAgents.c);
     Object.assign(liveAgents.a, ra);
     Object.assign(liveAgents.b, rb);
     Object.assign(liveAgents.c, rc);
-
     s.cycles++;
-
-    // Consensus: converged if all three accepted AND RG distance < 0.01
     const dist = rc.lambdaDist;
     const converged = ra.accepted && rb.accepted && rc.accepted && dist < 0.01;
     if (converged) s.converged++;
     s.lastLambda = dist;
-
     const line = document.createElement('div');
     line.className = converged ? 'log-ok' : 'log-info';
     line.textContent = '[' + s.cycles + '] PathA:' + (ra.accepted?'✓':'✗')
@@ -558,7 +498,6 @@ window.runOracle = async function(n) {
     log.appendChild(line);
     log.scrollTop = log.scrollHeight;
   }
-
   document.getElementById('oracle-cycles').textContent = s.cycles;
   document.getElementById('oracle-conv').textContent = s.converged;
   document.getElementById('oracle-lambda').textContent = s.lastLambda.toExponential(3);
@@ -575,10 +514,12 @@ window.resetOracle = function() {
 };
 
 // ================================================================
-// OPS — PING ENDPOINTS (fetch to real tollbooth base URL)
+// OPS — PING ENDPOINTS
+// No Cloud Run. No Google Cloud.
+// Configure your actual backend base URL here when ready.
 // ================================================================
-// Primary: Cloud Run API. Fallback note: enable GCP billing to activate.
-const TOLLBOOTH_BASE = 'https://sia-v6-agent-1005695038224.us-central1.run.app';
+// TODO: replace with real backend host (Fly.io / Railway / VPS / etc.)
+const API_BASE = 'https://api.savage-ai-studios.com';
 
 window.pingEndpoint = async function(btn, path) {
   const resp = document.getElementById('ping-response');
@@ -586,7 +527,7 @@ window.pingEndpoint = async function(btn, path) {
   btn.disabled = true;
   const t0 = Date.now();
   try {
-    const r = await fetch(TOLLBOOTH_BASE + path, { method: 'GET', signal: AbortSignal.timeout(5000) });
+    const r = await fetch(API_BASE + path, { method: 'GET', signal: AbortSignal.timeout(5000) });
     const ms = Date.now() - t0;
     resp.style.display = 'block';
     resp.textContent = path + '  →  HTTP ' + r.status + '  (' + ms + 'ms)';
@@ -843,9 +784,7 @@ function initChecklist() {
 }
 
 // ================================================================
-// PWA — INSTALL PROMPT (Edge Beta compatible)
-// Edge Beta on Android fires beforeinstallprompt.
-// Microsoft Launcher intercepts and shows native install.
+// PWA — INSTALL PROMPT
 // ================================================================
 let installPromptEvent = null;
 
@@ -942,10 +881,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initChecklist();
   updateWalletUI();
 
-  // If already had a wallet session, show reconnect hint
   if (STATE.wallet) {
     showBanner('Tap CONNECT WALLET to reconnect MetaMask (session refreshed).', 'warn');
-    STATE.wallet = null;  // Force fresh connection each load
+    STATE.wallet = null;
     saveState();
   }
 });
