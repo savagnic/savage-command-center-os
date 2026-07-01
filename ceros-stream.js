@@ -1,305 +1,177 @@
 /* ================================================================
-   CEROS STREAM BRIDGE — savage-command-center
-   Consumes GET /api/stream from SIA-V6-CEROS and renders
-   orchestrator cycles, founder decisions, diamond promotions,
-   and spine events into the command center UI.
-
-   Usage (in index.html):
-     <script src="./ceros-stream.js"></script>
-     <script>CerosStream.init();</script>
-
-   Or with custom CEROS URL:
-     window.CEROS_BASE_URL = 'http://192.168.1.100:3000';
-     CerosStream.init();
-
-   DOM targets (add these elements to index.html to activate panels):
-     #ceros-status          — organism status badge
-     #ceros-activity-log    — raw event stream log
-     #ceros-founder-queue   — founder decision list
-     #ceros-diamond-feed    — diamond promotion feed
-     #ceros-spine-log       — spine promotion events
-     #ceros-fault-log       — fault detections
-     #ceros-cri-value       — CRI number display
-     #ceros-connect-dot     — connection status dot
-     #ceros-connect-label   — connection status label
+   CEROS STREAM — savage-command-center
+   SSE client for SIA-v6 CEROS endpoint
+   Wires into #panel-ceros DOM elements defined in index.html
    ================================================================ */
 'use strict';
 
-(function (global) {
+(function() {
 
-  // ----------------------------------------------------------------
-  // Config
-  // ----------------------------------------------------------------
-  const DEFAULT_BASE = 'http://localhost:3000';
-  const MAX_LOG_LINES = 200;
-  const MAX_DECISION_ROWS = 100;
-  const MAX_DIAMOND_ROWS = 50;
-  const RECONNECT_INITIAL_MS = 2000;
-  const RECONNECT_MAX_MS = 30000;
+  const CEROS_BASE = (typeof window.CEROS_BASE_URL !== 'undefined')
+    ? window.CEROS_BASE_URL
+    : 'https://sia-v6-agent-1005695038224.us-central1.run.app';
 
-  // ----------------------------------------------------------------
-  // State
-  // ----------------------------------------------------------------
   let _es = null;
-  let _reconnectDelay = RECONNECT_INITIAL_MS;
-  let _reconnectTimer = null;
-  let _stats = {
-    cycles: 0,
-    decisions: 0,
-    promotions: 0,
-    faults: 0,
-    connected: false,
-  };
+  let _stats = { received: 0, promotions: 0, faults: 0, cycles: 0 };
 
-  // ----------------------------------------------------------------
-  // DOM helpers
-  // ----------------------------------------------------------------
+  // ── DOM helpers ────────────────────────────────────────────────
   function el(id) { return document.getElementById(id); }
 
-  function setConnectStatus(connected, label) {
-    const dot = el('ceros-connect-dot');
-    const lbl = el('ceros-connect-label');
-    if (dot) dot.className = 'ceros-dot ' + (connected ? 'ceros-dot--on' : 'ceros-dot--off');
-    if (lbl) lbl.textContent = label;
-    _stats.connected = connected;
+  function setDot(state) {
+    // state: 'connecting' | 'live' | 'error' | 'closed'
+    const dot   = el('ceros-connect-dot');
+    const label = el('ceros-connect-label');
+    if (!dot || !label) return;
+    dot.className = 'ceros-dot ceros-dot--' + state;
+    const labels = { connecting: 'CONNECTING…', live: 'LIVE', error: 'ERROR', closed: 'CLOSED' };
+    label.textContent = labels[state] || state.toUpperCase();
   }
 
-  function appendLog(targetId, text, cssClass) {
-    const log = el(targetId);
-    if (!log) return;
-    const line = document.createElement('div');
-    line.className = 'ceros-log-line ' + (cssClass || '');
-    line.textContent = '[' + new Date().toISOTimeString() + '] ' + text;
-    log.appendChild(line);
-    // Trim to max lines
-    while (log.children.length > MAX_LOG_LINES) log.removeChild(log.firstChild);
-    log.scrollTop = log.scrollHeight;
-  }
-
-  // Compact time string HH:MM:SS
-  Date.prototype.toISOTimeString = function () {
-    return this.toTimeString().slice(0, 8);
-  };
-
-  function updateStatusBadge(data) {
+  function setStatus(text, cls) {
     const s = el('ceros-status');
     if (!s) return;
-    const idle = data.idle ? ' [IDLE]' : '';
-    s.textContent =
-      'Cycles: ' + (data.cerosCycle || 0) +
-      '  Evaluated: ' + (data.candidatesEvaluated || 0) +
-      '  Queued: ' + (data.candidatesQueued || 0) +
-      '  Decisions: ' + (data.founderDecisionsPending || 0) +
-      idle;
+    s.textContent = text;
+    s.className = 'ceros-status-val ' + (cls || '');
   }
 
-  function updateCRI(cri) {
-    const criEl = el('ceros-cri-value');
-    if (!criEl) return;
-    const pct = Math.round((cri || 0) * 100);
-    criEl.textContent = pct + '%';
-    criEl.className = 'ceros-cri'
-      + (pct >= 60 ? ' ceros-cri--healthy'
-       : pct >= 35 ? ' ceros-cri--warn'
-       : ' ceros-cri--critical');
+  function appendLog(containerId, text, cls) {
+    const box = el(containerId);
+    if (!box) return;
+    const line = document.createElement('div');
+    line.className = cls || '';
+    line.textContent = '[' + new Date().toISOString().slice(11,23) + '] ' + text;
+    box.appendChild(line);
+    // Rolling window — keep last 200 lines
+    while (box.children.length > 200) box.removeChild(box.firstChild);
+    box.scrollTop = box.scrollHeight;
   }
 
-  function prependDecisionRow(decision) {
-    const queue = el('ceros-founder-queue');
-    if (!queue) return;
-    const row = document.createElement('div');
-    row.className = 'ceros-decision-row ceros-decision--' + (decision.decision || 'HOLD').toLowerCase();
-    row.innerHTML =
-      '<span class="ceros-decision-id">' + (decision.candidateId || '?').slice(0, 12) + '</span>' +
-      '<span class="ceros-decision-type">' + (decision.decision || '—') + '</span>' +
-      '<span class="ceros-decision-score">' +
-        (decision.weightedScore !== undefined ? decision.weightedScore.toFixed(3) : '—') +
-      '</span>' +
-      '<span class="ceros-decision-repo">' + (decision.repo || '') + '</span>';
-    queue.insertBefore(row, queue.firstChild);
-    while (queue.children.length > MAX_DECISION_ROWS) queue.removeChild(queue.lastChild);
+  function updateStats() {
+    const s = el('ceros-stream-stats');
+    if (s) s.textContent =
+      'rx:' + _stats.received +
+      '  promo:' + _stats.promotions +
+      '  fault:' + _stats.faults +
+      '  cycle:' + _stats.cycles;
   }
 
-  function prependDiamondRow(data) {
-    const feed = el('ceros-diamond-feed');
-    if (!feed) return;
-    const tier = data.diamondTier || data.tier || '?';
-    const composite = data.triadicScore?.composite ?? data.payload?.triadicScore?.composite ?? '?';
-    const cid = (data.candidateId || data.id || '?').slice(0, 12);
-    const row = document.createElement('div');
-    row.className = 'ceros-diamond-row ceros-diamond--' + tier.toLowerCase();
-    row.innerHTML =
-      '<span class="ceros-diamond-tier">' + tier + '</span>' +
-      '<span class="ceros-diamond-id">' + cid + '</span>' +
-      '<span class="ceros-diamond-score">composite:' + composite + '</span>';
-    feed.insertBefore(row, feed.firstChild);
-    while (feed.children.length > MAX_DIAMOND_ROWS) feed.removeChild(feed.lastChild);
-  }
-
-  // ----------------------------------------------------------------
-  // Event handlers
-  // ----------------------------------------------------------------
-  function handleEvent(type, raw) {
-    let data;
-    try { data = JSON.parse(raw); } catch { data = { raw }; }
-
-    appendLog('ceros-activity-log', type + ' ' + JSON.stringify(data).slice(0, 120), 'ceros-log--' + type.replace(/[^a-z]/gi, '-').toLowerCase());
-
-    switch (type) {
-
-      case 'orchestrator:cycle':
-        _stats.cycles++;
-        updateStatusBadge(data);
-        if (data.cri !== undefined) updateCRI(data.cri);
-        break;
-
-      case 'founder:decision':
-        _stats.decisions++;
-        prependDecisionRow(data);
-        break;
-
-      case 'diamond:candidate':
-        _stats.promotions++;
-        prependDiamondRow(data);
-        appendLog('ceros-diamond-feed-log', '💎 ' + (data.candidateId || '?').slice(0, 12) + ' | ' + (data.diamondTier || '?'), 'ceros-log--diamond');
-        break;
-
-      case 'spine:promotion':
-        _stats.promotions++;
-        prependDiamondRow(data);
-        appendLog('ceros-spine-log',
-          'SPINE PROMOTION ' + (data.eventId || '?').slice(0, 16) +
-          ' | ' + (data.sourceRepo || '?') +
-          ' | CRI:' + (data.cri !== undefined ? (data.cri * 100).toFixed(0) + '%' : '?'),
-          'ceros-log--spine'
-        );
-        break;
-
-      case 'narrative:update':
-        appendLog('ceros-activity-log', '📖 ' + (data.message || data.text || raw).slice(0, 160), 'ceros-log--narrative');
-        break;
-
-      case 'FAULT_DETECTED':
-        _stats.faults++;
-        appendLog('ceros-fault-log', '⚠ ' + (data.fault || data.message || raw).slice(0, 200), 'ceros-log--fault');
-        appendLog('ceros-activity-log', '⚠ FAULT: ' + (data.fault || data.message || '').slice(0, 100), 'ceros-log--fault');
-        break;
-
-      case 'AGENT_WIRING_PROPOSED':
-        appendLog('ceros-activity-log', '🔌 WIRING: ' + (data.agent || data.proposal || raw).slice(0, 120), 'ceros-log--wiring');
-        break;
-
-      default:
-        // unknown event type — just log it
-        break;
-    }
-
-    // Update stats display
-    const statEl = el('ceros-stream-stats');
-    if (statEl) {
-      statEl.textContent =
-        'Cycles:' + _stats.cycles +
-        ' Decisions:' + _stats.decisions +
-        ' Promotions:' + _stats.promotions +
-        ' Faults:' + _stats.faults;
-    }
-  }
-
-  // ----------------------------------------------------------------
-  // Fetch organism status on demand
-  // ----------------------------------------------------------------
-  async function fetchOrganismStatus(baseUrl) {
+  // ── Event handlers ─────────────────────────────────────────────
+  function onPromotion(data) {
+    _stats.promotions++;
     try {
-      const r = await fetch(baseUrl + '/api/organism/status', {
-        signal: AbortSignal.timeout(4000),
-      });
-      if (!r.ok) return;
-      const data = await r.json();
-      updateStatusBadge(data);
-      if (data.cri !== undefined) updateCRI(data.cri);
-    } catch { /* ignore */ }
+      const d = JSON.parse(data);
+      appendLog('ceros-spine-log',
+        (d.tier || '?') + ' ← ' + (d.agent || '?') + '  ' + (d.payload || ''),
+        'log-ok');
+      // Diamond feed
+      const feed = el('ceros-diamond-feed');
+      if (feed && d.tier) {
+        const badge = document.createElement('span');
+        badge.className = 'ceros-diamond ceros-diamond--' + (d.tier || 'base').toLowerCase();
+        badge.textContent = d.tier;
+        feed.prepend(badge);
+        while (feed.children.length > 20) feed.removeChild(feed.lastChild);
+      }
+    } catch(e) {
+      appendLog('ceros-spine-log', data, 'log-ok');
+    }
   }
 
-  // ----------------------------------------------------------------
-  // Connection
-  // ----------------------------------------------------------------
+  function onFault(data) {
+    _stats.faults++;
+    try {
+      const d = JSON.parse(data);
+      appendLog('ceros-fault-log',
+        (d.code || 'FAULT') + '  ' + (d.message || data),
+        'log-reject');
+    } catch(e) {
+      appendLog('ceros-fault-log', data, 'log-reject');
+    }
+    setStatus('FAULT DETECTED', 'ceros-status--fault');
+  }
+
+  function onCycle(data) {
+    _stats.cycles++;
+    try {
+      const d = JSON.parse(data);
+      appendLog('ceros-stream-log',
+        'cycle#' + (d.cycle || _stats.cycles) +
+        '  cri=' + (d.cri !== undefined ? (+d.cri).toFixed(4) : '—') +
+        '  agents=' + (d.agents || '—'),
+        'log-info');
+      // CRI value
+      const cri = el('ceros-cri-value');
+      if (cri && d.cri !== undefined) {
+        const v = +d.cri;
+        cri.textContent = v.toFixed(4);
+        cri.className = 'ceros-cri-val ' +
+          (v >= 0.8 ? 'cri-green' : v >= 0.5 ? 'cri-yellow' : 'cri-red');
+      }
+      setStatus('RUNNING', 'ceros-status--ok');
+    } catch(e) {
+      appendLog('ceros-stream-log', data, 'log-info');
+    }
+  }
+
+  function onFounderDecision(data) {
+    try {
+      const d = JSON.parse(data);
+      appendLog('ceros-founder-queue',
+        (d.decision || 'DECISION') + '  ' + (d.rationale || data),
+        'log-ok');
+    } catch(e) {
+      appendLog('ceros-founder-queue', data, 'log-ok');
+    }
+  }
+
+  // ── Core SSE logic ─────────────────────────────────────────────
   function connect() {
-    const baseUrl = (global.CEROS_BASE_URL || DEFAULT_BASE).replace(/\/$/, '');
-    const streamUrl = baseUrl + '/api/stream';
+    if (_es) return;   // already open
+    setDot('connecting');
+    setStatus('CONNECTING', '');
 
-    setConnectStatus(false, 'CONNECTING...');
-    appendLog('ceros-activity-log', 'Connecting to ' + streamUrl, 'ceros-log--info');
+    _es = new EventSource(CEROS_BASE + '/api/v6/ceros/stream');
 
-    if (_es) { try { _es.close(); } catch {} }
-
-    _es = new EventSource(streamUrl);
-
-    _es.onopen = () => {
-      _reconnectDelay = RECONNECT_INITIAL_MS;
-      setConnectStatus(true, 'LIVE — ' + baseUrl);
-      appendLog('ceros-activity-log', '✓ Connected to CEROS stream', 'ceros-log--ok');
-      fetchOrganismStatus(baseUrl);
-    };
-
-    _es.onmessage = (e) => {
-      // Default message event (no type)
-      handleEvent('message', e.data);
-    };
-
-    // Named event types from CEROS /api/stream
-    const NAMED_EVENTS = [
-      'orchestrator:cycle',
-      'founder:decision',
-      'diamond:candidate',
-      'spine:promotion',
-      'narrative:update',
-      'FAULT_DETECTED',
-      'AGENT_WIRING_PROPOSED',
-    ];
-
-    NAMED_EVENTS.forEach((type) => {
-      _es.addEventListener(type, (e) => handleEvent(type, e.data));
+    _es.addEventListener('open', function() {
+      setDot('live');
+      setStatus('LIVE', 'ceros-status--ok');
+      appendLog('ceros-stream-log', 'SSE connection opened → ' + CEROS_BASE, 'log-ok');
     });
 
-    _es.onerror = () => {
-      setConnectStatus(false, 'DISCONNECTED — reconnecting in ' + (_reconnectDelay / 1000).toFixed(0) + 's...');
-      appendLog('ceros-activity-log', 'SSE connection lost. Reconnecting in ' + (_reconnectDelay / 1000).toFixed(0) + 's.', 'ceros-log--warn');
-      _es.close();
-      _es = null;
-      clearTimeout(_reconnectTimer);
-      _reconnectTimer = setTimeout(() => {
-        _reconnectDelay = Math.min(_reconnectDelay * 2, RECONNECT_MAX_MS);
-        connect();
-      }, _reconnectDelay);
-    };
+    _es.addEventListener('error', function() {
+      setDot('error');
+      setStatus('ERROR — retrying', 'ceros-status--fault');
+      appendLog('ceros-stream-log', 'SSE error / reconnecting…', 'log-reject');
+    });
+
+    // Named event types
+    _es.addEventListener('spine:promotion',  function(e) { _stats.received++; onPromotion(e.data);       updateStats(); });
+    _es.addEventListener('FAULT_DETECTED',   function(e) { _stats.received++; onFault(e.data);           updateStats(); });
+    _es.addEventListener('cycle:complete',   function(e) { _stats.received++; onCycle(e.data);           updateStats(); });
+    _es.addEventListener('founder:decision', function(e) { _stats.received++; onFounderDecision(e.data); updateStats(); });
+
+    // Fallback: unnamed message events
+    _es.addEventListener('message', function(e) {
+      _stats.received++;
+      appendLog('ceros-stream-log', e.data, 'log-info');
+      updateStats();
+    });
   }
 
-  function disconnect() {
-    clearTimeout(_reconnectTimer);
+  function destroy() {
     if (_es) { _es.close(); _es = null; }
-    setConnectStatus(false, 'DISCONNECTED');
+    setDot('closed');
+    setStatus('DISCONNECTED', '');
   }
 
-  function getStats() { return Object.assign({}, _stats); }
+  // ── Public API ─────────────────────────────────────────────────
+  window.CerosStream = { init: connect, destroy: destroy };
 
-  // ----------------------------------------------------------------
-  // Public API
-  // ----------------------------------------------------------------
-  global.CerosStream = {
-    /**
-     * init(options?)
-     * options.baseUrl  — override CEROS base URL (default: window.CEROS_BASE_URL or http://localhost:3000)
-     * options.autoConnect — connect immediately (default: true)
-     */
-    init(options) {
-      const opts = options || {};
-      if (opts.baseUrl) global.CEROS_BASE_URL = opts.baseUrl;
-      if (opts.autoConnect !== false) connect();
-    },
-    connect,
-    disconnect,
-    getStats,
-    fetchOrganismStatus: () => fetchOrganismStatus(global.CEROS_BASE_URL || DEFAULT_BASE),
-  };
+  // Auto-init on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', connect);
+  } else {
+    connect();
+  }
 
-})(window);
+})();

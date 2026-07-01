@@ -20,55 +20,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-
-<!-- CEROS stream panel styles -->
-<style>
-.ceros-dot{width:10px;height:10px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px;}
-.ceros-dot--on{background:#00FF88;box-shadow:0 0 6px #00FF88;}
-.ceros-dot--off{background:#ff4444;}
-.ceros-connect-row{display:flex;align-items:center;gap:8px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#aaa;margin-bottom:12px;}
-.ceros-status-badge{font-size:11px;font-family:'JetBrains Mono',monospace;color:#aaa;padding:6px 10px;background:#111;border:1px solid #222;border-radius:4px;margin-bottom:12px;display:block;}
-.ceros-cri{font-weight:700;font-size:18px;font-family:'JetBrains Mono',monospace;}
-.ceros-cri--healthy{color:#00FF88;}
-.ceros-cri--warn{color:#ffcc00;}
-.ceros-cri--critical{color:#ff4444;}
-.ceros-log-box{height:180px;overflow-y:auto;font-size:10px;font-family:'JetBrains Mono',monospace;background:#0a0a0a;border:1px solid #222;border-radius:4px;padding:6px;margin-bottom:12px;}
-.ceros-log-line{padding:1px 0;border-bottom:1px solid #111;white-space:pre-wrap;word-break:break-all;}
-.ceros-log--fault{color:#ff4444;}
-.ceros-log--spine{color:#ffcc00;}
-.ceros-log--diamond{color:#00cfff;}
-.ceros-log--ok{color:#00FF88;}
-.ceros-log--warn{color:#ffcc00;}
-.ceros-log--info{color:#888;}
-.ceros-log--narrative{color:#aaa;}
-.ceros-decision-list{max-height:220px;overflow-y:auto;border:1px solid #222;border-radius:4px;background:#0a0a0a;margin-bottom:12px;}
-.ceros-decision-row{display:flex;gap:10px;font-size:11px;font-family:'JetBrains Mono',monospace;padding:5px 8px;border-bottom:1px solid #111;align-items:center;}
-.ceros-decision--promote{border-left:3px solid #00FF88;}
-.ceros-decision--escalate{border-left:3px solid #00cfff;}
-.ceros-decision--hold{border-left:3px solid #ffcc00;}
-.ceros-decision--reject{border-left:3px solid #ff4444;}
-.ceros-decision--diamond_promote{border-left:3px solid #fff;}
-.ceros-decision-id{color:#888;font-size:10px;}
-.ceros-decision-type{font-weight:700;min-width:80px;}
-.ceros-decision-score{color:#00cfff;}
-.ceros-decision-repo{color:#555;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;}
-.ceros-diamond-list{max-height:180px;overflow-y:auto;border:1px solid #222;border-radius:4px;background:#0a0a0a;margin-bottom:12px;}
-.ceros-diamond-row{display:flex;gap:10px;font-size:11px;font-family:'JetBrains Mono',monospace;padding:5px 8px;border-bottom:1px solid #111;align-items:center;}
-.ceros-diamond--flawless{border-left:3px solid #fff;color:#fff;}
-.ceros-diamond--polished{border-left:3px solid #00cfff;}
-.ceros-diamond--cut{border-left:3px solid #ffcc00;}
-.ceros-diamond--rough{border-left:3px solid #555;color:#666;}
-.ceros-diamond-tier{font-weight:700;min-width:72px;}
-.ceros-diamond-id{color:#888;font-size:10px;}
-.ceros-diamond-score{color:#00cfff;font-size:10px;}
-.ceros-stats-row{font-size:11px;font-family:'JetBrains Mono',monospace;color:#666;margin-bottom:10px;}
-.ceros-section-title{font-size:10px;font-family:'JetBrains Mono',monospace;color:#555;letter-spacing:.1em;text-transform:uppercase;margin:14px 0 6px;}
-.ceros-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.ceros-grid--3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-@media(max-width:700px){.ceros-grid,.ceros-grid--3{grid-template-columns:1fr;}}
-.ceros-cri-block{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
-.ceros-cri-label{font-size:11px;font-family:'JetBrains Mono',monospace;color:#555;}
-</style>
 </head>
 <body>
 
@@ -100,7 +51,7 @@
         <span id="wallet-label">NOT CONNECTED</span>
       </div>
       <button class="btn btn--connect" id="connect-btn">CONNECT WALLET</button>
-      <button class="btn btn--install" id="install-btn" style="display:none">&#x229A; INSTALL APP</button>
+      <button class="btn btn--install" id="install-btn" style="display:none">⊚ INSTALL APP</button>
     </div>
   </div>
 </nav>
@@ -108,7 +59,7 @@
 <!-- ===== WALLET BANNER ===== -->
 <div class="banner" id="wallet-banner" style="display:none">
   <span id="banner-text"></span>
-  <button class="banner__close" onclick="document.getElementById('wallet-banner').style.display='none'">&#x2715;</button>
+  <button class="banner__close" onclick="document.getElementById('wallet-banner').style.display='none'">✕</button>
 </div>
 
 <!-- ===== PANELS ===== -->
@@ -124,13 +75,13 @@
 
     <div class="kpi-grid">
       <div class="kpi-card">
-        <div class="kpi-card__value green">352&times;</div>
+        <div class="kpi-card__value green">352×</div>
         <div class="kpi-card__label">vs RK4</div>
         <div class="kpi-card__sub">PAT-6 drift stability</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-card__value green">52.39%</div>
-        <div class="kpi-card__label">Carnot &eta;</div>
+        <div class="kpi-card__label">Carnot η</div>
         <div class="kpi-card__sub">Derived, not designed</div>
       </div>
       <div class="kpi-card">
@@ -144,7 +95,7 @@
         <div class="kpi-card__sub">1,000/1,000 hash matches</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-card__value green">9,000&times;</div>
+        <div class="kpi-card__value green">9,000×</div>
         <div class="kpi-card__label">Berry phase</div>
         <div class="kpi-card__sub">vs Leapfrog, 500 orbits</div>
       </div>
@@ -169,9 +120,9 @@
       <div class="brief-card">
         <div class="brief-card__title">LAUNCH CHECKLIST</div>
         <div class="checklist" id="checklist">
-          <label class="chk"><input type="checkbox" id="chk-metamask"> MetaMask signed &mdash; all 4 TXs</label>
+          <label class="chk"><input type="checkbox" id="chk-metamask"> MetaMask signed — all 4 TXs</label>
           <label class="chk"><input type="checkbox" id="chk-gcp"> GCP billing enabled</label>
-          <label class="chk"><input type="checkbox" id="chk-dns"> DNS &mdash; both domains live</label>
+          <label class="chk"><input type="checkbox" id="chk-dns"> DNS — both domains live</label>
           <label class="chk"><input type="checkbox" id="chk-agents"> Three-path agents running</label>
           <label class="chk"><input type="checkbox" id="chk-v6"> Ontology V6 published</label>
           <label class="chk"><input type="checkbox" id="chk-outreach"> Outreach emails sent</label>
@@ -185,20 +136,20 @@
         <div class="domain-list">
           <div class="domain-row">
             <span class="domain-name">savage-ai-studios.com</span>
-            <a href="https://savage-ai-studios.com" target="_blank" class="domain-btn">&rarr; DURAK</a>
+            <a href="https://savage-ai-studios.com" target="_blank" class="domain-btn">→ DURAK</a>
           </div>
           <div class="domain-row">
             <span class="domain-name">savageaistudios.com</span>
-            <a href="https://savageaistudios.com" target="_blank" class="domain-btn">&rarr; SOVEREIGN</a>
+            <a href="https://savageaistudios.com" target="_blank" class="domain-btn">→ SOVEREIGN</a>
           </div>
         </div>
         <div class="brief-card__title" style="margin-top:16px">ARCHITECTURE CONSTANTS</div>
         <div class="const-list">
-          <div class="const-row"><span class="const-sym">&phi;</span><span class="const-val">1.6180339887...</span></div>
-          <div class="const-row"><span class="const-sym">&delta;<sub>F</sub></span><span class="const-val">4.6692016091...</span></div>
-          <div class="const-row"><span class="const-sym">&alpha;<sub>F</sub></span><span class="const-val">2.5029078750...</span></div>
-          <div class="const-row"><span class="const-sym">k*</span><span class="const-val">4 (Persona&harr;Topology)</span></div>
-          <div class="const-row"><span class="const-sym">&lambda;*</span><span class="const-val">RG fixed point</span></div>
+          <div class="const-row"><span class="const-sym">φ</span><span class="const-val">1.6180339887...</span></div>
+          <div class="const-row"><span class="const-sym">δ<sub>F</sub></span><span class="const-val">4.6692016091...</span></div>
+          <div class="const-row"><span class="const-sym">α<sub>F</sub></span><span class="const-val">2.5029078750...</span></div>
+          <div class="const-row"><span class="const-sym">k*</span><span class="const-val">4 (Persona↔Topology)</span></div>
+          <div class="const-row"><span class="const-sym">λ*</span><span class="const-val">RG fixed point</span></div>
         </div>
       </div>
     </div>
@@ -208,27 +159,27 @@
   <section class="panel" id="panel-chain">
     <div class="panel__header">
       <span class="panel__index">02</span>
-      <h2 class="panel__title">Chain &amp; Sign</h2>
-      <span class="panel__sub">MetaMask &middot; Edge Beta &middot; EIP-1193</span>
+      <h2 class="panel__title">Chain & Sign</h2>
+      <span class="panel__sub">MetaMask · Edge Beta · EIP-1193</span>
     </div>
 
     <!-- Wallet Info -->
     <div class="wallet-info-card" id="wallet-info" style="display:none">
       <div class="wallet-info__row">
         <span class="wallet-info__label">Address</span>
-        <code class="wallet-info__val" id="wi-address">&mdash;</code>
+        <code class="wallet-info__val" id="wi-address">—</code>
       </div>
       <div class="wallet-info__row">
         <span class="wallet-info__label">Network</span>
-        <span class="wallet-info__val" id="wi-network">&mdash;</span>
+        <span class="wallet-info__val" id="wi-network">—</span>
       </div>
       <div class="wallet-info__row">
         <span class="wallet-info__label">Balance</span>
-        <span class="wallet-info__val" id="wi-balance">&mdash;</span>
+        <span class="wallet-info__val" id="wi-balance">—</span>
       </div>
       <div class="wallet-info__row">
         <span class="wallet-info__label">Browser</span>
-        <span class="wallet-info__val" id="wi-browser">&mdash;</span>
+        <span class="wallet-info__val" id="wi-browser">—</span>
       </div>
     </div>
 
@@ -276,7 +227,7 @@
             <span class="tx-card__net net-linea">LINEA</span>
             <span class="tx-card__status" id="tx-1-status">PENDING</span>
           </div>
-          <div class="tx-card__label">Apr 4 Complete IP Corpus &mdash; Merkle Root</div>
+          <div class="tx-card__label">Apr 4 Complete IP Corpus — Merkle Root</div>
           <div class="tx-card__data">
             <code id="tx-1-data">0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600</code>
             <button class="copy-btn" onclick="copyText('tx-1-data')">COPY</button>
@@ -291,7 +242,7 @@
             <span class="tx-card__net net-eth">ETH MAINNET</span>
             <span class="tx-card__status" id="tx-2-status">PENDING</span>
           </div>
-          <div class="tx-card__label">Apr 4 Complete IP Corpus &mdash; ETH Anchor</div>
+          <div class="tx-card__label">Apr 4 Complete IP Corpus — ETH Anchor</div>
           <div class="tx-card__data">
             <code id="tx-2-data">0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600</code>
             <button class="copy-btn" onclick="copyText('tx-2-data')">COPY</button>
@@ -306,7 +257,7 @@
             <span class="tx-card__net net-linea">LINEA</span>
             <span class="tx-card__status" id="tx-3-status">PENDING</span>
           </div>
-          <div class="tx-card__label">Ontology V6 Corpus Hash &mdash; Linea</div>
+          <div class="tx-card__label">Ontology V6 Corpus Hash — Linea</div>
           <div class="tx-card__data">
             <input type="text" class="tx-card__input" id="tx-3-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
           </div>
@@ -320,7 +271,7 @@
             <span class="tx-card__net net-eth">ETH MAINNET</span>
             <span class="tx-card__status" id="tx-4-status">PENDING</span>
           </div>
-          <div class="tx-card__label">Ontology V6 Corpus Hash &mdash; ETH Mainnet</div>
+          <div class="tx-card__label">Ontology V6 Corpus Hash — ETH Mainnet</div>
           <div class="tx-card__data">
             <input type="text" class="tx-card__input" id="tx-4-hash" placeholder="Paste V6 corpus SHA-256 hash here (0x...)">
           </div>
@@ -336,20 +287,20 @@
       <div class="tx-section__title">CONFIRMED ON-CHAIN</div>
       <div class="confirmed-list">
         <div class="confirmed-row">
-          <span class="confirmed-label">Complete IP Corpus v2 &mdash; Linea Block 29774653</span>
-          <a href="https://lineascan.build/tx/0x9eb01506fffaec3fba50c27045505f0c08c4c327a7f993025c543050d078e839" target="_blank" class="confirmed-link">0x9eb015...78e839 &nearr;</a>
+          <span class="confirmed-label">Complete IP Corpus v2 — Linea Block 29774653</span>
+          <a href="https://lineascan.build/tx/0x9eb01506fffaec3fba50c27045505f0c08c4c327a7f993025c543050d078e839" target="_blank" class="confirmed-link">0x9eb015...78e839 ↗</a>
         </div>
         <div class="confirmed-row">
-          <span class="confirmed-label">Ontology V2 &mdash; Linea Block 29758060</span>
-          <a href="https://lineascan.build/tx/0x083f900538f605aae1fb341d04969d3f17edbb331d447e69ca0efaf3677ea27b" target="_blank" class="confirmed-link">0x083f90...7ea27b &nearr;</a>
+          <span class="confirmed-label">Ontology V2 — Linea Block 29758060</span>
+          <a href="https://lineascan.build/tx/0x083f900538f605aae1fb341d04969d3f17edbb331d447e69ca0efaf3677ea27b" target="_blank" class="confirmed-link">0x083f90...7ea27b ↗</a>
         </div>
         <div class="confirmed-row">
-          <span class="confirmed-label">IP Timestamp v3 &mdash; ETH Mainnet</span>
-          <a href="https://etherscan.io/tx/0x629424eb73904ea2d13c801b67921a70c8eb6c72bf5a578c4d9ab5666f361d6a" target="_blank" class="confirmed-link">0x629424...361d6a &nearr;</a>
+          <span class="confirmed-label">IP Timestamp v3 — ETH Mainnet</span>
+          <a href="https://etherscan.io/tx/0x629424eb73904ea2d13c801b67921a70c8eb6c72bf5a578c4d9ab5666f361d6a" target="_blank" class="confirmed-link">0x629424...361d6a ↗</a>
         </div>
         <div class="confirmed-row">
-          <span class="confirmed-label">Wallet &mdash; Lineascan</span>
-          <a href="https://lineascan.build/address/0xe188398e0116B2a5E82BE24CE0b201C3A6f1321f" target="_blank" class="confirmed-link">0xe18839...f1321f &nearr;</a>
+          <span class="confirmed-label">Wallet — Lineascan</span>
+          <a href="https://lineascan.build/address/0xe188398e0116B2a5E82BE24CE0b201C3A6f1321f" target="_blank" class="confirmed-link">0xe18839...f1321f ↗</a>
         </div>
       </div>
     </div>
@@ -360,7 +311,7 @@
     <div class="panel__header">
       <span class="panel__index">03</span>
       <h2 class="panel__title">Agent Control</h2>
-      <span class="panel__sub">Three-Path &middot; Sovereign Oracle</span>
+      <span class="panel__sub">Three-Path · Sovereign Oracle</span>
     </div>
 
     <div class="agent-grid">
@@ -368,13 +319,13 @@
       <div class="agent-card" id="agent-a">
         <div class="agent-card__header">
           <div class="agent-dot green-dot"></div>
-          <span class="agent-card__name">PATH A &mdash; Thermodynamic Ratchet</span>
+          <span class="agent-card__name">PATH A — Thermodynamic Ratchet</span>
         </div>
         <div class="agent-stats">
           <div class="stat"><span class="stat__val" id="a-ticks">0</span><span class="stat__label">ticks</span></div>
           <div class="stat"><span class="stat__val green" id="a-accept">0</span><span class="stat__label">accepted</span></div>
           <div class="stat"><span class="stat__val red" id="a-reject">0</span><span class="stat__label">rejected</span></div>
-          <div class="stat"><span class="stat__val" id="a-hash">&mdash;</span><span class="stat__label">proof hash</span></div>
+          <div class="stat"><span class="stat__val" id="a-hash">—</span><span class="stat__label">proof hash</span></div>
         </div>
         <div class="agent-progress"><div class="agent-progress__bar" id="a-bar"></div></div>
         <div class="agent-log" id="a-log"></div>
@@ -389,13 +340,13 @@
       <div class="agent-card" id="agent-b">
         <div class="agent-card__header">
           <div class="agent-dot green-dot"></div>
-          <span class="agent-card__name">PATH B &mdash; Topological Memory</span>
+          <span class="agent-card__name">PATH B — Topological Memory</span>
         </div>
         <div class="agent-stats">
           <div class="stat"><span class="stat__val" id="b-ticks">0</span><span class="stat__label">ticks</span></div>
           <div class="stat"><span class="stat__val green" id="b-accept">0</span><span class="stat__label">accepted</span></div>
           <div class="stat"><span class="stat__val red" id="b-reject">0</span><span class="stat__label">rejected</span></div>
-          <div class="stat"><span class="stat__val" id="b-hash">&mdash;</span><span class="stat__label">proof hash</span></div>
+          <div class="stat"><span class="stat__val" id="b-hash">—</span><span class="stat__label">proof hash</span></div>
         </div>
         <div class="agent-progress"><div class="agent-progress__bar" id="b-bar"></div></div>
         <div class="agent-log" id="b-log"></div>
@@ -410,13 +361,13 @@
       <div class="agent-card" id="agent-c">
         <div class="agent-card__header">
           <div class="agent-dot green-dot"></div>
-          <span class="agent-card__name">PATH C &mdash; RG Flow</span>
+          <span class="agent-card__name">PATH C — RG Flow</span>
         </div>
         <div class="agent-stats">
           <div class="stat"><span class="stat__val" id="c-ticks">0</span><span class="stat__label">ticks</span></div>
           <div class="stat"><span class="stat__val green" id="c-accept">0</span><span class="stat__label">accepted</span></div>
           <div class="stat"><span class="stat__val red" id="c-reject">0</span><span class="stat__label">rejected</span></div>
-          <div class="stat"><span class="stat__val" id="c-hash">&mdash;</span><span class="stat__label">proof hash</span></div>
+          <div class="stat"><span class="stat__val" id="c-hash">—</span><span class="stat__label">proof hash</span></div>
         </div>
         <div class="agent-progress"><div class="agent-progress__bar" id="c-bar"></div></div>
         <div class="agent-log" id="c-log"></div>
@@ -439,7 +390,7 @@
       <div class="oracle-stats">
         <div class="stat"><span class="stat__val" id="oracle-cycles">0</span><span class="stat__label">cycles</span></div>
         <div class="stat"><span class="stat__val green" id="oracle-conv">0</span><span class="stat__label">converged</span></div>
-        <div class="stat"><span class="stat__val" id="oracle-lambda">&mdash;</span><span class="stat__label">&lambda;* distance</span></div>
+        <div class="stat"><span class="stat__val" id="oracle-lambda">—</span><span class="stat__label">λ* distance</span></div>
       </div>
       <div class="agent-log" id="oracle-log"></div>
       <div class="agent-btns">
@@ -454,8 +405,8 @@
   <section class="panel" id="panel-ops">
     <div class="panel__header">
       <span class="panel__index">04</span>
-      <h2 class="panel__title">Ops &amp; Infrastructure</h2>
-      <span class="panel__sub">GCP &middot; Tollbooth &middot; DNS</span>
+      <h2 class="panel__title">Ops & Infrastructure</h2>
+      <span class="panel__sub">GCP · Tollbooth · DNS</span>
     </div>
 
     <div class="ops-grid">
@@ -469,7 +420,7 @@
           <tr><td>Cloud SQL</td><td class="mono">PostgreSQL 15</td></tr>
           <tr><td>Billing Status</td><td><span class="status-badge status-warn" id="gcp-billing">CHECK REQUIRED</span></td></tr>
         </table>
-        <a href="https://console.cloud.google.com/billing" target="_blank" class="btn btn--green" style="margin-top:12px;width:100%;display:block;text-align:center;">ENABLE BILLING &nearr;</a>
+        <a href="https://console.cloud.google.com/billing" target="_blank" class="btn btn--green" style="margin-top:12px;width:100%;display:block;text-align:center;">ENABLE BILLING ↗</a>
       </div>
 
       <div class="ops-card">
@@ -508,48 +459,48 @@
         <div class="ops-card__title">EMAIL ARSENAL</div>
         <div class="email-list">
           <div class="email-row">
-            <span class="email-target">NVIDIA &mdash; Jonah Alben (SVP GPU Eng)</span>
+            <span class="email-target">NVIDIA — Jonah Alben (SVP GPU Eng)</span>
             <button class="copy-btn" onclick="copyEmail('nvidia')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('nvidia')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Palantir &mdash; Shyam Sankar (CTO)</span>
+            <span class="email-target">Palantir — Shyam Sankar (CTO)</span>
             <button class="copy-btn" onclick="copyEmail('palantir')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('palantir')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Jane Street &mdash; Quant Research</span>
+            <span class="email-target">Jane Street — Quant Research</span>
             <button class="copy-btn" onclick="copyEmail('janestreet')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('janestreet')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Shield AI &mdash; Nathan Michael (CTO)</span>
+            <span class="email-target">Shield AI — Nathan Michael (CTO)</span>
             <button class="copy-btn" onclick="copyEmail('shieldai')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('shieldai')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">RTX / Raytheon &mdash; Advanced R&amp;D</span>
+            <span class="email-target">RTX / Raytheon — Advanced R&amp;D</span>
             <button class="copy-btn" onclick="copyEmail('rtx')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('rtx')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Hudson River Trading &mdash; Quant</span>
+            <span class="email-target">Hudson River Trading — Quant</span>
             <button class="copy-btn" onclick="copyEmail('hrt')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('hrt')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Jump Trading &mdash; Quant Research</span>
+            <span class="email-target">Jump Trading — Quant Research</span>
             <button class="copy-btn" onclick="copyEmail('jump')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('jump')">VIEW</button>
           </div>
           <div class="email-row">
-            <span class="email-target">Quantinuum &mdash; Brian Neyenhuis</span>
+            <span class="email-target">Quantinuum — Brian Neyenhuis</span>
             <button class="copy-btn" onclick="copyEmail('quantinuum')">COPY</button>
             <button class="copy-btn" onclick="previewEmail('quantinuum')">VIEW</button>
           </div>
         </div>
         <div class="email-preview" id="email-preview" style="display:none">
-          <div class="email-preview__close" onclick="document.getElementById('email-preview').style.display='none'">&#x2715; CLOSE</div>
+          <div class="email-preview__close" onclick="document.getElementById('email-preview').style.display='none'">✕ CLOSE</div>
           <pre id="email-preview-text"></pre>
         </div>
       </div>
@@ -562,7 +513,7 @@
     <div class="panel__header">
       <span class="panel__index">05</span>
       <h2 class="panel__title">Intelligence</h2>
-      <span class="panel__sub">Ontology &middot; Vault &middot; Locks</span>
+      <span class="panel__sub">Ontology · Vault · Locks</span>
     </div>
 
     <div class="intel-grid">
@@ -586,11 +537,11 @@
       <div class="intel-card">
         <div class="intel-card__title">PAT-6 VAULT (10 BENCHMARKS)</div>
         <div class="vault-list">
-          <div class="vault-row ok"><span class="vault-name">B1 KAM Torus</span><span class="vault-score">100.00% fidelity &middot; 2411&times; drift</span></div>
-          <div class="vault-row ok"><span class="vault-name">B2 RK4 Comparison</span><span class="vault-score">400K steps &middot; 28 RK4</span></div>
+          <div class="vault-row ok"><span class="vault-name">B1 KAM Torus</span><span class="vault-score">100.00% fidelity · 2411× drift</span></div>
+          <div class="vault-row ok"><span class="vault-name">B2 RK4 Comparison</span><span class="vault-score">400K steps · 28 RK4</span></div>
           <div class="vault-row ok"><span class="vault-name">B3 Thermodynamic Ratchet</span><span class="vault-score">Monotone entropy</span></div>
           <div class="vault-row ok"><span class="vault-name">B4 Topological Persistence</span><span class="vault-score">Betti invariant</span></div>
-          <div class="vault-row ok"><span class="vault-name">B5 RG Flow Convergence</span><span class="vault-score">&lambda;* approach confirmed</span></div>
+          <div class="vault-row ok"><span class="vault-name">B5 RG Flow Convergence</span><span class="vault-score">λ* approach confirmed</span></div>
           <div class="vault-row ok"><span class="vault-name">B6 Symplectic Conservation</span><span class="vault-score">Area-preserving</span></div>
           <div class="vault-row ok"><span class="vault-name">B7 Thermal Reduction</span><span class="vault-score">72.1% anchored</span></div>
           <div class="vault-row ok"><span class="vault-name">B8 Memory Bound</span><span class="vault-score">O(1) any load</span></div>
@@ -602,22 +553,22 @@
       <div class="intel-card">
         <div class="intel-card__title">ACTIVE LOCKS</div>
         <div class="lock-list">
-          <div class="lock-row locked"><span class="lock-icon">&#x1F512;</span><span>SIA-v6 Core Engine &mdash; ETH + Linea anchored</span></div>
-          <div class="lock-row locked"><span class="lock-icon">&#x1F512;</span><span>60-file IP corpus &mdash; SHA-256 Merkle sealed</span></div>
-          <div class="lock-row locked"><span class="lock-icon">&#x1F512;</span><span>Ontology V5 &mdash; Ethereum mainnet TX confirmed</span></div>
-          <div class="lock-row pending"><span class="lock-icon">&#x23F3;</span><span>Ontology V6 &mdash; PENDING anchor</span></div>
-          <div class="lock-row pending"><span class="lock-icon">&#x23F3;</span><span>PAT-6 results &mdash; PENDING publication</span></div>
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>SIA-v6 Core Engine — ETH + Linea anchored</span></div>
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>60-file IP corpus — SHA-256 Merkle sealed</span></div>
+          <div class="lock-row locked"><span class="lock-icon">🔒</span><span>Ontology V5 — Ethereum mainnet TX confirmed</span></div>
+          <div class="lock-row pending"><span class="lock-icon">⏳</span><span>Ontology V6 — PENDING anchor</span></div>
+          <div class="lock-row pending"><span class="lock-icon">⏳</span><span>PAT-6 results — PENDING publication</span></div>
         </div>
 
         <div class="intel-card__title" style="margin-top:16px">CONSERVATION SENTINEL</div>
         <div class="sentinel-status" id="intel-sentinel">
           <div class="agent-dot green-dot pulse"></div>
-          <span class="green">23 / 23 PASS &mdash; All laws intact</span>
+          <span class="green">23 / 23 PASS — All laws intact</span>
         </div>
         <div class="const-list">
-          <div class="const-row"><span>Tier 0 (Exact &epsilon;=10&sup9;)</span><span class="green">4 laws &#x2713;</span></div>
-          <div class="const-row"><span>Tier 1 (3-decimal &epsilon;=5&times;10&sup4;)</span><span class="green">3 laws &#x2713;</span></div>
-          <div class="const-row"><span>Tier 2 (Transcendental &epsilon;=10&sup1;)</span><span class="green">16 laws &#x2713;</span></div>
+          <div class="const-row"><span>Tier 0 (Exact ε=10⁻⁹)</span><span class="green">4 laws ✓</span></div>
+          <div class="const-row"><span>Tier 1 (3-decimal ε=5×10⁻⁴)</span><span class="green">3 laws ✓</span></div>
+          <div class="const-row"><span>Tier 2 (Transcendental ε=10⁻¹)</span><span class="green">16 laws ✓</span></div>
         </div>
       </div>
 
@@ -628,51 +579,46 @@
   <section class="panel" id="panel-ceros">
     <div class="panel__header">
       <span class="panel__index">06</span>
-      <h2 class="panel__title">CEROS Organism</h2>
-      <span class="panel__sub">Constitutional Spine &middot; Live SSE Feed</span>
+      <h2 class="panel__title">CEROS</h2>
+      <span class="panel__sub">Continuous Evolutionary Recursive Optimization System</span>
     </div>
 
-    <!-- Connection status row -->
-    <div class="ceros-connect-row">
-      <span id="ceros-connect-dot" class="ceros-dot ceros-dot--off"></span>
-      <span id="ceros-connect-label">NOT CONNECTED</span>
-      <button class="btn btn--sm btn--ghost" style="margin-left:auto" onclick="CerosStream.connect()">RECONNECT</button>
-      <button class="btn btn--sm btn--ghost" onclick="CerosStream.fetchOrganismStatus()">REFRESH STATUS</button>
+    <!-- Connection status bar -->
+    <div class="ceros-connect-bar">
+      <div class="ceros-dot ceros-dot--connecting" id="ceros-connect-dot"></div>
+      <span class="ceros-connect-label" id="ceros-connect-label">CONNECTING…</span>
+      <span class="ceros-status-val" id="ceros-status"></span>
+      <span class="ceros-stream-stats" id="ceros-stream-stats"></span>
     </div>
 
-    <!-- Organism status badge -->
-    <div id="ceros-status" class="ceros-status-badge">Waiting for CEROS organism status&hellip;</div>
-
-    <!-- CRI + stream stats -->
-    <div class="ceros-cri-block">
-      <span class="ceros-cri-label">CRI</span>
-      <span id="ceros-cri-value" class="ceros-cri">&mdash;</span>
-      <span class="ceros-cri-label" style="margin-left:16px">STREAM STATS</span>
-      <span id="ceros-stream-stats" class="ceros-stats-row" style="margin:0 0 0 8px">&mdash;</span>
-    </div>
-
-    <!-- Two-column grid -->
     <div class="ceros-grid">
 
-      <!-- Left: logs -->
-      <div>
-        <div class="ceros-section-title">&#x25B6; Live Activity Log</div>
-        <div id="ceros-activity-log" class="ceros-log-box"></div>
-
-        <div class="ceros-section-title">&#x26A1; Spine Promotions</div>
-        <div id="ceros-spine-log" class="ceros-log-box" style="height:130px"></div>
-
-        <div class="ceros-section-title">&#x26A0; Fault Log</div>
-        <div id="ceros-fault-log" class="ceros-log-box" style="height:110px"></div>
+      <!-- CRI + Cycle stream -->
+      <div class="ceros-card">
+        <div class="ceros-card__title">CYCLE STREAM
+          <span class="ceros-cri-val" id="ceros-cri-value">—</span>
+          <span class="ceros-cri-label">CRI</span>
+        </div>
+        <div class="agent-log" id="ceros-stream-log"></div>
       </div>
 
-      <!-- Right: decision queue + diamond feed -->
-      <div>
-        <div class="ceros-section-title">&#x1F9E0; Founder Decision Queue</div>
-        <div id="ceros-founder-queue" class="ceros-decision-list"></div>
+      <!-- Spine promotions -->
+      <div class="ceros-card">
+        <div class="ceros-card__title">SPINE PROMOTIONS</div>
+        <div class="ceros-diamond-feed" id="ceros-diamond-feed"></div>
+        <div class="agent-log" id="ceros-spine-log"></div>
+      </div>
 
-        <div class="ceros-section-title">&#x1F48E; Diamond Promotions</div>
-        <div id="ceros-diamond-feed" class="ceros-diamond-list"></div>
+      <!-- Fault log -->
+      <div class="ceros-card ceros-card--fault">
+        <div class="ceros-card__title">FAULT LOG</div>
+        <div class="agent-log" id="ceros-fault-log"></div>
+      </div>
+
+      <!-- Founder decision queue -->
+      <div class="ceros-card">
+        <div class="ceros-card__title">FOUNDER QUEUE</div>
+        <div class="agent-log" id="ceros-founder-queue"></div>
       </div>
 
     </div>
@@ -681,13 +627,6 @@
 </main>
 
 <script src="app.js"></script>
-<!-- CEROS SSE stream consumer: loads after app.js so tab switcher is already wired -->
 <script src="ceros-stream.js"></script>
-<script>
-  // Set CEROS server URL before init.
-  // Override window.CEROS_BASE_URL before this tag for a different host.
-  window.CEROS_BASE_URL = window.CEROS_BASE_URL || 'http://localhost:3000';
-  CerosStream.init();
-</script>
 </body>
 </html>
