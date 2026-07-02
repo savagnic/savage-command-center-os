@@ -1111,6 +1111,43 @@ const SHELL_COMMANDS = {
   }
 };
 
+
+let termuxWs = null;
+
+function connectTermux() {
+  const statusEl = document.getElementById('termux-status');
+  termuxWs = new WebSocket('ws://127.0.0.1:8765');
+
+  termuxWs.onopen = () => {
+    if (statusEl) {
+      statusEl.textContent = 'TERMUX: CONNECTED';
+      statusEl.style.color = 'var(--green)';
+    }
+    shellPrint('LOCAL ANDROID OS LINK ESTABLISHED.', 'success');
+  };
+
+  termuxWs.onmessage = (event) => {
+    shellPrint(event.data);
+  };
+
+  termuxWs.onclose = () => {
+    if (statusEl) {
+      statusEl.textContent = 'TERMUX: DISCONNECTED';
+      statusEl.style.color = 'var(--amber)';
+    }
+    termuxWs = null;
+    // Attempt reconnect after 5s
+    setTimeout(connectTermux, 5000);
+  };
+
+  termuxWs.onerror = () => {
+    // Silent fail, just let onclose handle it
+  };
+}
+
+// Start connection attempt
+connectTermux();
+
 if (shellInput) {
   shellInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -1124,10 +1161,14 @@ if (shellInput) {
       const cmd = parts[0].toLowerCase();
       const args = parts.slice(1);
 
-      if (SHELL_COMMANDS[cmd]) {
-        SHELL_COMMANDS[cmd](args);
+      if (termuxWs && termuxWs.readyState === WebSocket.OPEN) {
+        termuxWs.send(val);
       } else {
-        shellPrint(`Command not found: ${cmd}. Type 'help' for available commands.`, 'err');
+        if (SHELL_COMMANDS[cmd]) {
+          SHELL_COMMANDS[cmd](args);
+        } else {
+          shellPrint(`Command not found: ${cmd}. Type 'help' for available commands.`, 'err');
+        }
       }
     }
   });
