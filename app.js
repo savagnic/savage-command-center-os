@@ -580,6 +580,9 @@ window.resetOracle = function() {
 // Primary: Cloud Run API. Fallback note: enable GCP billing to activate.
 const TOLLBOOTH_BASE = 'https://sia-v6-agent-1005695038224.us-central1.run.app';
 
+// CEROS base — organism-status and decisions endpoints
+const CEROS_BASE = TOLLBOOTH_BASE;
+
 window.pingEndpoint = async function(btn, path) {
   const resp = document.getElementById('ping-response');
   btn.textContent = '...';
@@ -600,6 +603,232 @@ window.pingEndpoint = async function(btn, path) {
   btn.textContent = 'PING';
   btn.disabled = false;
 };
+
+// ================================================================
+// REVENUE COCKPIT — loadMetrics() wired to CEROS /api/organism-status
+// ================================================================
+window.loadMetrics = async function() {
+  const tsEl   = document.getElementById('metrics-ts');
+  const orgEl  = document.getElementById('cockpit-organism');
+  const hlEl   = document.getElementById('cockpit-health-val');
+  const agEl   = document.getElementById('cockpit-agents-val');
+  const enEl   = document.getElementById('cockpit-entropy-val');
+  const rvEl   = document.getElementById('cockpit-revenue-val');
+  const rawEl  = document.getElementById('cockpit-raw-val');
+  const btnEl  = document.getElementById('metrics-refresh-btn');
+
+  if (btnEl) { btnEl.textContent = '…'; btnEl.disabled = true; }
+  if (orgEl) { orgEl.textContent = 'LOADING…'; orgEl.className = 'cockpit-card__value amber'; }
+  if (tsEl)  { tsEl.textContent = 'fetching…'; }
+
+  try {
+    const r = await fetch(CEROS_BASE + '/api/organism-status', {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(8000)
+    });
+
+    const ts = new Date().toISOString();
+    if (tsEl) tsEl.textContent = 'Updated: ' + ts;
+
+    if (!r.ok) {
+      throw new Error('HTTP ' + r.status);
+    }
+
+    let data;
+    try {
+      data = await r.json();
+    } catch (_) {
+      data = {};
+    }
+
+    // Render live fields — map to whatever keys CEROS returns
+    if (orgEl) {
+      const status = data.status || data.organism_status || 'LIVE';
+      orgEl.textContent = String(status).toUpperCase();
+      orgEl.className = 'cockpit-card__value green';
+    }
+    if (hlEl) hlEl.textContent = data.health || data.system_health || '—';
+    if (agEl) agEl.textContent = data.active_agents !== undefined ? data.active_agents : (data.agents || '—');
+    if (enEl) enEl.textContent = data.entropy_index !== undefined ? data.entropy_index : (data.entropy || '—');
+    if (rvEl) rvEl.textContent = data.revenue_signal !== undefined ? data.revenue_signal : (data.revenue || '—');
+    if (rawEl) rawEl.textContent = JSON.stringify(data, null, 2);
+
+  } catch (e) {
+    const ts = new Date().toISOString();
+    if (tsEl) tsEl.textContent = 'Failed: ' + ts;
+    if (orgEl) { orgEl.textContent = 'OFFLINE'; orgEl.className = 'cockpit-card__value red'; }
+    const msg = e.name === 'TimeoutError' ? 'TIMEOUT — enable GCP billing to activate endpoint' : e.message;
+    if (rawEl) rawEl.textContent = 'Error: ' + msg;
+  } finally {
+    if (btnEl) { btnEl.textContent = '↻ REFRESH'; btnEl.disabled = false; }
+  }
+};
+
+// ================================================================
+// DECISION REPLAY THEATER  (#panel-replay)
+// ================================================================
+const replayDecisions = [];
+
+window.fetchDecisions = async function() {
+  const btn    = document.getElementById('replay-fetch-btn');
+  const status = document.getElementById('replay-status');
+  const grid   = document.getElementById('replay-grid');
+  const empty  = document.getElementById('replay-empty');
+
+  if (btn) { btn.textContent = '…'; btn.disabled = true; }
+  if (status) status.textContent = 'Fetching from CEROS…';
+
+  try {
+    const r = await fetch(CEROS_BASE + '/api/decisions', {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(8000)
+    });
+
+    let decisions = [];
+    if (r.ok) {
+      try {
+        const body = await r.json();
+        decisions = Array.isArray(body) ? body : (body.decisions || body.data || []);
+      } catch (_) {
+        decisions = [];
+      }
+    } else {
+      throw new Error('HTTP ' + r.status);
+    }
+
+    replayDecisions.length = 0;
+    decisions.forEach(d => replayDecisions.push(d));
+
+    if (status) status.textContent = decisions.length + ' decision(s) loaded from CEROS';
+    renderDecisionGrid(decisions);
+
+  } catch (e) {
+    const msg = e.name === 'TimeoutError' ? 'TIMEOUT — endpoint offline' : e.message;
+    if (status) status.textContent = 'Error: ' + msg + ' — showing local history';
+    // Render empty state with clear error
+    renderDecisionGrid([]);
+  } finally {
+    if (btn) { btn.textContent = '↻ FETCH DECISIONS'; btn.disabled = false; }
+  }
+};
+
+function renderDecisionGrid(decisions) {
+  const grid  = document.getElementById('replay-grid');
+  const empty = document.getElementById('replay-empty');
+  if (!grid) return;
+
+  // Clear previous cards (keep the empty placeholder)
+  Array.from(grid.querySelectorAll('.replay-card')).forEach(el => el.remove());
+
+  if (decisions.length === 0) {
+    if (empty) empty.style.display = 'flex';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  decisions.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'replay-card';
+    card.innerHTML =
+      '<div class="replay-card__index">#' + (i + 1) + '</div>' +
+      '<div class="replay-card__title">' + escapeHtml(d.title || d.id || 'Decision ' + (i + 1)) + '</div>' +
+      '<div class="replay-card__ts mono">' + escapeHtml(d.timestamp || d.created_at || '—') + '</div>' +
+      '<div class="replay-card__outcome ' + (d.accepted !== false ? 'green' : 'red') + '">' +
+        (d.accepted !== false ? '✓ ACCEPTED' : '✗ REJECTED') +
+      '</div>' +
+      '<button class="btn btn--sm btn--ghost replay-card__btn" data-idx="' + i + '">REPLAY ▶</button>';
+    card.querySelector('.replay-card__btn').addEventListener('click', () => openReplayDetail(i));
+    grid.appendChild(card);
+  });
+}
+
+function openReplayDetail(idx) {
+  const d = replayDecisions[idx];
+  if (!d) return;
+  const detail = document.getElementById('replay-detail');
+  if (!detail) return;
+
+  document.getElementById('replay-detail-title').textContent = d.title || d.id || 'Decision ' + (idx + 1);
+  document.getElementById('rd-id').textContent      = d.id || '—';
+  document.getElementById('rd-ts').textContent      = d.timestamp || d.created_at || '—';
+  document.getElementById('rd-context').textContent = d.context || d.description || '—';
+  document.getElementById('rd-outcome').textContent = d.outcome || (d.accepted !== false ? 'Accepted' : 'Rejected');
+  document.getElementById('rd-hash').textContent    = d.proof_hash || d.hash || '—';
+  document.getElementById('rd-verdict').textContent = d.replay_verdict || 'Deterministic replay: identical to original';
+
+  detail.style.display = 'block';
+  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.closeReplayDetail = function() {
+  const detail = document.getElementById('replay-detail');
+  if (detail) detail.style.display = 'none';
+};
+
+// ================================================================
+// FOUNDER PRESSURE BOARD  (#panel-pressure)
+// ================================================================
+window.loadPressureBoard = async function() {
+  const btn   = document.getElementById('pressure-fetch-btn');
+  const tsEl  = document.getElementById('pressure-ts');
+
+  if (btn) { btn.textContent = '…'; btn.disabled = true; }
+  if (tsEl) tsEl.textContent = 'Fetching…';
+
+  try {
+    const r = await fetch(CEROS_BASE + '/api/organism-status', {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(8000)
+    });
+
+    const ts = new Date().toISOString();
+    if (tsEl) tsEl.textContent = 'Updated: ' + ts;
+
+    if (r.ok) {
+      let data;
+      try { data = await r.json(); } catch (_) { data = {}; }
+
+      const poStatus  = document.getElementById('po-status');
+      const poHealth  = document.getElementById('po-health');
+      const poAgents  = document.getElementById('po-agents');
+      const poEntropy = document.getElementById('po-entropy');
+      const poRevenue = document.getElementById('po-revenue');
+      const poTs      = document.getElementById('po-ts');
+
+      if (poStatus)  { poStatus.textContent  = String(data.status || data.organism_status || 'LIVE').toUpperCase(); poStatus.className = 'pressure-field__val green'; }
+      if (poHealth)  poHealth.textContent  = data.health  || data.system_health  || '—';
+      if (poAgents)  poAgents.textContent  = data.active_agents !== undefined ? data.active_agents : (data.agents || '—');
+      if (poEntropy) poEntropy.textContent = data.entropy_index !== undefined ? data.entropy_index : (data.entropy || '—');
+      if (poRevenue) poRevenue.textContent = data.revenue_signal !== undefined ? data.revenue_signal : (data.revenue || '—');
+      if (poTs)      poTs.textContent      = ts;
+    } else {
+      throw new Error('HTTP ' + r.status);
+    }
+
+  } catch (e) {
+    const ts = new Date().toISOString();
+    if (tsEl) tsEl.textContent = 'Offline: ' + ts;
+    const poStatus = document.getElementById('po-status');
+    if (poStatus) { poStatus.textContent = 'OFFLINE'; poStatus.className = 'pressure-field__val red'; }
+  } finally {
+    if (btn) { btn.textContent = '↻ REFRESH'; btn.disabled = false; }
+  }
+};
+
+// ================================================================
+// UTILITY — HTML escape for dynamic content
+// ================================================================
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 // ================================================================
 // EMAIL ARSENAL
@@ -941,6 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   restoreOracleUI();
   initChecklist();
   updateWalletUI();
+  loadMetrics();
 
   // If already had a wallet session, show reconnect hint
   if (STATE.wallet) {
