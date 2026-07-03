@@ -43,12 +43,14 @@
       <button class="tab" data-panel="agents">AGENTS</button>
       <button class="tab" data-panel="ops">OPS</button>
       <button class="tab" data-panel="intel">INTEL</button>
+      <button class="tab" data-panel="shell">SHELL</button>
     </div>
     <div class="topnav__right">
       <div class="wallet-status" id="wallet-status">
         <div class="wallet-dot" id="wallet-dot"></div>
         <span id="wallet-label">NOT CONNECTED</span>
       </div>
+      <div class="termux-status" id="termux-status" style="margin-right: 12px; color: var(--amber); font-family: var(--mono); font-size: 11px; display: flex; align-items: center;">TERMUX: DISCONNECTED</div>
       <button class="btn btn--connect" id="connect-btn">CONNECT WALLET</button>
       <button class="btn btn--install" id="install-btn" style="display:none">⊚ INSTALL APP</button>
     </div>
@@ -571,6 +573,21 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+
+  <!-- ======= SHELL ======= -->
+  <section class="panel" id="panel-shell">
+    <div class="shell-container">
+      <div class="shell-output" id="shell-output">
+        <div class="shell-line sys">SAVAGE CORE TERMUX-SUBSTRATE INITIALIZED.</div>
+        <div class="shell-line sys">AGENTIC KERNEL v9.0 ACTIVE. WAITING FOR COMMAND...</div>
+      </div>
+      <div class="shell-input-wrapper">
+        <span class="shell-prompt">root@savage-cmd:~#</span>
+        <input type="text" class="shell-input" id="shell-input" autocomplete="off" spellcheck="false" autofocus>
+      </div>
     </div>
   </section>
 

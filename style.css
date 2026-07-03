@@ -374,3 +374,118 @@ body {
   .agent-stats { grid-template-columns: repeat(2, 1fr); }
   .oracle-stats { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ============================================================
+   SHELL (AGENTIC SUBSTRATE)
+   ============================================================ */
+#panel-shell {
+  display: none;
+  height: calc(100vh - var(--nav-h));
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+}
+
+#panel-shell.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #000;
+  border-top: 1px solid var(--border);
+  height: 100%;
+  font-family: var(--mono);
+  overflow: hidden;
+  position: relative;
+}
+
+/* scanline effect */
+.shell-container::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+.shell-output {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shell-line {
+  font-size: 13px;
+  word-break: break-all;
+  line-height: 1.4;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.shell-line.sys {
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.shell-line.err {
+  color: var(--red);
+}
+
+.shell-line.success {
+  color: var(--green);
+}
+
+.shell-line.warn {
+  color: var(--amber);
+}
+
+.shell-line.cmd {
+  color: #fff;
+}
+
+.shell-line.cmd::before {
+  content: "root@savage-cmd:~# ";
+  color: var(--teal);
+}
+
+.shell-input-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  z-index: 3;
+}
+
+.shell-prompt {
+  color: var(--teal);
+  font-size: 14px;
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.shell-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 14px;
+  outline: none;
+}

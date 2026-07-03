@@ -949,3 +949,227 @@ document.addEventListener('DOMContentLoaded', () => {
     saveState();
   }
 });
+
+// ================================================================
+// SAVAGE AGENTIC SHELL
+// ================================================================
+const shellOutput = document.getElementById('shell-output');
+const shellInput = document.getElementById('shell-input');
+
+// Ensure shell panel layout adjusts on show
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    if (btn.dataset.panel === 'shell') {
+      setTimeout(() => {
+        shellInput.focus();
+        shellOutput.scrollTop = shellOutput.scrollHeight;
+      }, 50);
+    }
+  });
+});
+
+const FS_MOUNT = {
+    '/opt/savage': ['core.bin', 'config.yml', 'agents/'],
+    '/sys/devices': ['cpu0', 'gpu0', 'tpu_array'],
+    '/var/log/sia': ['kernel.log', 'entropy.log']
+};
+
+function shellPrint(text, className = '') {
+  const div = document.createElement('div');
+  div.className = `shell-line ${className}`;
+  div.textContent = text;
+  shellOutput.appendChild(div);
+  shellOutput.scrollTop = shellOutput.scrollHeight;
+}
+
+const SHELL_COMMANDS = {
+  'help': () => {
+    shellPrint('AVAILABLE AGENTIC KERNEL COMMANDS:', 'sys');
+    shellPrint('  sysinfo         - Display current hardware and quantum states');
+    shellPrint('  clear           - Purge terminal output buffer');
+    shellPrint('  agent spawn <n> - Instantiate <n> autonomous task agents');
+    shellPrint('  agent status    - View topology and state of all agents');
+    shellPrint('  betti           - Calculate Betti numbers for current memory topology');
+    shellPrint('  ls <path>       - List virtual file system');
+    shellPrint('  mount           - Map IPFS/Swarm decentralized volume');
+    shellPrint('  pipeline        - Engage visual data hyper-streaming');
+    shellPrint('  auth <bio>      - Trigger WebAuthn Biometric lock');
+    shellPrint('  zkp-verify      - Run Zero-Knowledge Proof protocol');
+    shellPrint('  thermo          - Check system thermodynamics/entropy');
+    shellPrint('  bridge <chain>  - Init cross-chain RPC bridge');
+    shellPrint('  heal            - Engage auto-reconstruction of virtual sectors');
+  },
+  'sysinfo': () => {
+    shellPrint('SIA-v6 SOVEREIGN OS | TERMUX-SUBSTRATE', 'sys');
+    shellPrint('--------------------------------------');
+    shellPrint('CPU: 128-core Armv9 + Neural Processing Unit');
+    shellPrint(`RAM: 64TB Unified Quantum Memory`);
+    shellPrint(`ARCH: Phi=${ARCH.PHI}, Alpha=${ARCH.ALPHA}`);
+    shellPrint(`NET: Mesh-Node 42 (Offline-First Ready)`);
+    shellPrint(`WALLET: ${STATE.wallet ? STATE.wallet : 'NOT CONNECTED'}`, STATE.wallet ? 'success' : 'warn');
+  },
+  'clear': () => {
+    shellOutput.innerHTML = '';
+  },
+  'agent': (args) => {
+    if (args[0] === 'spawn') {
+      const num = parseInt(args[1]) || 1;
+      shellPrint(`Spawning ${num} autonomous agents...`, 'sys');
+      setTimeout(() => {
+        shellPrint(`[OK] ${num} agents instantiated and mapped to topology.`, 'success');
+        shellPrint(`Agents awaiting task delegation.`, 'warn');
+      }, 600);
+    } else if (args[0] === 'status') {
+      shellPrint('ACTIVE AGENT TOPOLOGY:', 'sys');
+      shellPrint(`  A: Symplectic (Ticks: ${STATE.agents.a.ticks}, Entropy: ${STATE.agents.a.entropy.toFixed(4)})`);
+      shellPrint(`  B: Topological (Ticks: ${STATE.agents.b.ticks}, Betti Sum: ${STATE.agents.b.bettiSum})`);
+      shellPrint(`  C: RG Flow (Ticks: ${STATE.agents.c.ticks}, Dist: ${STATE.agents.c.lambdaDist.toFixed(4)})`);
+    } else {
+        shellPrint(`agent: command not found: ${args[0]}`, 'err');
+    }
+  },
+  'betti': () => {
+      shellPrint('Computing Betti numbers for memory substrate...', 'sys');
+      setTimeout(() => {
+          shellPrint(`B0 (Connected Components) : ${Math.floor(Math.random() * 5) + 1}`, 'success');
+          shellPrint(`B1 (Circular Holes)       : ${Math.floor(Math.random() * 10)}`, 'success');
+          shellPrint(`B2 (2D Voids)             : ${Math.floor(Math.random() * 2)}`, 'success');
+      }, 500);
+  },
+  'ls': (args) => {
+      const path = args[0] || '/opt/savage';
+      if (FS_MOUNT[path]) {
+          shellPrint(`Directory: ${path}`);
+          shellPrint(FS_MOUNT[path].join('  '));
+      } else {
+          shellPrint(`ls: cannot access '${path}': No such file or directory`, 'err');
+      }
+  },
+  'mount': () => {
+      shellPrint('Mounting decentralized IPFS volume...', 'sys');
+      setTimeout(() => {
+          shellPrint('IPFS cluster located. Securing TLS...', 'warn');
+          setTimeout(() => {
+              shellPrint('[OK] Volume mounted at /mnt/swarm', 'success');
+          }, 400);
+      }, 400);
+  },
+  'pipeline': () => {
+      shellPrint('INITIALIZING HYPER-STREAM DATA PIPELINE', 'sys');
+      let i = 0;
+      const interval = setInterval(() => {
+          shellPrint(`Stream-Block ${i++}: [${Math.random().toString(16).substr(2, 16)}] -> Processed in ${Math.random().toFixed(2)}ms`, 'warn');
+          if (i > 5) {
+              clearInterval(interval);
+              shellPrint('Pipeline execution complete.', 'success');
+          }
+      }, 100);
+  },
+  'auth': () => {
+      shellPrint('Awaiting WebAuthn hardware trigger...', 'warn');
+      if (window.PublicKeyCredential) {
+          shellPrint('Biometric sensor detected. Engaging...', 'sys');
+          setTimeout(() => {
+              shellPrint('ACCESS GRANTED: Root Authority Verified.', 'success');
+          }, 800);
+      } else {
+          shellPrint('WebAuthn not supported in this environment.', 'err');
+      }
+  },
+  'zkp-verify': () => {
+      shellPrint('Executing Zero-Knowledge Proof constraint verification...', 'sys');
+      shellPrint(`Target Hash: ${STATE.agents.a.lastHash || 'NULL'}`);
+      setTimeout(() => {
+          if (!STATE.agents.a.lastHash) {
+             shellPrint('FAILED: No prior agent state to verify.', 'err');
+          } else {
+             shellPrint('[OK] ZK-SNARK valid. State transition cryptographically proven.', 'success');
+          }
+      }, 700);
+  },
+  'thermo': () => {
+      shellPrint(`Current System Entropy: ${(Math.random() * 100).toFixed(2)} J/K`, 'warn');
+      shellPrint(`Cooling System: Nominal`, 'success');
+      shellPrint(`Decoherence Risk: Low`, 'success');
+  },
+  'bridge': (args) => {
+      const target = args[0] || 'Linea';
+      shellPrint(`Initializing cross-chain RPC to ${target}...`, 'sys');
+      setTimeout(() => {
+          shellPrint(`[OK] Substrate bridge established. Latency 24ms.`, 'success');
+      }, 500);
+  },
+  'heal': () => {
+      shellPrint('Scanning virtual sectors for corruption...', 'sys');
+      setTimeout(() => {
+          shellPrint('2 minor topological tears detected.', 'warn');
+          shellPrint('Engaging self-healing manifold...', 'sys');
+          setTimeout(() => {
+              shellPrint('[OK] Virtual file system fully restored.', 'success');
+          }, 600);
+      }, 400);
+  }
+};
+
+
+let termuxWs = null;
+
+function connectTermux() {
+  const statusEl = document.getElementById('termux-status');
+  termuxWs = new WebSocket('ws://127.0.0.1:8765');
+
+  termuxWs.onopen = () => {
+    if (statusEl) {
+      statusEl.textContent = 'TERMUX: CONNECTED';
+      statusEl.style.color = 'var(--green)';
+    }
+    shellPrint('LOCAL ANDROID OS LINK ESTABLISHED.', 'success');
+  };
+
+  termuxWs.onmessage = (event) => {
+    shellPrint(event.data);
+  };
+
+  termuxWs.onclose = () => {
+    if (statusEl) {
+      statusEl.textContent = 'TERMUX: DISCONNECTED';
+      statusEl.style.color = 'var(--amber)';
+    }
+    termuxWs = null;
+    // Attempt reconnect after 5s
+    setTimeout(connectTermux, 5000);
+  };
+
+  termuxWs.onerror = () => {
+    // Silent fail, just let onclose handle it
+  };
+}
+
+// Start connection attempt
+connectTermux();
+
+if (shellInput) {
+  shellInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const val = shellInput.value.trim();
+      if (!val) return;
+
+      shellPrint(val, 'cmd');
+      shellInput.value = '';
+
+      const parts = val.split(' ');
+      const cmd = parts[0].toLowerCase();
+      const args = parts.slice(1);
+
+      if (termuxWs && termuxWs.readyState === WebSocket.OPEN) {
+        termuxWs.send(val);
+      } else {
+        if (SHELL_COMMANDS[cmd]) {
+          SHELL_COMMANDS[cmd](args);
+        } else {
+          shellPrint(`Command not found: ${cmd}. Type 'help' for available commands.`, 'err');
+        }
+      }
+    }
+  });
+}
