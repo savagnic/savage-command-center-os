@@ -15,7 +15,7 @@ function maskWalletAddress(addr) {
   if (!addr || addr.length < 10) return '••••…????';
   return '••••…' + addr.slice(-4);
 }
-const WALLET_ADDR_DISPLAY = maskWalletAddress(WALLET_ADDR_DISPLAY);
+const WALLET_ADDR_DISPLAY = maskWalletAddress(WALLET_ADDR);
 const MASTER_HASH = '0x937fe8fb1349e0af37995ac10b24cd082ee3a30558a29b2311fdcb38b402a600';
 
 const ARCH = {
@@ -839,182 +839,17 @@ function escapeHtml(str) {
 // ================================================================
 // EMAIL ARSENAL
 // ================================================================
-const EMAILS = {
-  nvidia: {
-    target: 'NVIDIA — Jonah Alben (SVP GPU Engineering)',
-    body: `Subject: Deterministic Fix for B200 NVFP4 Quantization Heat-Spikes
-
-To Jonah Alben, SVP GPU Engineering — NVIDIA Blackwell Team,
-
-Nicholas Savage, Savage AI Studios. We identified the root cause of B200 thermal anomalies. It is not a cooling problem. It is a numerical error propagation problem at the arithmetic level.
-
-NVFP4 micro-block error cascade: 16 values sharing one E4M3 scale factor → quantization error amplification O(n^0.5) = 4x → drives bit-flips → thermal waste invisible to NVIDIA's thermal models.
-
-The fix: 1-bit renormalization selector per sub-block, φ⁻¹ attenuation. Result:
-• 72.1% thermal waste reduction
-• Corrected amplification: 2.11x (from 4x)
-• ~1.9kW per NVL72 recovered
-• Die area overhead: ~2%
-• Validated against Princeton edge-state data (Phys. Rev. B 2024; Nature 2025)
-
-All results SHA-256 certified, blockchain-anchored on Ethereum mainnet. Stability threshold: 0.8636.
-
-Performance-based licensing model. You pay when the evidence saves you money.
-
-Nicholas Savage
-ns@savage-ai-studios.com
-savageaistudios.com`
-  },
-  palantir: {
-    target: 'Palantir — Shyam Sankar (CTO)',
-    body: `Subject: AIP Streaming Latency — Architectural Root Cause
-
-To Shyam Sankar, CTO — Palantir,
-
-Nicholas Savage, Savage AI Studios. Foundry streaming latency traces to a stochastic transformation pipeline — architectural, not infrastructural.
-
-SIA-v6 deterministic co-processor layer:
-• 0.113ms warm-path latency — every call
-• O(1) memory — no heap, no GC
-• Cryptographic proof chain on every output — every AIP decision becomes auditable
-• 23/23 conservation laws verified algebraically
-
-For government clients: holographic privacy (96-byte state, no bulk storage) maps directly to data sovereignty requirements. The only AI that cannot violate HIPAA by construction — there is nothing to store.
-
-All benchmarks blockchain-anchored (Linea + ETH mainnet).
-
-I would appreciate 20 minutes with your technical team.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  janestreet: {
-    target: 'Jane Street — Quantitative Research',
-    body: `Subject: Can your risk systems detect decoherence 32μs before a crash? This one can.
-
-To Jane Street Quantitative Research,
-
-Nicholas Savage, Savage AI Studios.
-
-32.47μs decoherence prediction window. Not probabilistically. Deterministically.
-
-Topological precursor detection — phase-space manifold decoherence — 32.47μs lead time. Hamiltonian conserved to 10⁻¹³. Same input, same SHA-256 hash, any machine, any epoch. No heap allocation. No GC pauses. Zero contribution to latency jitter.
-
-The proof hash is your SEC-admissible audit trail for every algorithmic decision.
-
-API standing offer. Key provisioned in 24 hours.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  shieldai: {
-    target: 'Shield AI — Nathan Michael (CTO)',
-    body: `Subject: Edge Compute Drift Problem + Symplectic Fix
-
-To Nathan Michael, CTO — Shield AI,
-
-Nicholas Savage, Savage AI Studios.
-
-Hivemind faces sim-to-real drift, sensor fusion instability, and thermal throttling at scale. The root cause: numerical integration on manifolds is not symplectic by default — accumulates geometric error proportional to √steps.
-
-SIA-v6 4th-order geometric integrator:
-• Symplectic by construction — Hamiltonian drift bounded at 10⁻¹³ over 10⁶ steps
-• Eliminates sim-to-real gap in long autonomous missions
-• CPU-native, no new hardware required
-• Air-gappable: the entire state is 96 bytes. Fits in any secure channel.
-• No training data to exfiltrate. No model weights to invert. No cloud dependency.
-
-Certified by cryptographic proof hash, not just measurement. Blockchain-anchored.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  rtx: {
-    target: 'RTX / Raytheon — Advanced R&D',
-    body: `Subject: SIA-v6 — Certified Deterministic Computation for Advanced Systems
-
-To RTX Advanced R&D,
-
-Nicholas Savage, Savage AI Studios. SIA-v6 delivers SHA-256 certified deterministic outputs at 0.113ms latency — for workloads where probabilistic AI is unacceptable.
-
-Directly relevant to RTX:
-• Hypersonics thermal modeling — 72.1% thermal waste reduction, anchored
-• Structural health monitoring — proof hash per result, not confidence interval
-• Propulsion telemetry — CPU-native, no GPU infrastructure required
-• Air-gappable (96 bytes) — deployable in classified environments
-• 23/23 conservation laws algebraically verified
-
-All results blockchain-anchored on Ethereum mainnet.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  hrt: {
-    target: 'Hudson River Trading — Quantitative Research',
-    body: `Subject: Your intraday book saw $12.3B in 2025. How much did flash crashes cost you?
-
-To Hudson River Trading Quantitative Research,
-
-Nicholas Savage, Savage AI Studios.
-
-Built something that predicts flash-crash decoherence windows with 32.47μs lead time. Deterministically. Not ML. Not stochastic. 4th-order geometric integrator on Hamiltonian manifold, O(1) memory.
-
-Same input → same SHA-256 hash, any machine. Secure API ready.
-
-Upload your tick data from any historical crash event. Returns: prediction window + proof hash. No code leaves server.
-
-API key provisioned in 24 hours.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  jump: {
-    target: 'Jump Trading — Quantitative Research',
-    body: `Subject: Symplectic inference on tick data — no ML, no stochastic components, deterministic to machine epsilon
-
-To Jump Trading Quantitative Research,
-
-Nicholas Savage, Savage AI Studios.
-
-Physics-based decoherence detection for HFT — no ML, no stochastic components.
-
-Key invariants:
-• Hamiltonian conserved to 10⁻¹³ over 10⁶ integration steps
-• 32.47μs prediction window — decoherence precursor, not post-hoc analysis
-• SHA-256 hash identical across runs — SEC-admissible audit trail
-• O(1) memory, no GC pauses, no latency jitter contribution
-
-Secure API endpoint: upload historical tick data from any crash event. Returns prediction window + proof hash.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  },
-  quantinuum: {
-    target: 'Quantinuum — Brian Neyenhuis (Sr. Director Engineering)',
-    body: `Subject: Predictive QEC via Persistent Homology
-
-To Brian Neyenhuis, Sr. Director Engineering — Quantinuum,
-
-Nicholas Savage, Savage AI Studios.
-
-Current QEC is reactive — it corrects errors that already happened. SIA-v6 detects decoherence precursors before they corrupt logical qubits.
-
-BCD sign-flip in Z-X stabilizer cross-correlation is a precursor. Multi-threaded topology monitoring (β₀/β₁/β₂):
-• 1.5x faster decoherence detection than syndrome matching alone
-• 17–32μs prediction window on H-series parameters
-• Enough time for dynamical decoupling, logical rerouting, lattice surgery
-
-Co-processor model — runs alongside your existing decoder, does not replace it.
-
-Performance-based licensing.
-
-Nicholas Savage
-ns@savage-ai-studios.com`
-  }
-};
+// The prospect/outreach EMAILS dictionary is intentionally not committed.
+// Load app.emails.private.js locally to set window.EMAILS, then opt in with
+// localStorage.setItem('SCC_PRIVATE','1') on Nick's machine only.
+var EMAILS = (typeof window !== 'undefined' && window.EMAILS) ? window.EMAILS : {};
 
 function isPrivateModeUnlocked() {
-  try { return localStorage.getItem('SCC_PRIVATE') === '1'; } catch { return false; }
+  try {
+    return localStorage.getItem('SCC_PRIVATE') === '1';
+  } catch {
+    return false;
+  }
 }
 
 window.copyEmail = function(key) {
