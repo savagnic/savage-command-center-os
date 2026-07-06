@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-validate:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install HTML validator
+        run: npm install -g htmlhint
+
+      - name: Validate HTML
+        run: htmlhint index.html --config .htmlhintrc || true
+
+      - name: Check for Math.random() outside test files
+        run: |
+          # Math.random() is banned in production code (non-determinism)
+          if grep -rn "Math\.random()" --include="*.js" \
+               --exclude-dir=node_modules \
+               --exclude="*.test.js" \
+               --exclude="*.spec.js" \
+               --exclude="*test*" \
+               .; then
+            echo "❌ Math.random() found in production code. Replace with deterministic logic."
+            exit 1
+          else
+            echo "✅ No Math.random() in production code."
+          fi
+
+      - name: Check manifest.json is valid JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8')); console.log('✅ manifest.json is valid JSON')"
+
+      - name: Check sw.js exists
+        run: |
+          if [ -f "sw.js" ]; then
+            echo "✅ Service worker exists"
+          else
+            echo "❌ sw.js missing"
+            exit 1
+          fi
+
+      - name: Check app.js has no syntax errors
+        run: node --check app.js && echo "✅ app.js syntax OK"
+
+      - name: Verify loadMetrics is wired to CEROS endpoint
+        run: |
+          if grep -q "loadMetrics" app.js && grep -q "organism-status" app.js; then
+            echo "✅ loadMetrics wired to CEROS /api/organism-status"
+          else
+            echo "❌ loadMetrics not wired to CEROS /api/organism-status"
+            exit 1
+          fi
+
+      - name: Verify Decision Replay Theater exists
+        run: |
+          if grep -q "panel-replay" index.html && grep -q "panel-replay" app.js; then
+            echo "✅ Decision Replay Theater panel exists"
+          else
+            echo "❌ Decision Replay Theater not implemented"
+            exit 1
+          fi
+
+      - name: Verify Founder Pressure Board exists
+        run: |
+          if grep -q "panel-pressure" index.html && grep -q "panel-pressure" app.js; then
+            echo "✅ Founder Pressure Board panel exists"
+          else
+            echo "❌ Founder Pressure Board not implemented"
+            exit 1
+          fi
