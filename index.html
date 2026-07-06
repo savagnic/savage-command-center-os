@@ -43,14 +43,14 @@
       <button class="tab" data-panel="agents">AGENTS</button>
       <button class="tab" data-panel="ops">OPS</button>
       <button class="tab" data-panel="intel">INTEL</button>
-      <button class="tab" data-panel="shell">SHELL</button>
+      <button class="tab" data-panel="replay">REPLAY</button>
+      <button class="tab" data-panel="pressure">PRESSURE</button>
     </div>
     <div class="topnav__right">
       <div class="wallet-status" id="wallet-status">
         <div class="wallet-dot" id="wallet-dot"></div>
         <span id="wallet-label">NOT CONNECTED</span>
       </div>
-      <div class="termux-status" id="termux-status" style="margin-right: 12px; color: var(--amber); font-family: var(--mono); font-size: 11px; display: flex; align-items: center;">TERMUX: DISCONNECTED</div>
       <button class="btn btn--connect" id="connect-btn">CONNECT WALLET</button>
       <button class="btn btn--install" id="install-btn" style="display:none">⊚ INSTALL APP</button>
     </div>
@@ -114,6 +114,39 @@
         <div class="kpi-card__value green">4.44e-16</div>
         <div class="kpi-card__label">retrograde error</div>
         <div class="kpi-card__sub">Machine epsilon floor</div>
+      </div>
+    </div>
+
+    <!-- Revenue Cockpit — live CEROS feed -->
+    <div class="section-header">
+      <span class="section-header__title">REVENUE COCKPIT</span>
+      <span class="section-header__sub" id="metrics-ts">—</span>
+      <button class="btn btn--sm btn--ghost" id="metrics-refresh-btn" onclick="loadMetrics()">↻ REFRESH</button>
+    </div>
+    <div class="cockpit-grid" id="cockpit-grid">
+      <div class="cockpit-card" id="cockpit-status">
+        <div class="cockpit-card__label">ORGANISM STATUS</div>
+        <div class="cockpit-card__value amber" id="cockpit-organism">LOADING…</div>
+      </div>
+      <div class="cockpit-card" id="cockpit-health">
+        <div class="cockpit-card__label">SYSTEM HEALTH</div>
+        <div class="cockpit-card__value" id="cockpit-health-val">—</div>
+      </div>
+      <div class="cockpit-card" id="cockpit-agents-live">
+        <div class="cockpit-card__label">ACTIVE AGENTS</div>
+        <div class="cockpit-card__value" id="cockpit-agents-val">—</div>
+      </div>
+      <div class="cockpit-card" id="cockpit-entropy">
+        <div class="cockpit-card__label">ENTROPY INDEX</div>
+        <div class="cockpit-card__value" id="cockpit-entropy-val">—</div>
+      </div>
+      <div class="cockpit-card" id="cockpit-revenue">
+        <div class="cockpit-card__label">REVENUE SIGNAL</div>
+        <div class="cockpit-card__value" id="cockpit-revenue-val">—</div>
+      </div>
+      <div class="cockpit-card" id="cockpit-raw">
+        <div class="cockpit-card__label">RAW FEED</div>
+        <div class="cockpit-card__value cockpit-raw-pre" id="cockpit-raw-val">—</div>
       </div>
     </div>
 
@@ -576,18 +609,117 @@
     </div>
   </section>
 
+  <!-- ======= DECISION REPLAY THEATER ======= -->
+  <section class="panel" id="panel-replay">
+    <div class="panel__header">
+      <span class="panel__index">06</span>
+      <h2 class="panel__title">Decision Replay Theater</h2>
+      <span class="panel__sub">CEROS · Audit Trail · Deterministic</span>
+    </div>
 
-  <!-- ======= SHELL ======= -->
-  <section class="panel" id="panel-shell">
-    <div class="shell-container">
-      <div class="shell-output" id="shell-output">
-        <div class="shell-line sys">SAVAGE CORE TERMUX-SUBSTRATE INITIALIZED.</div>
-        <div class="shell-line sys">AGENTIC KERNEL v9.0 ACTIVE. WAITING FOR COMMAND...</div>
+    <div class="replay-controls">
+      <button class="btn btn--green" id="replay-fetch-btn" onclick="fetchDecisions()">↻ FETCH DECISIONS</button>
+      <span class="replay-status" id="replay-status">Tap FETCH to load from CEROS</span>
+    </div>
+
+    <div class="replay-grid" id="replay-grid">
+      <div class="replay-empty" id="replay-empty">
+        <span class="replay-empty__icon">⏮</span>
+        <span>No decisions loaded. Connect to CEROS and tap FETCH.</span>
       </div>
-      <div class="shell-input-wrapper">
-        <span class="shell-prompt">root@savage-cmd:~#</span>
-        <input type="text" class="shell-input" id="shell-input" autocomplete="off" spellcheck="false" autofocus>
+    </div>
+
+    <div class="replay-detail" id="replay-detail" style="display:none">
+      <div class="replay-detail__header">
+        <span class="replay-detail__title" id="replay-detail-title">—</span>
+        <button class="btn btn--sm btn--ghost" onclick="closeReplayDetail()">✕ CLOSE</button>
       </div>
+      <div class="replay-detail__body">
+        <div class="replay-field">
+          <span class="replay-field__label">Decision ID</span>
+          <span class="replay-field__val mono" id="rd-id">—</span>
+        </div>
+        <div class="replay-field">
+          <span class="replay-field__label">Timestamp</span>
+          <span class="replay-field__val mono" id="rd-ts">—</span>
+        </div>
+        <div class="replay-field">
+          <span class="replay-field__label">Context</span>
+          <span class="replay-field__val" id="rd-context">—</span>
+        </div>
+        <div class="replay-field">
+          <span class="replay-field__label">Outcome</span>
+          <span class="replay-field__val" id="rd-outcome">—</span>
+        </div>
+        <div class="replay-field">
+          <span class="replay-field__label">Proof Hash</span>
+          <span class="replay-field__val mono green" id="rd-hash">—</span>
+        </div>
+        <div class="replay-field">
+          <span class="replay-field__label">Replay Verdict</span>
+          <span class="replay-field__val" id="rd-verdict">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOUNDER PRESSURE BOARD ======= -->
+  <section class="panel" id="panel-pressure">
+    <div class="panel__header">
+      <span class="panel__index">07</span>
+      <h2 class="panel__title">Founder Pressure Board</h2>
+      <span class="panel__sub">SIA-v6 · Sovereign Health · Live</span>
+    </div>
+
+    <div class="pressure-refresh">
+      <button class="btn btn--green" id="pressure-fetch-btn" onclick="loadPressureBoard()">↻ REFRESH</button>
+      <span class="pressure-ts" id="pressure-ts">—</span>
+    </div>
+
+    <div class="pressure-grid">
+
+      <div class="pressure-card pressure-card--critical" id="pc-blockers">
+        <div class="pressure-card__title">🔴 CRITICAL BLOCKERS</div>
+        <div class="pressure-list" id="pressure-blockers">
+          <div class="pressure-item pressure-item--crit">GCP billing not yet enabled — blocks Cloud Run</div>
+          <div class="pressure-item pressure-item--crit">Ontology V6 anchor TX pending (TX-3, TX-4)</div>
+          <div class="pressure-item pressure-item--crit">arXiv / SSRN submission pending</div>
+        </div>
+      </div>
+
+      <div class="pressure-card pressure-card--warn" id="pc-watch">
+        <div class="pressure-card__title">🟡 WATCH LIST</div>
+        <div class="pressure-list" id="pressure-watch">
+          <div class="pressure-item pressure-item--warn">Outreach emails not yet dispatched</div>
+          <div class="pressure-item pressure-item--warn">CEROS organism-status endpoint reachability</div>
+          <div class="pressure-item pressure-item--warn">PAT-6 publication pipeline</div>
+        </div>
+      </div>
+
+      <div class="pressure-card pressure-card--ok" id="pc-wins">
+        <div class="pressure-card__title">🟢 WINS THIS CYCLE</div>
+        <div class="pressure-list" id="pressure-wins">
+          <div class="pressure-item pressure-item--ok">Revenue Cockpit UI wired to live CEROS feed</div>
+          <div class="pressure-item pressure-item--ok">Decision Replay Theater implemented</div>
+          <div class="pressure-item pressure-item--ok">Founder Pressure Board implemented</div>
+          <div class="pressure-item pressure-item--ok">CI pipeline live on master</div>
+          <div class="pressure-item pressure-item--ok">Math.random() eliminated from production code</div>
+          <div class="pressure-item pressure-item--ok">23/23 conservation laws intact</div>
+        </div>
+      </div>
+
+      <div class="pressure-card" id="pc-organism">
+        <div class="pressure-card__title">📡 CEROS ORGANISM STATUS</div>
+        <div class="pressure-organism" id="pressure-organism-data">
+          <div class="pressure-field"><span class="pressure-field__label">Status</span><span class="pressure-field__val amber" id="po-status">UNKNOWN</span></div>
+          <div class="pressure-field"><span class="pressure-field__label">Health</span><span class="pressure-field__val" id="po-health">—</span></div>
+          <div class="pressure-field"><span class="pressure-field__label">Active Agents</span><span class="pressure-field__val" id="po-agents">—</span></div>
+          <div class="pressure-field"><span class="pressure-field__label">Entropy Index</span><span class="pressure-field__val" id="po-entropy">—</span></div>
+          <div class="pressure-field"><span class="pressure-field__label">Revenue Signal</span><span class="pressure-field__val" id="po-revenue">—</span></div>
+          <div class="pressure-field"><span class="pressure-field__label">Last Poll</span><span class="pressure-field__val mono" id="po-ts">—</span></div>
+        </div>
+      </div>
+
     </div>
   </section>
 
