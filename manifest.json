@@ -1,7 +1,7 @@
 {
-  "name": "Savage Command Center",
-  "short_name": "CMD CENTER",
-  "description": "Savage AI Studios — Sovereign Control Interface",
+  "name": "Sovereign Agent Shell",
+  "short_name": "AGENT SHELL",
+  "description": "Sovereign AI Studios — Sovereign Control Interface",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
