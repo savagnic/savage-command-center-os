@@ -2,3 +2,11 @@
 app.emails.private.js
 
 # Prospect / outreach content — never commit
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Logs & temp files
+*.log
+.DS_Store

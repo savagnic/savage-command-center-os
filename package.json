@@ -1,0 +1,17 @@
+{
+  "name": "savage-command-center",
+  "version": "3.1.0",
+  "description": "Sovereign Control Interface & PWA Dashboard for SIA-v6, featuring an advanced integrated Shell and IDE",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}
