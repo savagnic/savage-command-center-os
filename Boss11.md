@@ -1,7 +1,7 @@
-# Boss11 Entry — savage-command-center
+# Boss11 Entry — agent-shell
 
 ## 1. Repository Identity
-- **Canonical Repo Name:** `savage-command-center`
+- **Canonical Repo Name:** `agent-shell`
 - **Observed Purpose:** Operator dashboard and Sovereign Control Interface for the SIA-v6 ecosystem, enabling cryptographic anchoring, endpoint monitoring, simulation of deterministic agents, and execution of structured commercial outreach.
 - **Organism Role:** The visual command, control, and sales execution surface of the organism.
 - **Architectural Tier:** Frontend Web / Client-Side (Progressive Web App).
@@ -26,7 +26,7 @@
   - `sw.js`: Service worker providing minimal caching for PWA offline capabilities.
   - `manifest.json`: Configuration for standalone PWA installation.
 - **Build/Config/Test/Workflow Assets:** None. It is a vanilla HTML/JS implementation requiring no build step.
-- **Generated Artifacts:** Browser `localStorage` (`scc_v3_state`).
+- **Generated Artifacts:** Browser `localStorage` (`sas_v3_state`).
 - **Expected but Missing Assets:** Tests, build pipelines, or dependency manifests (e.g., `package.json`), indicating a deliberate choice to use zero-dependency vanilla web technologies.
 
 ## 3. Functional Architecture
@@ -52,7 +52,7 @@
 | Capability | Agent C: RG Flow | Live | Code | `app.js` (`tickAgentC`) | Prior State | $\lambda$, distance | None | Simulation | Low | Renormalization fixed point targeting |
 | Dynamics | Oracle Consensus | Live | Code | `app.js` (`tickOracle`) | Agent States | Convergence Flag | Agent A, B, C | Orchestration | Low | Unifies the three disparate math branches |
 | Platform Ability | GCP API Tollbooth Ping | Live | Code | `index.html` | Path | HTTP Response | External APIs | Monitoring | Low | Verifies backend uptime |
-| Capability | Local State Persistence | Live | Code | `app.js` (`saveState`) | DOM / JS State | LocalStorage string | None | Usability | Low | Recovers `scc_v3_state` on reload |
+| Capability | Local State Persistence | Live | Code | `app.js` (`saveState`) | DOM / JS State | LocalStorage string | None | Usability | Low | Recovers `sas_v3_state` on reload |
 
 ## 5. Operational Dynamics
 - **Event Flow:** Completely driven by user interaction (clicks, toggles). No background polling other than the manually triggered Agent ticking and API pings.
@@ -123,7 +123,7 @@ graph TD
 
 ## 11. Repo Schema
 ```yaml
-repo_name: savage-command-center
+repo_name: agent-shell
 canonical_role: Operator Interface and Commercial Sales Surface
 architectural_tier: Frontend (Client-side PWA)
 primary_languages: [JavaScript, HTML, CSS]
@@ -188,7 +188,7 @@ operator_visibility: Complete
 | **APIs Called** | `/api/v6/physics`, `/api/v6/finance`, `/api/v6/verify` | External GCP backend APIs. |
 | **Events Consumed** | `chainChanged`, `accountsChanged` | Standard EIP-1193 Web3 events. |
 | **Events Emitted** | `wallet_switchEthereumChain` | Forces network alignment. |
-| **Files Written** | `localStorage: scc_v3_state` | Persistence layer. |
+| **Files Written** | `localStorage: sas_v3_state` | Persistence layer. |
 | **Downstream Consumers**| The Operator / User | |
 | **Upstream Providers** | MetaMask / Linea / ETH | For cryptographic anchoring. |
 
@@ -217,7 +217,7 @@ operator_visibility: Complete
 - **Boundaries:** The boundary is very clean—it is purely a frontend calling external APIs and relying on browser local storage.
 
 ## 17. Boss11 Merge Payload
-- **Identity:** `savage-command-center` is a zero-dependency vanilla JavaScript PWA acting as the Sovereign Control Interface for the SIA-v6 organism. It integrates EIP-1193 Web3 wallets for blockchain anchoring, provides monitoring for external GCP backend APIs, and runs simplified client-side deterministic simulations (Symplectic maps, Topological Betti invariants, Renormalization Group flows) to visually represent the core engine's capabilities to the operator.
+- **Identity:** `agent-shell` is a zero-dependency vanilla JavaScript PWA acting as the Sovereign Control Interface for the SIA-v6 organism. It integrates EIP-1193 Web3 wallets for blockchain anchoring, provides monitoring for external GCP backend APIs, and runs simplified client-side deterministic simulations (Symplectic maps, Topological Betti invariants, Renormalization Group flows) to visually represent the core engine's capabilities to the operator.
 - **Observed Findings:**
   - Implements three synchronous, mathematically-gated JavaScript simulation loops directly in `app.js` representing Agent A, B, and C.
   - Generates verifiable SHA-256 hashes of client state using the Web Crypto API.
