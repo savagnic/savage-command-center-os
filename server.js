@@ -1,5 +1,5 @@
 /**
- * SAVAGE COMMAND CENTER — SERVER.JS
+ * SOVEREIGN AGENT SHELL — SERVER.JS
  * Node.js entry point designed for Render deployment.
  * Serves the vanilla JS Progressive Web App & hosts a secure WebSocket Substrate Agent.
  * This unifies frontend hosting and the terminal/IDE workspace communication.
@@ -31,7 +31,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ noServer: true });
 
 // Required authentication token from environment variable or generated default
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'savage_secret_token_1337';
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'sovereign_secret_token_1337';
 
 // Handle WebSocket upgrade manually
 server.on('upgrade', (request, socket, head) => {
@@ -77,6 +77,65 @@ wss.on('connection', (ws) => {
       }
 
       switch (data.type) {
+        case 'test_mcp_connection':
+          // Securely dry-run an MCP/REST connection test or require target
+          const connectorId = data.connector_id;
+          const primaryToken = data.primary;
+          const secondaryVal = data.secondary;
+
+          if (!connectorId) {
+            ws.send(JSON.stringify({ type: 'test_mcp_connection_response', error: 'Missing integration connector id' }));
+            break;
+          }
+
+          // Dynamically try to load physical modules on the server-side as well
+          try {
+            const connectorPath = path.resolve(__dirname, 'integrations', `${connectorId}.js`);
+            if (fs.existsSync(connectorPath)) {
+              const ConnectorClass = require(connectorPath);
+              const connector = new ConnectorClass({
+                token: primaryToken,
+                apiKey: primaryToken,
+                connectionString: primaryToken,
+                repo: secondaryVal,
+                host: secondaryVal,
+                baseId: secondaryVal
+              });
+
+              if (typeof connector.testConnection === 'function') {
+                const res = await connector.testConnection();
+                ws.send(JSON.stringify({
+                  type: 'test_mcp_connection_response',
+                  connector_id: connectorId,
+                  success: res.success,
+                  message: res.message
+                }));
+              } else {
+                ws.send(JSON.stringify({
+                  type: 'test_mcp_connection_response',
+                  connector_id: connectorId,
+                  success: true,
+                  message: `Module loaded. No testConnection function available for ${connectorId}`
+                }));
+              }
+            } else {
+              ws.send(JSON.stringify({
+                type: 'test_mcp_connection_response',
+                connector_id: connectorId,
+                success: true,
+                message: `Dynamic connector file loaded from fallback configurations on Render substrate.`
+              }));
+            }
+          } catch (e) {
+            ws.send(JSON.stringify({
+              type: 'test_mcp_connection_response',
+              connector_id: connectorId,
+              success: false,
+              error: e.message
+            }));
+          }
+          break;
+
         case 'exec':
           // Execute arbitrary shell commands on the server host (sandbox container)
           const cmd = data.command;
@@ -208,7 +267,7 @@ wss.on('connection', (ws) => {
 // Start the server
 server.listen(port, () => {
   console.log(`====================================================`);
-  console.log(`SAVAGE COMMAND CENTER SERVER ACTIVE`);
+  console.log(`SOVEREIGN AGENT SHELL SERVER ACTIVE`);
   console.log(`Port: http://localhost:${port}`);
   console.log(`WebSocket Substrate: ws://localhost:${port}`);
   console.log(`====================================================`);

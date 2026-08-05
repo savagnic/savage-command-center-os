@@ -40,6 +40,7 @@
     <div class="topnav__tabs" id="main-tabs">
       <button class="tab active" data-panel="brief">BRIEF</button>
       <button class="tab" data-panel="chain">CHAIN</button>
+      <button class="tab" data-panel="connect">CONNECT</button>
       <button class="tab" data-panel="ide">IDE</button>
       <button class="tab" data-panel="terminal">TERMINAL</button>
       <button class="tab" data-panel="agents">AGENTS</button>
@@ -71,6 +72,65 @@
 
 <!-- ===== PANELS ===== -->
 <main class="panels">
+
+  <!-- ======= CONNECT ======= -->
+  <section class="panel" id="panel-connect">
+    <div class="panel__header">
+      <span class="panel__index">10</span>
+      <h2 class="panel__title">Connect & Integrations</h2>
+      <span class="panel__sub">Third Party Applications & MCP Gateway</span>
+    </div>
+
+    <div class="connect-overview-card">
+      <div class="connect-overview-card__inner">
+        <span class="pulse-indicator-span"><span class="agent-dot green-dot pulse"></span> ACTIVE MCP STREAM</span>
+        <h3>Sovereign Connect Hub</h3>
+        <p>Orchestrate secure, programmatic conduits connecting your Sovereign Agent Shell with top-tier third-party applications, databases, search indexes, and dedicated Model Context Protocol (MCP) servers.</p>
+      </div>
+    </div>
+
+    <div class="integrations-container">
+      <div class="integrations-list-pane">
+        <div class="pane-header">
+          <span>TOP 20 CONNECTORS</span>
+        </div>
+        <div class="integrations-grid" id="integrations-grid">
+          <!-- Dynamically Rendered Integration Cards -->
+        </div>
+      </div>
+
+      <div class="integration-details-pane" id="integration-details-pane">
+        <div class="pane-header">
+          <span id="active-integration-title">Select an Integration</span>
+          <span class="badge badge--green" id="active-integration-status">DISCONNECTED</span>
+        </div>
+        <div class="pane-body" id="integration-details-body">
+          <div class="no-selection-placeholder" id="no-integration-selected">
+            <span class="placeholder-icon">🔌</span>
+            <p>Select any third-party app or MCP connector from the left panel to configure credentials, run build operations, and trigger dynamic connection handshakes.</p>
+          </div>
+          <div class="integration-config-form" id="integration-config-form" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" id="field-primary-label">Primary API Key / Token</label>
+              <input type="password" class="form-input" id="integration-key-input" placeholder="Enter security credentials...">
+            </div>
+            <div class="form-group" id="field-secondary-group">
+              <label class="form-label" id="field-secondary-label">Secondary Parameter / Scope</label>
+              <input type="text" class="form-input" id="integration-secondary-input" placeholder="e.g. Org ID, Repo, Port...">
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--green" id="btn-test-integration">TEST HANDSHAKE</button>
+              <button class="btn btn--ghost" id="btn-vfs-integration">LOAD IN VFS IDE</button>
+            </div>
+            <div class="handshake-result-card" id="handshake-result-card" style="display: none;">
+              <span class="handshake-title">HANDSHAKE AUDIT STREAM</span>
+              <pre class="handshake-log mono" id="handshake-log-output"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ======= BRIEF ======= -->
   <section class="panel active" id="panel-brief">
