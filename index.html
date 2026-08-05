@@ -45,8 +45,14 @@
       <button class="tab" data-panel="intel">INTEL</button>
       <button class="tab" data-panel="replay">REPLAY</button>
       <button class="tab" data-panel="pressure">PRESSURE</button>
+      <button class="tab" data-panel="shell">SHELL</button>
+      <button class="tab" data-panel="ide">IDE</button>
     </div>
     <div class="topnav__right">
+      <div class="termux-status" id="termux-status">
+        <div class="termux-dot" id="termux-dot"></div>
+        <span id="termux-label">TERMUX: DISCONNECTED</span>
+      </div>
       <div class="wallet-status" id="wallet-status">
         <div class="wallet-dot" id="wallet-dot"></div>
         <span id="wallet-label">NOT CONNECTED</span>
@@ -720,6 +726,129 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ======= SHELL & TERMINAL ======= -->
+  <section class="panel" id="panel-shell">
+    <div class="panel__header">
+      <span class="panel__index">08</span>
+      <h2 class="panel__title">Substrate Shell</h2>
+      <span class="panel__sub">Autonomous OS Node Substrate</span>
+    </div>
+
+    <!-- Connection / Target Selection -->
+    <div class="substrate-selector">
+      <span class="selector-label">SUBSTRATE TARGET:</span>
+      <button class="selector-btn active" id="sub-local" onclick="setSubstrateTarget('local')">LOCAL EMULATOR</button>
+      <button class="selector-btn" id="sub-termux" onclick="setSubstrateTarget('termux')">LOCAL TERMUX</button>
+      <button class="selector-btn" id="sub-render" onclick="setSubstrateTarget('render')">RENDER REMOTE</button>
+    </div>
+
+    <!-- Terminal Window -->
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="tdot tdot-red"></span>
+          <span class="tdot tdot-yellow"></span>
+          <span class="tdot tdot-green"></span>
+        </div>
+        <span class="terminal-title" id="terminal-target-title">SHELL: LOCAL SANDBOX</span>
+        <div class="terminal-actions">
+          <button class="tbtn" onclick="clearTerminal()">CLEAR</button>
+          <button class="tbtn" onclick="resetTerminalEnv()">RESET</button>
+          <button class="tbtn" onclick="downloadTerminalLog()">LOG 💾</button>
+        </div>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="tline tline-info">Savage Sovereign Substrate Interface Loaded.</div>
+        <div class="tline tline-info">Type 'help' to view available operations, or execute arbitrary bash/JS commands.</div>
+      </div>
+      <div class="terminal-input-row">
+        <span class="terminal-prompt" id="terminal-prompt-char">$</span>
+        <input type="text" class="terminal-input" id="terminal-input" placeholder="Execute command..." autofocus autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= SOVEREIGN IDE WORKSPACE ======= -->
+  <section class="panel" id="panel-ide">
+    <div class="panel__header">
+      <span class="panel__index">09</span>
+      <h2 class="panel__title">Sovereign IDE Workspace</h2>
+      <span class="panel__sub">Dynamic File System & Execution Environment</span>
+    </div>
+
+    <div class="ide-workspace">
+      <!-- File Explorer Sidebar -->
+      <aside class="ide-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">FILE SYSTEM</span>
+          <div class="sidebar-actions">
+            <button class="sibtn" onclick="ideCreateFile()" title="Create File">📄+</button>
+            <button class="sibtn" onclick="ideCreateFolder()" title="Create Folder">📁+</button>
+            <button class="sibtn" onclick="ideRenameSelected()" title="Rename File">✏️</button>
+            <button class="sibtn" onclick="ideDeleteSelected()" title="Delete File">🗑️</button>
+            <button class="sibtn" onclick="refreshFileSystem()" title="Refresh">↻</button>
+          </div>
+        </div>
+        <div class="file-tree" id="file-tree">
+          <!-- Tree list will populate here -->
+        </div>
+        <div class="sidebar-footer">
+          <input type="file" id="ide-file-upload-input" style="display:none" onchange="handleIdeFileUpload(this)">
+          <button class="btn btn--ghost btn--sm btn-full" onclick="document.getElementById('ide-file-upload-input').click()">UPLOAD FILE</button>
+        </div>
+      </aside>
+
+      <!-- Code Editor Workspace -->
+      <div class="ide-editor-container">
+        <!-- Tabbed Multi-file editing header -->
+        <div class="ide-tabs" id="ide-tabs">
+          <!-- Tab items go here dynamically -->
+        </div>
+
+        <!-- Editor Toolbar -->
+        <div class="ide-editor-toolbar">
+          <div class="toolbar-left">
+            <span class="current-filepath" id="current-filepath">No File Open</span>
+          </div>
+          <div class="toolbar-right">
+            <button class="sibtn" onclick="editorZoomOut()" title="Zoom Out font">-</button>
+            <span class="font-size-indicator" id="font-size-val">12px</span>
+            <button class="sibtn" onclick="editorZoomIn()" title="Zoom In font">+</button>
+            <button class="btn btn--green btn--sm" onclick="saveCurrentFile()">SAVE FILE</button>
+          </div>
+        </div>
+
+        <!-- Editor Body (Gutter + TextArea) -->
+        <div class="editor-main-layout">
+          <div class="editor-gutter" id="editor-gutter">1</div>
+          <textarea class="editor-textarea" id="editor-textarea" spellcheck="false" autocomplete="off" oninput="updateGutter()"></textarea>
+        </div>
+
+        <!-- Editor Status bar -->
+        <div class="editor-status-bar">
+          <span class="editor-status-item" id="editor-char-count">0 characters</span>
+          <span class="editor-status-item" id="editor-line-count">1 line</span>
+          <span class="editor-status-item text-green" id="editor-sync-status">All changes saved</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDE Lower Execution Console -->
+    <div class="ide-console">
+      <div class="console-header">
+        <span class="console-title">CODE EXECUTION CONSOLE</span>
+        <div class="console-actions">
+          <button class="btn btn--green btn--sm" onclick="runConsoleCode()">RUN CODE</button>
+          <button class="btn btn--red btn--sm" onclick="killConsoleProcess()">KILL</button>
+          <button class="btn btn--ghost btn--sm" onclick="clearConsoleLog()">CLEAR</button>
+        </div>
+      </div>
+      <div class="console-body" id="console-body">
+        <div class="cline cline-info">Sovereign code execution sandbox initialized. Support Node.js scripting in remote environment.</div>
+      </div>
     </div>
   </section>
 

@@ -1026,3 +1026,917 @@ document.addEventListener('DOMContentLoaded', () => {
     saveState();
   }
 });
+
+// ================================================================
+// ADVANCED TERMUX & RENDER SUBSTRATE AGENT ENGINE (TERMINAL & IDE)
+// ================================================================
+let socket = null;
+let substrateTarget = 'local';
+let activeFilepath = null;
+const openTabs = [];
+const terminalHistory = [];
+let terminalHistoryIndex = -1;
+let editorFontSize = 12;
+
+const VFS = {
+  'index.js': `// Savage Agentic Node Entry Point
+console.log("=====================================");
+console.log("SIA-v6 Autonomous Substrate Active");
+console.log("=====================================");
+
+const PHI = 1.6180339887;
+console.log("Physical coupling ratio (phi): " + PHI);
+`,
+  'README.md': `# SAVAGE COMMAND CENTER SUBSTRATE
+This is your localized workspace.
+Feel free to write custom Node.js and client-side scripts here.
+Click files in the sidebar to open them in the multi-tab editor.
+`,
+  'agents.config.json': `{
+  "agent_a": {
+    "entropy_threshold": 0.0,
+    "dt": 0.001
+  },
+  "agent_b": {
+    "persistence_epsilon": 0.25
+  },
+  "agent_c": {
+    "fixed_point": "1/phi"
+  }
+}`
+};
+
+function appendTerminalLine(text, type = 'output') {
+  const body = document.getElementById('terminal-body');
+  if (!body) return;
+  const line = document.createElement('div');
+  line.className = 'tline tline-' + type;
+  line.textContent = text;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+
+function appendConsoleLine(text, type = 'log') {
+  const body = document.getElementById('console-body');
+  if (!body) return;
+  const line = document.createElement('div');
+  line.className = 'cline cline-' + type;
+  line.textContent = text;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+
+async function executeTerminalCommand(cmdText) {
+  cmdText = cmdText.trim();
+  if (!cmdText) return;
+
+  // Echo input
+  appendTerminalLine('$ ' + cmdText, 'input-echo');
+
+  // Push to history
+  terminalHistory.push(cmdText);
+  terminalHistoryIndex = terminalHistory.length;
+
+  const args = cmdText.split(' ');
+  const cmd = args[0].toLowerCase();
+
+  // Local command parsing for general utilities
+  if (cmd === 'clear') {
+    const body = document.getElementById('terminal-body');
+    if (body) body.innerHTML = '';
+    return;
+  }
+  if (cmd === 'help') {
+    appendTerminalLine('Sovereign Command Center Terminal - Help', 'success');
+    appendTerminalLine('Available utility commands:', 'info');
+    appendTerminalLine('  help                Show this help menu', 'info');
+    appendTerminalLine('  clear               Clear the screen', 'info');
+    appendTerminalLine('  sysinfo             Display substrate node architecture details', 'info');
+    appendTerminalLine('  ls                  List files in the current directory', 'info');
+    appendTerminalLine('  cat <file>          Show contents of a file', 'info');
+    appendTerminalLine('  write <file> <text> Create or overwrite a file with raw text', 'info');
+    appendTerminalLine('  rm <file>           Delete a file from the workspace', 'info');
+    appendTerminalLine('  run <file>          Run a script file (local JS sandbox or server-side node)', 'info');
+    appendTerminalLine('  theme <color>       Set terminal color theme (green, amber, teal, purple)', 'info');
+    return;
+  }
+  if (cmd === 'theme') {
+    const color = args[1];
+    const root = document.documentElement;
+    if (color === 'amber') {
+      root.style.setProperty('--green', '#FFB800');
+      root.style.setProperty('--green-dim', 'rgba(255,184,0,0.12)');
+      appendTerminalLine('Theme updated to AMBER.', 'success');
+    } else if (color === 'teal') {
+      root.style.setProperty('--green', '#4F98A3');
+      root.style.setProperty('--green-dim', 'rgba(79,152,163,0.12)');
+      appendTerminalLine('Theme updated to TEAL.', 'success');
+    } else if (color === 'purple') {
+      root.style.setProperty('--green', '#a78bfa');
+      root.style.setProperty('--green-dim', 'rgba(167,139,250,0.12)');
+      appendTerminalLine('Theme updated to PURPLE.', 'success');
+    } else {
+      root.style.setProperty('--green', '#00FF88');
+      root.style.setProperty('--green-dim', 'rgba(0,255,136,0.12)');
+      appendTerminalLine('Theme reverted to DEFAULT GREEN.', 'success');
+    }
+    return;
+  }
+  if (cmd === 'sysinfo') {
+    appendTerminalLine('--- SYSTEM STATE ---', 'info');
+    appendTerminalLine('SIA-v6 Sovereign Agent Engine: Live', 'info');
+    appendTerminalLine('Local Wallet: ' + (STATE.wallet ? STATE.wallet.address : 'Disconnected'), 'info');
+    appendTerminalLine('Substrate Mode: ' + substrateTarget.toUpperCase(), 'info');
+    appendTerminalLine('Coupling Phi Constant: ' + ARCH.PHI, 'info');
+    appendTerminalLine('Fixed Point Lambda*: ' + ARCH.LAMBDA_STAR, 'info');
+    appendTerminalLine('Active Agents Ticks: ' + (STATE.agents.a.ticks + STATE.agents.b.ticks + STATE.agents.c.ticks), 'info');
+    appendTerminalLine('--------------------', 'info');
+    return;
+  }
+
+  // If substrate target is local VFS
+  if (substrateTarget === 'local') {
+    if (cmd === 'ls') {
+      const files = Object.keys(VFS);
+      if (files.length === 0) {
+        appendTerminalLine('[No files in workspace]');
+      } else {
+        files.forEach(f => appendTerminalLine('📄  ' + f, 'output'));
+      }
+    } else if (cmd === 'cat') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: cat <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        appendTerminalLine(VFS[fn], 'output');
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else if (cmd === 'write') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: write <filename> <content>', 'error'); return; }
+      const content = args.slice(2).join(' ');
+      VFS[fn] = content;
+      appendTerminalLine('File written successfully.', 'success');
+      refreshFileSystem();
+    } else if (cmd === 'rm') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: rm <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        delete VFS[fn];
+        appendTerminalLine('File deleted.', 'success');
+        refreshFileSystem();
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else if (cmd === 'run') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: run <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        appendTerminalLine('Executing ' + fn + ' in client-side local sandbox...', 'info');
+        runJavaScriptSandbox(VFS[fn]);
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else {
+      appendTerminalLine('Command not recognized in local emulation. Type help for list of commands.', 'error');
+    }
+    return;
+  }
+
+  // If connected via WebSocket (Termux or Render)
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    appendTerminalLine('Error: Substrate WebSocket disconnected. Please reconnect.', 'error');
+    return;
+  }
+
+  // Map client helper commands to shell commands on the daemon if needed, or pass-through
+  let daemonCmd = cmdText;
+  if (cmd === 'ls' && (substrateTarget === 'termux' || substrateTarget === 'render')) {
+    // just normal pass-through
+  } else if (cmd === 'cat') {
+    const fn = args[1];
+    daemonCmd = 'cat ' + fn;
+  } else if (cmd === 'run') {
+    const fn = args[1];
+    daemonCmd = 'node ' + fn;
+  }
+
+  // Send execution command
+  socket.send(JSON.stringify({
+    type: 'exec',
+    command: daemonCmd
+  }));
+}
+
+function handleExecResponse(data) {
+  if (data.error) {
+    appendTerminalLine('Execution Error: ' + data.error, 'error');
+    appendConsoleLine('Execution Error: ' + data.error, 'error');
+  }
+  if (data.stdout) {
+    appendTerminalLine(data.stdout, 'output');
+    appendConsoleLine(data.stdout, 'log');
+  }
+  if (data.stderr) {
+    appendTerminalLine(data.stderr, 'error');
+    appendConsoleLine(data.stderr, 'error');
+  }
+  if (!data.stdout && !data.stderr && !data.error) {
+    appendTerminalLine('[Command completed with no output]', 'info');
+    appendConsoleLine('[Command completed with no output]', 'info');
+  }
+}
+
+function handleListFilesResponse(data) {
+  if (data.error) {
+    appendTerminalLine('List files error: ' + data.error, 'error');
+    return;
+  }
+  renderFileSystemTree(data.files || []);
+}
+
+function handleReadFileResponse(data) {
+  if (data.error) {
+    showBanner('Read file failed: ' + data.error, 'err');
+    return;
+  }
+  openFileInTab(data.filepath, data.content);
+}
+
+function handleWriteFileResponse(data) {
+  if (data.error) {
+    showBanner('Save file failed: ' + data.error, 'err');
+    document.getElementById('editor-sync-status').textContent = 'Error saving changes';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-red';
+  } else {
+    showBanner('✓ File saved successfully: ' + data.filepath, 'ok');
+    document.getElementById('editor-sync-status').textContent = 'All changes saved';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-green';
+    refreshFileSystem();
+  }
+}
+
+function handleDeleteFileResponse(data) {
+  if (data.error) {
+    showBanner('Delete failed: ' + data.error, 'err');
+  } else {
+    showBanner('✓ Deleted: ' + data.filepath, 'ok');
+    closeFileTab(data.filepath);
+    refreshFileSystem();
+  }
+}
+
+function handleRenameFileResponse(data) {
+  if (data.error) {
+    showBanner('Rename failed: ' + data.error, 'err');
+  } else {
+    showBanner('✓ Renamed to: ' + data.new_filepath, 'ok');
+    renameFileTab(data.filepath, data.new_filepath);
+    refreshFileSystem();
+  }
+}
+
+function refreshFileSystem() {
+  if (substrateTarget === 'local') {
+    const list = Object.keys(VFS).map(name => ({
+      name,
+      isDirectory: false
+    }));
+    renderFileSystemTree(list);
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'list_files' }));
+  } else {
+    renderFileSystemTree([]);
+  }
+}
+
+function renderFileSystemTree(files) {
+  const tree = document.getElementById('file-tree');
+  if (!tree) return;
+  tree.innerHTML = '';
+
+  if (files.length === 0) {
+    tree.innerHTML = '<div style="padding:10px;font-size:11px;color:var(--text3);font-family:var(--mono);">No files found</div>';
+    return;
+  }
+
+  // Sort files
+  files.sort((a,b) => {
+    if (a.isDirectory && !b.isDirectory) return -1;
+    if (!a.isDirectory && b.isDirectory) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  files.forEach(f => {
+    if (f.name === 'node_modules' || f.name === '.git' || f.name === '.gitignore' || f.name === 'package-lock.json') return;
+
+    const div = document.createElement('div');
+    div.className = 'tree-item';
+    if (activeFilepath === f.name) div.classList.add('active');
+
+    const icon = f.isDirectory ? '📁' : '📄';
+    div.innerHTML = `
+      <div class="tree-item-meta">
+        <span class="tree-icon">${icon}</span>
+        <span>${escapeHtml(f.name)}</span>
+      </div>
+    `;
+
+    div.addEventListener('click', () => {
+      openFile(f.name, f.isDirectory);
+    });
+
+    tree.appendChild(div);
+  });
+}
+
+function openFile(filepath, isDirectory) {
+  if (isDirectory) return;
+  activeFilepath = filepath;
+
+  document.querySelectorAll('.tree-item').forEach(el => {
+    const isThis = el.querySelector('.tree-item-meta span:last-child').textContent === filepath;
+    el.classList.toggle('active', isThis);
+  });
+
+  const tabIdx = openTabs.findIndex(t => t.filepath === filepath);
+  if (tabIdx !== -1) {
+    setActiveTab(tabIdx);
+    return;
+  }
+
+  if (substrateTarget === 'local') {
+    const content = VFS[filepath] || '';
+    openFileInTab(filepath, content);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'read_file', filepath }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+}
+
+function openFileInTab(filepath, content) {
+  const tab = { filepath, content, isDirty: false };
+  openTabs.push(tab);
+  setActiveTab(openTabs.length - 1);
+}
+
+function setActiveTab(idx) {
+  const tab = openTabs[idx];
+  if (!tab) {
+    activeFilepath = null;
+    document.getElementById('current-filepath').textContent = 'No File Open';
+    document.getElementById('editor-textarea').value = '';
+    document.getElementById('editor-textarea').disabled = true;
+    updateGutter();
+    renderTabsUI();
+    return;
+  }
+
+  activeFilepath = tab.filepath;
+  document.getElementById('current-filepath').textContent = tab.filepath;
+
+  const textarea = document.getElementById('editor-textarea');
+  textarea.value = tab.content;
+  textarea.disabled = false;
+
+  updateGutter();
+  updateStatusBarMetrics();
+  renderTabsUI();
+}
+
+function renderTabsUI() {
+  const container = document.getElementById('ide-tabs');
+  if (!container) return;
+  container.innerHTML = '';
+
+  openTabs.forEach((tab, i) => {
+    const el = document.createElement('div');
+    el.className = 'ide-tab';
+    if (tab.filepath === activeFilepath) el.classList.add('active');
+
+    const displayName = tab.filepath.split('/').pop() + (tab.isDirty ? ' *' : '');
+    el.innerHTML = `
+      <span>${escapeHtml(displayName)}</span>
+      <span class="ide-tab-close">✕</span>
+    `;
+
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('ide-tab-close')) {
+        e.stopPropagation();
+        closeTabAt(i);
+      } else {
+        setActiveTab(i);
+      }
+    });
+
+    container.appendChild(el);
+  });
+}
+
+function closeTabAt(idx) {
+  const closingActive = (openTabs[idx].filepath === activeFilepath);
+  openTabs.splice(idx, 1);
+
+  if (closingActive) {
+    const nextIdx = Math.max(0, idx - 1);
+    setActiveTab(openTabs.length > 0 ? nextIdx : -1);
+  } else {
+    renderTabsUI();
+  }
+}
+
+function closeFileTab(filepath) {
+  const idx = openTabs.findIndex(t => t.filepath === filepath);
+  if (idx !== -1) closeTabAt(idx);
+}
+
+function renameFileTab(oldFilepath, newFilepath) {
+  const tab = openTabs.find(t => t.filepath === oldFilepath);
+  if (tab) {
+    tab.filepath = newFilepath;
+    if (activeFilepath === oldFilepath) {
+      activeFilepath = newFilepath;
+      document.getElementById('current-filepath').textContent = newFilepath;
+    }
+    renderTabsUI();
+  }
+}
+
+window.updateGutter = function() {
+  const textarea = document.getElementById('editor-textarea');
+  const gutter = document.getElementById('editor-gutter');
+  if (!textarea || !gutter) return;
+
+  const lines = textarea.value.split('\n').length;
+  let gutterHTML = '';
+  for (let i = 1; i <= lines; i++) {
+    gutterHTML += i + '<br>';
+  }
+  gutter.innerHTML = gutterHTML;
+
+  gutter.scrollTop = textarea.scrollTop;
+
+  const activeTab = openTabs.find(t => t.filepath === activeFilepath);
+  if (activeTab && activeTab.content !== textarea.value) {
+    activeTab.content = textarea.value;
+    activeTab.isDirty = true;
+    document.getElementById('editor-sync-status').textContent = 'Unsaved changes';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-amber';
+    renderTabsUI();
+  }
+
+  updateStatusBarMetrics();
+};
+
+document.getElementById('editor-textarea')?.addEventListener('scroll', () => {
+  const gutter = document.getElementById('editor-gutter');
+  const textarea = document.getElementById('editor-textarea');
+  if (gutter && textarea) gutter.scrollTop = textarea.scrollTop;
+});
+
+function updateStatusBarMetrics() {
+  const textarea = document.getElementById('editor-textarea');
+  if (!textarea) return;
+
+  const text = textarea.value;
+  const chars = text.length;
+  const lines = text.split('\n').length;
+
+  document.getElementById('editor-char-count').textContent = chars + ' characters';
+  document.getElementById('editor-line-count').textContent = lines + (lines === 1 ? ' line' : ' lines');
+}
+
+window.editorZoomIn = function() {
+  editorFontSize = Math.min(24, editorFontSize + 1);
+  applyEditorFontSize();
+};
+
+window.editorZoomOut = function() {
+  editorFontSize = Math.max(9, editorFontSize - 1);
+  applyEditorFontSize();
+};
+
+function applyEditorFontSize() {
+  const el = document.getElementById('editor-textarea');
+  const gut = document.getElementById('editor-gutter');
+  const ind = document.getElementById('font-size-val');
+  if (el) el.style.fontSize = editorFontSize + 'px';
+  if (gut) gut.style.fontSize = editorFontSize + 'px';
+  if (ind) ind.textContent = editorFontSize + 'px';
+}
+
+window.saveCurrentFile = function() {
+  const tab = openTabs.find(t => t.filepath === activeFilepath);
+  if (!tab) return showBanner('No file active to save.', 'warn');
+
+  const textarea = document.getElementById('editor-textarea');
+  tab.content = textarea.value;
+  tab.isDirty = false;
+
+  if (substrateTarget === 'local') {
+    VFS[activeFilepath] = tab.content;
+    showBanner('✓ Saved locally to VFS.', 'ok');
+    document.getElementById('editor-sync-status').textContent = 'All changes saved';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-green';
+    renderTabsUI();
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      document.getElementById('editor-sync-status').textContent = 'Saving changes...';
+      document.getElementById('editor-sync-status').className = 'editor-status-item text-amber';
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: activeFilepath,
+        content: tab.content
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideCreateFile = function() {
+  const name = prompt('Enter name of new file (e.g., config.js):');
+  if (!name) return;
+  const cleanedName = name.trim();
+  if (!cleanedName) return;
+
+  if (substrateTarget === 'local') {
+    if (VFS[cleanedName] !== undefined) return showBanner('File already exists.', 'warn');
+    VFS[cleanedName] = '';
+    showBanner('✓ File created: ' + cleanedName, 'ok');
+    refreshFileSystem();
+    openFile(cleanedName, false);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: cleanedName,
+        content: ''
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideCreateFolder = function() {
+  const name = prompt('Enter folder name:');
+  if (!name) return;
+  const cleanedName = name.trim();
+  if (!cleanedName) return;
+
+  if (substrateTarget === 'local') {
+    showBanner('Folders are emulated via path names (e.g. create file folder/file.js).', 'info');
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: cleanedName + '/.placeholder',
+        content: ''
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideRenameSelected = function() {
+  if (!activeFilepath) return showBanner('Select a file to rename.', 'warn');
+  const newName = prompt('Enter new filename for ' + activeFilepath + ':', activeFilepath);
+  if (!newName) return;
+  const cleanedNewName = newName.trim();
+  if (!cleanedNewName || cleanedNewName === activeFilepath) return;
+
+  if (substrateTarget === 'local') {
+    VFS[cleanedNewName] = VFS[activeFilepath];
+    delete VFS[activeFilepath];
+    renameFileTab(activeFilepath, cleanedNewName);
+    showBanner('✓ Renamed to ' + cleanedNewName, 'ok');
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'rename_file',
+        filepath: activeFilepath,
+        new_filepath: cleanedNewName
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideDeleteSelected = function() {
+  if (!activeFilepath) return showBanner('Select a file to delete.', 'warn');
+  if (!confirm('Are you sure you want to delete ' + activeFilepath + '?')) return;
+
+  if (substrateTarget === 'local') {
+    delete VFS[activeFilepath];
+    closeFileTab(activeFilepath);
+    showBanner('✓ File deleted.', 'ok');
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'delete_file',
+        filepath: activeFilepath
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.handleIdeFileUpload = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    const name = file.name;
+
+    if (substrateTarget === 'local') {
+      VFS[name] = content;
+      showBanner('✓ Uploaded ' + name + ' locally.', 'ok');
+      refreshFileSystem();
+      openFile(name, false);
+    } else {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+          type: 'write_file',
+          filepath: name,
+          content: content
+        }));
+      } else {
+        showBanner('Error: WebSocket disconnected.', 'err');
+      }
+    }
+  };
+  reader.readAsText(file);
+};
+
+function runJavaScriptSandbox(code) {
+  appendConsoleLine('--- Launching Sandbox Simulator ---', 'info');
+
+  const originalLog = console.log;
+  const originalError = console.error;
+  const captureBuffer = [];
+
+  console.log = (...args) => {
+    captureBuffer.push({ text: args.map(String).join(' '), type: 'log' });
+    originalLog.apply(console, args);
+  };
+  console.error = (...args) => {
+    captureBuffer.push({ text: args.map(String).join(' '), type: 'error' });
+    originalError.apply(console, args);
+  };
+
+  try {
+    const fn = new Function(code);
+    fn();
+    appendConsoleLine('Execution successfully completed.', 'success');
+  } catch (e) {
+    appendConsoleLine('Runtime Error: ' + e.message, 'error');
+  }
+
+  console.log = originalLog;
+  console.error = originalError;
+
+  captureBuffer.forEach(line => appendConsoleLine(line.text, line.type));
+}
+
+window.runConsoleCode = function() {
+  const tab = openTabs.find(t => t.filepath === activeFilepath);
+  if (!tab) return showBanner('Open a file first to run it.', 'warn');
+
+  appendConsoleLine(`Starting execution: ${tab.filepath}...`, 'info');
+
+  if (substrateTarget === 'local') {
+    runJavaScriptSandbox(tab.content);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'exec',
+        command: `node ${tab.filepath}`
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.killConsoleProcess = function() {
+  appendConsoleLine('Process execution terminated by operator.', 'error');
+};
+
+window.clearConsoleLog = function() {
+  const body = document.getElementById('console-body');
+  if (body) body.innerHTML = '';
+};
+
+window.setSubstrateTarget = function(target) {
+  document.querySelectorAll('.selector-btn').forEach(b => {
+    b.classList.toggle('active', b.id === 'sub-' + target);
+  });
+
+  substrateTarget = target;
+  appendTerminalLine(`Switched substrate target to: ${target.toUpperCase()}`, 'info');
+
+  const titleEl = document.getElementById('terminal-target-title');
+  if (titleEl) titleEl.textContent = `SHELL: ${target.toUpperCase()} SUBSTRATE`;
+
+  const dot = document.getElementById('termux-dot');
+  const label = document.getElementById('termux-label');
+
+  if (socket) {
+    socket.close();
+    socket = null;
+  }
+
+  if (target === 'local') {
+    if (dot) dot.className = 'termux-dot connected';
+    if (label) label.textContent = 'EMULATED (LOCAL)';
+    appendTerminalLine('System utilizing zero-dependency in-browser emulator.', 'success');
+    refreshFileSystem();
+    return;
+  }
+
+  let wsUrl;
+  if (target === 'termux') {
+    wsUrl = 'ws://127.0.0.1:8765';
+    if (dot) dot.className = 'termux-dot connecting';
+    if (label) label.textContent = 'CONNECTING TERMUX...';
+  } else {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl = proto + '//' + location.host + '/ws';
+    if (dot) dot.className = 'termux-dot connecting';
+    if (label) label.textContent = 'CONNECTING RENDER...';
+  }
+
+  appendTerminalLine(`Connecting WebSocket daemon at ${wsUrl}...`, 'info');
+
+  try {
+    socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      appendTerminalLine(`WebSocket link opened with ${target.toUpperCase()} Substrate. Initiating authentication handshake...`, 'info');
+
+      // Load saved token or prompt user (Termux does not require real password unless configured, default is savage_secret_token_1337)
+      let savedToken = localStorage.getItem('scc_admin_token');
+      if (!savedToken) {
+        savedToken = prompt(`Enter Authentication Token for ${target.toUpperCase()} Substrate:`);
+        if (savedToken) {
+          localStorage.setItem('scc_admin_token', savedToken);
+        }
+      }
+
+      socket.send(JSON.stringify({
+        type: 'auth',
+        token: savedToken || ''
+      }));
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        // Handle Authentication Response
+        if (data.type === 'auth_response') {
+          if (data.success) {
+            appendTerminalLine(`✓ Authentication successful! Established high-throughput telemetry connection with ${target.toUpperCase()} Substrate.`, 'success');
+            if (dot) dot.className = 'termux-dot connected';
+            if (label) label.textContent = `${target.toUpperCase()}: CONNECTED`;
+            showBanner(`✓ Connected & Authenticated to ${target.toUpperCase()} Substrate`, 'ok');
+            refreshFileSystem();
+          } else {
+            appendTerminalLine(`✗ Authentication failed: ${data.error || 'Invalid Token'}`, 'error');
+            showBanner(`Authentication failed for ${target.toUpperCase()}`, 'err');
+            localStorage.removeItem('scc_admin_token');
+            if (dot) dot.className = 'termux-dot';
+            if (label) label.textContent = `${target.toUpperCase()}: DISCONNECTED`;
+          }
+          return;
+        }
+
+        if (data.type === 'exec_response') {
+          handleExecResponse(data);
+        } else if (data.type === 'list_files_response') {
+          handleListFilesResponse(data);
+        } else if (data.type === 'read_file_response') {
+          handleReadFileResponse(data);
+        } else if (data.type === 'write_file_response') {
+          handleWriteFileResponse(data);
+        } else if (data.type === 'delete_file_response') {
+          handleDeleteFileResponse(data);
+        } else if (data.type === 'rename_file_response') {
+          handleRenameFileResponse(data);
+        } else if (data.type === 'error') {
+          appendTerminalLine('Daemon Error: ' + data.message, 'error');
+        }
+      } catch (e) {
+        appendTerminalLine(event.data, 'output');
+      }
+    };
+
+    socket.onerror = () => {
+      appendTerminalLine(`Connection failure occurred at address ${wsUrl}.`, 'error');
+    };
+
+    socket.onclose = () => {
+      appendTerminalLine(`Telemetry telemetry link closed.`, 'info');
+      if (dot) dot.className = 'termux-dot';
+      if (label) label.textContent = `${target.toUpperCase()}: DISCONNECTED`;
+      if (target === 'termux') {
+        showBanner('Termux agent closed. To run on Android: start python termux_agent.py.', 'warn');
+      }
+    };
+
+  } catch (err) {
+    appendTerminalLine(`WebSocket initialization error: ${err.message}`, 'error');
+  }
+};
+
+window.clearTerminal = function() {
+  const body = document.getElementById('terminal-body');
+  if (body) body.innerHTML = '';
+};
+
+window.resetTerminalEnv = function() {
+  appendTerminalLine('Resetting terminal context environment...', 'info');
+  setSubstrateTarget(substrateTarget);
+};
+
+window.downloadTerminalLog = function() {
+  const body = document.getElementById('terminal-body');
+  if (!body) return;
+  const text = body.textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `terminal_log_${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showBanner('✓ Terminal log saved', 'ok');
+};
+
+document.getElementById('terminal-input')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const input = e.target;
+    const val = input.value;
+    input.value = '';
+    executeTerminalCommand(val);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (terminalHistory.length > 0 && terminalHistoryIndex > 0) {
+      terminalHistoryIndex--;
+      e.target.value = terminalHistory[terminalHistoryIndex];
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (terminalHistoryIndex < terminalHistory.length - 1) {
+      terminalHistoryIndex++;
+      e.target.value = terminalHistory[terminalHistoryIndex];
+    } else {
+      terminalHistoryIndex = terminalHistory.length;
+      e.target.value = '';
+    }
+  } else if (e.key === 'Tab') {
+    e.preventDefault();
+    const val = e.target.value.trim();
+    if (!val) return;
+    const cmdList = ['help', 'clear', 'sysinfo', 'ls', 'cat', 'write', 'rm', 'run', 'theme'];
+    const matches = cmdList.filter(c => c.startsWith(val));
+    if (matches.length === 1) {
+      e.target.value = matches[0] + ' ';
+    } else {
+      const parts = val.split(' ');
+      if (parts.length === 2 && (parts[0] === 'cat' || parts[0] === 'run' || parts[0] === 'rm')) {
+        const cmdWord = parts[0];
+        const fileWord = parts[1];
+        const files = (substrateTarget === 'local') ? Object.keys(VFS) : [];
+        const fileMatches = files.filter(f => f.startsWith(fileWord));
+        if (fileMatches.length === 1) {
+          e.target.value = cmdWord + ' ' + fileMatches[0];
+        }
+      }
+    }
+  }
+});
+
+// Auto-initialize files workspace on content load
+document.addEventListener('DOMContentLoaded', () => {
+  setSubstrateTarget('local');
+  refreshFileSystem();
+  openFile('README.md', false);
+});
