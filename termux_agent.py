@@ -32,8 +32,8 @@ async def execute_command(websocket):
 
 async def main():
     print("SOVEREIGN TERMUX SUBSTRATE AGENT STARTED.")
-    print("Listening on ws://127.0.0.1:8765...")
-    async with websockets.serve(execute_command, "127.0.0.1", 8765):
+    print("Listening on ws://127.0.0.1:8080...")
+    async with websockets.serve(execute_command, "127.0.0.1", 8080):
         await asyncio.Future()  # run forever
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@ The Sovereign Agent Shell web interface is designed to communicate with a local 
    ```bash
    python termux_agent.py
    ```
-   *You should see "Listening on ws://127.0.0.1:8765..."*
+   *You should see "Listening on ws://127.0.0.1:8080..."*
 
 ## Step 3: Initialize the Link
 

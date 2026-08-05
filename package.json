@@ -1,0 +1,11 @@
+{
+  "name": "agent-shell",
+  "version": "3.0.0",
+  "description": "Sovereign Agent Shell",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "verify-all": "node --check app.js && npm run test"
+  }
+}
