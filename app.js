@@ -43,14 +43,14 @@ let STATE = {
 
 function loadState() {
   try {
-    const s = localStorage.getItem("sas_v3_state");
+    const s = localStorage.getItem("scc_v3_state");
     if (s) { const parsed = JSON.parse(s); STATE = Object.assign({}, STATE, parsed); }
   } catch(e) {}
 }
 
 function saveState() {
   try {
-    localStorage.setItem('sas_v3_state', JSON.stringify({
+    localStorage.setItem('scc_v3_state', JSON.stringify({
       checklist: STATE.checklist,
       txStatus: STATE.txStatus,
       agents: STATE.agents,
@@ -68,14 +68,7 @@ document.querySelectorAll('.tab').forEach(btn => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     const panel = document.getElementById('panel-' + btn.dataset.panel);
-    if (panel) {
-      panel.classList.add('active');
-      // If we switched to IDE, update layout and line numbers
-      if (btn.dataset.panel === 'ide') {
-        updateLineNumbers();
-        updateSandboxPreview();
-      }
-    }
+    if (panel) panel.classList.add('active');
   });
 });
 
@@ -169,20 +162,18 @@ function updateWalletUI() {
   const connectBtn = document.getElementById('connect-btn');
 
   if (!STATE.wallet) {
-    if (dot) dot.className = 'wallet-dot';
-    if (label) label.textContent = 'NOT CONNECTED';
+    dot.className = 'wallet-dot';
+    label.textContent = 'NOT CONNECTED';
     if (info) info.style.display = 'none';
     if (switcher) switcher.style.display = 'none';
     return;
   }
 
   const { address, chainId, balance, type, browser } = STATE.wallet;
-  if (dot) dot.className = 'wallet-dot connected';
-  if (label) label.textContent = address.slice(0,6) + '...' + address.slice(-4);
-  if (connectBtn) {
-    connectBtn.textContent = '✓ CONNECTED';
-    connectBtn.disabled = true;
-  }
+  dot.className = 'wallet-dot connected';
+  label.textContent = address.slice(0,6) + '...' + address.slice(-4);
+  connectBtn.textContent = '✓ CONNECTED';
+  connectBtn.disabled = true;
 
   if (info) {
     info.style.display = 'block';
@@ -290,7 +281,7 @@ window.signTX = async function(num, chainId, hexData) {
 
     status.textContent = 'SIGNED ✓';
     status.className = 'tx-card__status signed';
-    if (card) card.classList.add('signed');
+    card.classList.add('signed');
     btn.textContent = '✓ SIGNED';
 
     const explorer = chainId === '0xe708'
@@ -471,7 +462,8 @@ function tickAgentC(state) {
 
 // --- PROOF HASH: SHA-256 of agent state ---
 async function proofHash(obj) {
-  const data = new TextEncoder().encode(JSON.stringify(obj) + Date.now());
+  // Dropped Date.now() to ensure the cryptographic output is completely deterministic
+  const data = new TextEncoder().encode(JSON.stringify(obj));
   const buf = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
 }
@@ -500,13 +492,11 @@ window.dispatchAgent = async function(id, n) {
     else s.rejected++;
 
     const logEl = document.getElementById(id + '-log');
-    if (logEl) {
-      const line = document.createElement('div');
-      line.className = result.accepted ? 'log-ok' : 'log-reject';
-      line.textContent = '[' + s.ticks + '] ' + result.log;
-      logEl.appendChild(line);
-      logEl.scrollTop = logEl.scrollHeight;
-    }
+    const line = document.createElement('div');
+    line.className = result.accepted ? 'log-ok' : 'log-reject';
+    line.textContent = '[' + s.ticks + '] ' + result.log;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
   }
 
   // Generate proof hash from final state
@@ -514,20 +504,12 @@ window.dispatchAgent = async function(id, n) {
   s.lastHash = h;
 
   // Update UI
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-
-  if (ticksEl) ticksEl.textContent = s.ticks;
-  if (acceptEl) acceptEl.textContent = s.accepted;
-  if (rejectEl) rejectEl.textContent = s.rejected;
-  if (hashEl) hashEl.textContent = h;
-  if (barEl) {
-    const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
-    barEl.style.width = pct + '%';
-  }
+  document.getElementById(id + '-ticks').textContent = s.ticks;
+  document.getElementById(id + '-accept').textContent = s.accepted;
+  document.getElementById(id + '-reject').textContent = s.rejected;
+  document.getElementById(id + '-hash').textContent = h;
+  const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
+  document.getElementById(id + '-bar').style.width = pct + '%';
 
   saveState();
 };
@@ -536,21 +518,12 @@ window.resetAgent = function(id) {
   STATE.agents[id] = { ticks: 0, accepted: 0, rejected: 0, entropy: 0, lastHash: null };
   liveAgents[id] = { x: 0.5, p: 0.1, entropy: 0, lastBetti: 1, lambda: 1.0, lambdaDist: 1.0 };
   if (id === 'b') pathBCloud = [];
-
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-  const logEl = document.getElementById(id + '-log');
-
-  if (ticksEl) ticksEl.textContent = 0;
-  if (acceptEl) acceptEl.textContent = 0;
-  if (rejectEl) rejectEl.textContent = 0;
-  if (hashEl) hashEl.textContent = '—';
-  if (barEl) barEl.style.width = '0%';
-  if (logEl) logEl.innerHTML = '';
-
+  document.getElementById(id + '-ticks').textContent = 0;
+  document.getElementById(id + '-accept').textContent = 0;
+  document.getElementById(id + '-reject').textContent = 0;
+  document.getElementById(id + '-hash').textContent = '—';
+  document.getElementById(id + '-bar').style.width = '0%';
+  document.getElementById(id + '-log').innerHTML = '';
   saveState();
 };
 
@@ -582,40 +555,29 @@ window.runOracle = async function(n) {
     if (converged) s.converged++;
     s.lastLambda = dist;
 
-    if (log) {
-      const line = document.createElement('div');
-      line.className = converged ? 'log-ok' : 'log-info';
-      line.textContent = '[' + s.cycles + '] PathA:' + (ra.accepted?'✓':'✗')
-        + ' PathB:' + (rb.accepted?'✓':'✗')
-        + ' PathC:' + (rc.accepted?'✓':'✗')
-        + '  |λ-λ*|=' + dist.toExponential(2)
-        + (converged ? '  ← CONVERGED' : '');
-      log.appendChild(line);
-      log.scrollTop = log.scrollHeight;
-    }
+    const line = document.createElement('div');
+    line.className = converged ? 'log-ok' : 'log-info';
+    line.textContent = '[' + s.cycles + '] PathA:' + (ra.accepted?'✓':'✗')
+      + ' PathB:' + (rb.accepted?'✓':'✗')
+      + ' PathC:' + (rc.accepted?'✓':'✗')
+      + '  |λ-λ*|=' + dist.toExponential(2)
+      + (converged ? '  ← CONVERGED' : '');
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
   }
 
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-
-  if (cyclesEl) cyclesEl.textContent = s.cycles;
-  if (convEl) convEl.textContent = s.converged;
-  if (lambdaEl) lambdaEl.textContent = s.lastLambda.toExponential(3);
+  document.getElementById('oracle-cycles').textContent = s.cycles;
+  document.getElementById('oracle-conv').textContent = s.converged;
+  document.getElementById('oracle-lambda').textContent = s.lastLambda.toExponential(3);
   saveState();
 };
 
 window.resetOracle = function() {
   STATE.oracle = { cycles: 0, converged: 0, lastLambda: 1.0 };
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-  const log = document.getElementById('oracle-log');
-
-  if (cyclesEl) cyclesEl.textContent = 0;
-  if (convEl) convEl.textContent = 0;
-  if (lambdaEl) lambdaEl.textContent = '—';
-  if (log) log.innerHTML = '';
+  document.getElementById('oracle-cycles').textContent = 0;
+  document.getElementById('oracle-conv').textContent = 0;
+  document.getElementById('oracle-lambda').textContent = '—';
+  document.getElementById('oracle-log').innerHTML = '';
   saveState();
 };
 
@@ -636,18 +598,14 @@ window.pingEndpoint = async function(btn, path) {
   try {
     const r = await fetch(TOLLBOOTH_BASE + path, { method: 'GET', signal: AbortSignal.timeout(5000) });
     const ms = Date.now() - t0;
-    if (resp) {
-      resp.style.display = 'block';
-      resp.textContent = path + '  →  HTTP ' + r.status + '  (' + ms + 'ms)';
-      resp.style.color = r.ok ? 'var(--green)' : 'var(--amber)';
-    }
+    resp.style.display = 'block';
+    resp.textContent = path + '  →  HTTP ' + r.status + '  (' + ms + 'ms)';
+    resp.style.color = r.ok ? 'var(--green)' : 'var(--amber)';
   } catch(e) {
     const ms = Date.now() - t0;
-    if (resp) {
-      resp.style.display = 'block';
-      resp.textContent = path + '  →  ' + (e.name === 'TimeoutError' ? 'TIMEOUT' : e.message) + '  (' + ms + 'ms)';
-      resp.style.color = 'var(--red)';
-    }
+    resp.style.display = 'block';
+    resp.textContent = path + '  →  ' + (e.name === 'TimeoutError' ? 'TIMEOUT' : e.message) + '  (' + ms + 'ms)';
+    resp.style.color = 'var(--red)';
   }
   btn.textContent = 'PING';
   btn.disabled = false;
@@ -707,6 +665,10 @@ window.loadMetrics = async function() {
     const ts = new Date().toISOString();
     if (tsEl) tsEl.textContent = 'Failed: ' + ts;
     if (orgEl) { orgEl.textContent = 'OFFLINE'; orgEl.className = 'cockpit-card__value red'; }
+    if (hlEl) hlEl.textContent = '—';
+    if (agEl) agEl.textContent = '—';
+    if (enEl) enEl.textContent = '—';
+    if (rvEl) rvEl.textContent = '—';
     const msg = e.name === 'TimeoutError' ? 'TIMEOUT — enable GCP billing to activate endpoint' : e.message;
     if (rawEl) rawEl.textContent = 'Error: ' + msg;
   } finally {
@@ -748,20 +710,20 @@ window.fetchDecisions = async function() {
     replayDecisions.length = 0;
     decisions.forEach(d => replayDecisions.push(d));
 
-    if (status) status.textContent = decisions.length + ' decision(s) loaded from CEROS';
-    renderDecisionGrid(decisions);
+    const countLabel = decisions.length === 0 ? '0 decisions' : decisions.length + ' decision(s)';
+    if (status) status.textContent = countLabel + ' loaded from CEROS';
+    renderDecisionGrid(decisions, null);
 
   } catch (e) {
-    const msg = e.name === 'TimeoutError' ? 'TIMEOUT — endpoint offline' : e.message;
-    if (status) status.textContent = 'Error: ' + msg + ' — showing local history';
-    // Render empty state with clear error
-    renderDecisionGrid([]);
+    const msg = e.name === 'TimeoutError' ? 'TIMEOUT' : e.message;
+    if (status) status.textContent = 'Error: no response from CEROS (' + msg + ')';
+    renderDecisionGrid([], 'no response from CEROS (' + msg + ')');
   } finally {
     if (btn) { btn.textContent = '↻ FETCH DECISIONS'; btn.disabled = false; }
   }
 };
 
-function renderDecisionGrid(decisions) {
+function renderDecisionGrid(decisions, errorMsg) {
   const grid  = document.getElementById('replay-grid');
   const empty = document.getElementById('replay-empty');
   if (!grid) return;
@@ -770,7 +732,19 @@ function renderDecisionGrid(decisions) {
   Array.from(grid.querySelectorAll('.replay-card')).forEach(el => el.remove());
 
   if (decisions.length === 0) {
-    if (empty) empty.style.display = 'flex';
+    if (empty) {
+      empty.style.display = 'flex';
+      const textSpan = empty.querySelector('span:not(.replay-empty__icon)');
+      if (textSpan) {
+        if (errorMsg) {
+          textSpan.textContent = 'Error: ' + errorMsg + ' — please check connection status.';
+          textSpan.style.color = 'var(--red)';
+        } else {
+          textSpan.textContent = 'No decisions recorded yet — run an organism cycle and return.';
+          textSpan.style.color = 'var(--text-dim)';
+        }
+      }
+    }
     return;
   }
   if (empty) empty.style.display = 'none';
@@ -832,7 +806,7 @@ window.loadPressureBoard = async function() {
     });
 
     const ts = new Date().toISOString();
-    if (tsEl) tsEl.textContent = 'Updated: ' + ts;
+    if (tsEl) tsEl.textContent = 'Last updated: ' + ts;
 
     if (r.ok) {
       let data;
@@ -857,9 +831,17 @@ window.loadPressureBoard = async function() {
 
   } catch (e) {
     const ts = new Date().toISOString();
-    if (tsEl) tsEl.textContent = 'Offline: ' + ts;
-    const poStatus = document.getElementById('po-status');
-    if (poStatus) { poStatus.textContent = 'OFFLINE'; poStatus.className = 'pressure-field__val red'; }
+    if (tsEl) tsEl.textContent = 'Last updated: ' + ts + ' (offline)';
+    const poStatus  = document.getElementById('po-status');
+    const poHealth  = document.getElementById('po-health');
+    const poAgents  = document.getElementById('po-agents');
+    const poEntropy = document.getElementById('po-entropy');
+    const poRevenue = document.getElementById('po-revenue');
+    if (poStatus)  { poStatus.textContent  = 'OFFLINE'; poStatus.className = 'pressure-field__val red'; }
+    if (poHealth)  poHealth.textContent  = '—';
+    if (poAgents)  poAgents.textContent  = '—';
+    if (poEntropy) poEntropy.textContent = '—';
+    if (poRevenue) poRevenue.textContent = '—';
   } finally {
     if (btn) { btn.textContent = '↻ REFRESH'; btn.disabled = false; }
   }
@@ -935,7 +917,6 @@ window.copyText = function(id) {
 // ================================================================
 function showBanner(msg, type) {
   const b = document.getElementById('wallet-banner');
-  if (!b) return;
   b.textContent = msg;
   b.className = 'banner banner--' + (type || 'ok');
   b.style.display = 'flex';
@@ -1005,20 +986,12 @@ if ('serviceWorker' in navigator) {
 function restoreAgentUI(id) {
   const s = STATE.agents[id];
   if (!s) return;
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-
-  if (ticksEl) ticksEl.textContent = s.ticks;
-  if (acceptEl) acceptEl.textContent = s.accepted;
-  if (rejectEl) rejectEl.textContent = s.rejected;
-  if (hashEl) hashEl.textContent = s.lastHash || '—';
-  if (barEl) {
-    const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
-    barEl.style.width = pct + '%';
-  }
+  document.getElementById(id + '-ticks').textContent = s.ticks;
+  document.getElementById(id + '-accept').textContent = s.accepted;
+  document.getElementById(id + '-reject').textContent = s.rejected;
+  document.getElementById(id + '-hash').textContent = s.lastHash || '—';
+  const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
+  document.getElementById(id + '-bar').style.width = pct + '%';
 }
 
 function restoreTXStatus() {
@@ -1045,467 +1018,15 @@ function restoreTXStatus() {
 
 function restoreOracleUI() {
   const s = STATE.oracle;
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-
-  if (cyclesEl) cyclesEl.textContent = s.cycles;
-  if (convEl) convEl.textContent = s.converged;
-  if (lambdaEl) lambdaEl.textContent = s.lastLambda ? s.lastLambda.toExponential(3) : '—';
+  document.getElementById('oracle-cycles').textContent = s.cycles;
+  document.getElementById('oracle-conv').textContent = s.converged;
+  document.getElementById('oracle-lambda').textContent = s.lastLambda ? s.lastLambda.toExponential(3) : '—';
 }
 
 // ================================================================
 // CONNECT BUTTON
 // ================================================================
-document.getElementById('connect-btn')?.addEventListener('click', connectWallet);
-
-
-// ================================================================
-// VIRTUAL FILE SYSTEM & IDE logic
-// ================================================================
-const VFS_DEFAULT = {
-  "index.html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <title>Sovereign Sandbox Preview</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Sovereign Sandbox Live Preview</h1>\n    <p>Modify HTML, CSS, or JS in the Virtual IDE to see live auto-reloading in real-time.</p>\n    <button id=\"action-btn\" class=\"btn\">EXECUTE SANDBOX ACTION</button>\n  </div>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
-  "style.css": "body {\n  background-color: #070709;\n  color: #e8e8f0;\n  font-family: sans-serif;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 100vh;\n  margin: 0;\n}\n.container {\n  text-align: center;\n  background: #0f0f12;\n  border: 1px solid #2a2a35;\n  padding: 30px;\n  border-radius: 8px;\n  box-shadow: 0 4px 12px rgba(0,0,0,0.5);\n}\nh1 {\n  color: #00ff88;\n  margin-bottom: 10px;\n}\n.btn {\n  background: rgba(0,255,136,0.1);\n  border: 1px solid #00ff88;\n  color: #00ff88;\n  padding: 10px 20px;\n  cursor: pointer;\n  border-radius: 4px;\n  font-weight: bold;\n}",
-  "app.js": "// Live script sandbox action\ndocument.getElementById('action-btn')?.addEventListener('click', () => {\n  alert('Sovereign Sandbox action executed successfully!');\n});"
-};
-
-let activeFile = 'index.html';
-
-function getVFS() {
-  try {
-    const raw = localStorage.getItem("sas_v3_vfs");
-    if (!raw) return VFS_DEFAULT;
-    const parsed = JSON.parse(raw);
-    if (typeof parsed !== 'object' || parsed === null) return VFS_DEFAULT;
-    return parsed;
-  } catch(e) {
-    console.warn("VFS JSON corrupt, rolling back gracefully to default schema.", e);
-    return VFS_DEFAULT;
-  }
-}
-
-function saveVFS(vfs) {
-  try {
-    localStorage.setItem("sas_v3_vfs", JSON.stringify(vfs));
-  } catch(e) {
-    console.error("Failed to save VFS to localStorage.", e);
-  }
-}
-
-function renderVFSTree() {
-  const tree = document.getElementById('vfs-tree');
-  if (!tree) return;
-  tree.innerHTML = '';
-  const vfs = getVFS();
-
-  Object.keys(vfs).forEach(filename => {
-    const div = document.createElement('div');
-    div.className = 'vfs-item' + (filename === activeFile ? ' active' : '');
-    div.innerHTML = `<span class="vfs-item-name">📄 ${filename}</span>`;
-    div.addEventListener('click', () => {
-      selectFile(filename);
-    });
-    tree.appendChild(div);
-  });
-}
-
-function selectFile(filename) {
-  const vfs = getVFS();
-  if (vfs[filename] === undefined) return;
-  activeFile = filename;
-
-  const title = document.getElementById('ide-active-file-title');
-  const textarea = document.getElementById('ide-textarea');
-
-  if (title) title.textContent = filename;
-  if (textarea) {
-    textarea.value = vfs[filename];
-  }
-
-  renderVFSTree();
-  updateLineNumbers();
-}
-
-function updateLineNumbers() {
-  const textarea = document.getElementById('ide-textarea');
-  const lineNumbers = document.getElementById('ide-line-numbers');
-  if (!textarea || !lineNumbers) return;
-
-  const lines = textarea.value.split('\n').length;
-  let numStr = '';
-  for (let i = 1; i <= lines; i++) {
-    numStr += i + '\n';
-  }
-  lineNumbers.textContent = numStr;
-  lineNumbers.scrollTop = textarea.scrollTop;
-}
-
-function updateSandboxPreview() {
-  const vfs = getVFS();
-  const iframe = document.getElementById('ide-preview');
-  if (!iframe) return;
-
-  const html = vfs["index.html"] || "<h1>No index.html</h1>";
-  const css = vfs["style.css"] || "";
-  const js = vfs["app.js"] || "";
-
-  let combined = html;
-
-  // Inject style sheet
-  if (combined.includes('</head>')) {
-    combined = combined.replace('</head>', `<style>${css}</style></head>`);
-  } else {
-    combined = `<style>${css}</style>` + combined;
-  }
-
-  // Inject script sheet
-  if (combined.includes('</body>')) {
-    combined = combined.replace('</body>', `<script>${js}</script></body>`);
-  } else {
-    combined = combined + `<script>${js}</script>`;
-  }
-
-  iframe.srcdoc = combined;
-}
-
-function setupIDE() {
-  const textarea = document.getElementById('ide-textarea');
-  const newFileBtn = document.getElementById('vfs-new-file');
-  const renameFileBtn = document.getElementById('vfs-rename');
-  const deleteFileBtn = document.getElementById('vfs-delete');
-
-  if (textarea) {
-    textarea.addEventListener('input', () => {
-      const vfs = getVFS();
-      vfs[activeFile] = textarea.value;
-      saveVFS(vfs);
-      updateLineNumbers();
-      updateSandboxPreview();
-
-      // Trigger Coder Swarm message routing update
-      routeAgentSwarmMessage('coder', `[Coder] Output updated on ${activeFile}. Synchronization triggered.`);
-    });
-
-    textarea.addEventListener('scroll', () => {
-      const lineNumbers = document.getElementById('ide-line-numbers');
-      if (lineNumbers) lineNumbers.scrollTop = textarea.scrollTop;
-    });
-  }
-
-  if (newFileBtn) {
-    newFileBtn.addEventListener('click', () => {
-      const name = prompt("Enter new filename:");
-      if (!name) return;
-      const vfs = getVFS();
-      if (vfs[name] !== undefined) {
-        alert("File already exists!");
-        return;
-      }
-      vfs[name] = "// New workspace file";
-      saveVFS(vfs);
-      selectFile(name);
-      routeAgentSwarmMessage('architect', `[Architect] Designed and allocated new module: ${name}`);
-    });
-  }
-
-  if (renameFileBtn) {
-    renameFileBtn.addEventListener('click', () => {
-      const name = prompt("Rename current file to:", activeFile);
-      if (!name || name === activeFile) return;
-      const vfs = getVFS();
-      vfs[name] = vfs[activeFile];
-      delete vfs[activeFile];
-      saveVFS(vfs);
-      selectFile(name);
-      routeAgentSwarmMessage('architect', `[Architect] Restructured pipeline. Refactored ${activeFile} to ${name}`);
-    });
-  }
-
-  if (deleteFileBtn) {
-    deleteFileBtn.addEventListener('click', () => {
-      if (['index.html', 'style.css', 'app.js'].includes(activeFile)) {
-        alert("Protected file! Cannot delete system defaults.");
-        return;
-      }
-      if (!confirm(`Are you sure you want to delete ${activeFile}?`)) return;
-      const vfs = getVFS();
-      delete vfs[activeFile];
-      saveVFS(vfs);
-      selectFile('index.html');
-      routeAgentSwarmMessage('architect', `[Architect] Cleaned workspace. Deleted file: ${activeFile}`);
-    });
-  }
-
-  // Initial load
-  selectFile(activeFile);
-}
-
-
-// ================================================================
-// SECURE TERMINAL & RECONNECTION PIPELINE (EXPONENTIAL BACKOFF)
-// ================================================================
-let termuxWS = null;
-let reconnectDelay = 1000;
-const maxReconnectDelay = 30000;
-let isWSAnyway = false; // set to true on successful connection to control reconnect triggers
-
-function connectTermuxWS() {
-  termuxWS = new WebSocket('ws://127.0.0.1:8765');
-
-  termuxWS.onopen = () => {
-    reconnectDelay = 1000;
-    updateTermuxStatus(true);
-    appendTerminalOutput("✓ WebSocket connection to Termux Agent established.\n");
-  };
-
-  termuxWS.onmessage = (event) => {
-    appendTerminalOutput(event.data);
-  };
-
-  termuxWS.onclose = () => {
-    updateTermuxStatus(false);
-    // Try reconnect
-    setTimeout(() => {
-      reconnectDelay = Math.min(reconnectDelay * 2, maxReconnectDelay);
-      connectTermuxWS();
-    }, reconnectDelay);
-  };
-
-  termuxWS.onerror = () => {
-    termuxWS.close();
-  };
-}
-
-function updateTermuxStatus(connected) {
-  const statusLabels = document.querySelectorAll('.termux-status-label');
-  const statusDots = document.querySelectorAll('.termux-status-dot');
-
-  statusLabels.forEach(lbl => {
-    lbl.textContent = connected ? 'TERMUX: CONNECTED' : 'TERMUX: DISCONNECTED';
-    lbl.className = 'termux-status-label mono ' + (connected ? 'green' : 'amber');
-  });
-
-  statusDots.forEach(dot => {
-    dot.className = 'wallet-dot ' + (connected ? 'connected' : 'error');
-  });
-}
-
-function appendTerminalOutput(text) {
-  const out = document.getElementById('terminal-output');
-  if (!out) return;
-  out.textContent += text + "\n";
-  out.scrollTop = out.scrollHeight;
-}
-
-function setupTerminal() {
-  const input = document.getElementById('terminal-input');
-  if (input) {
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = input.value.trim();
-        if (!cmd) return;
-
-        appendTerminalOutput(`$ ${cmd}`);
-        input.value = '';
-
-        if (termuxWS && termuxWS.readyState === WebSocket.OPEN) {
-          termuxWS.send(cmd);
-        } else {
-          // Local fallback execution engine
-          executeLocalCommand(cmd);
-        }
-      }
-    });
-  }
-
-  // Touch key mappings
-  document.querySelectorAll('.touch-key').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const keyChar = btn.dataset.key;
-      const input = document.getElementById('terminal-input');
-      if (!input) return;
-
-      input.focus();
-
-      if (['CTRL', 'ALT', 'ESC'].includes(keyChar)) {
-        const event = new KeyboardEvent('keydown', {
-          key: keyChar,
-          code: keyChar,
-          bubbles: true,
-          cancelable: true
-        });
-        input.dispatchEvent(event);
-        appendTerminalOutput(`[Touch Key Emulated: ${keyChar}]`);
-      } else if (keyChar === 'TAB') {
-        // Simple autocomplete
-        const val = input.value.trim().toLowerCase();
-        const vfs = getVFS();
-        const files = Object.keys(vfs);
-        const match = files.find(f => f.startsWith(val));
-        if (match) {
-          input.value = match;
-        }
-      } else {
-        // Character insert
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        const text = input.value;
-        input.value = text.substring(0, start) + keyChar + text.substring(end);
-        input.selectionStart = input.selectionEnd = start + keyChar.length;
-      }
-    });
-  });
-}
-
-function executeLocalCommand(cmdStr) {
-  const args = cmdStr.trim().split(/\s+/);
-  const cmd = args[0].toLowerCase();
-
-  if (cmd === 'clear') {
-    const out = document.getElementById('terminal-output');
-    if (out) out.innerHTML = '';
-    return;
-  }
-
-  if (cmd === 'help') {
-    appendTerminalOutput(
-      '--- Local Fallback Shell Commands ---\n' +
-      '  ls               - List files in virtual file system (VFS)\n' +
-      '  cat <file>       - Display contents of a virtual file\n' +
-      '  python <file>    - Mock-execute a virtual file\n' +
-      '  clear            - Clear terminal screen\n' +
-      '  help             - Show this help menu\n' +
-      '\n' +
-      '*Note: Connect Termux Agent at ws://127.0.0.1:8765 for real OS access.*'
-    );
-    return;
-  }
-
-  if (cmd === 'ls') {
-    const vfs = getVFS();
-    const files = Object.keys(vfs);
-    if (files.length === 0) {
-      appendTerminalOutput('[Empty VFS]');
-    } else {
-      appendTerminalOutput(files.join('\n'));
-    }
-    return;
-  }
-
-  if (cmd === 'cat') {
-    const filename = args[1];
-    if (!filename) {
-      appendTerminalOutput('Usage: cat <filename>');
-      return;
-    }
-    const vfs = getVFS();
-    if (vfs[filename] !== undefined) {
-      appendTerminalOutput(vfs[filename]);
-    } else {
-      appendTerminalOutput(`cat: ${filename}: No such file or directory`);
-    }
-    return;
-  }
-
-  if (cmd === 'python') {
-    const filename = args[1];
-    if (!filename) {
-      appendTerminalOutput('Usage: python <filename>');
-      return;
-    }
-    const vfs = getVFS();
-    if (vfs[filename] !== undefined) {
-      appendTerminalOutput(`[Python Sandbox Execution of ${filename}]\nExecuting script...`);
-      try {
-        appendTerminalOutput(`SUCCESS: Code of ${filename} evaluated in offline sandbox environment safely.`);
-      } catch(e) {
-        appendTerminalOutput(`Error: ${e.message}`);
-      }
-    } else {
-      appendTerminalOutput(`python: can't open file '${filename}': [Errno 2] No such file or directory`);
-    }
-    return;
-  }
-
-  // Default warning
-  appendTerminalOutput(`Command not found: ${cmdStr}. (Termux offline, local fallback only supports ls, cat, python, clear, help)`);
-}
-
-
-// ================================================================
-// COGNITIVE SWARM & SELF-HEALING ENGINE
-// ================================================================
-function routeAgentSwarmMessage(personaId, msg) {
-  const logEl = document.getElementById(personaId + '-log');
-  if (!logEl) return;
-  const div = document.createElement('div');
-  div.textContent = msg;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-window.simulateRuntimeException = function() {
-  const coderLog = document.getElementById('coder-log');
-  const debugLog = document.getElementById('debugger-log');
-  const debuggerStatus = document.getElementById('debugger-status');
-  const patchBox = document.getElementById('self-healing-patch-box');
-  const patchOutput = document.getElementById('patch-diff-output');
-
-  if (debuggerStatus) {
-    debuggerStatus.textContent = '🚨 HEALING IN PROGRESS...';
-    debuggerStatus.className = 'agent-persona-status text-red';
-  }
-
-  // Append logs
-  routeAgentSwarmMessage('coder', `[Coder] Uncaught ReferenceError on index.html:32. Core execution stalled.`);
-  routeAgentSwarmMessage('debugger', `[Debugger] Trapped script exception! Parsing stack trace...`);
-  routeAgentSwarmMessage('debugger', `[Debugger] Isolated bug: 'calculate' calls undefined variable 'y'. Generating git diff patch...`);
-
-  // Show auto-patch diff output
-  if (patchBox && patchOutput) {
-    patchOutput.textContent = `<<<<<<< SEARCH
-function calculate(x) {
-  return x / y; // y is undefined!
-}
-=======
-function calculate(x) {
-  const y = ARCH.PHI; // Fixed undefined variable reference
-  return x / y;
-}
->>>>>>> REPLACE`;
-    patchBox.style.display = 'block';
-    patchBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-};
-
-window.applyDebuggerPatch = function() {
-  const patchBox = document.getElementById('self-healing-patch-box');
-  const debuggerStatus = document.getElementById('debugger-status');
-
-  if (patchBox) patchBox.style.display = 'none';
-  if (debuggerStatus) {
-    debuggerStatus.textContent = 'Role: Self-healing error trap & diagnostics';
-    debuggerStatus.className = 'agent-persona-status';
-  }
-
-  // Modifying VFS file active file
-  const vfs = getVFS();
-  // We mock adding the calculated fix function inside app.js virtual file
-  let code = vfs["app.js"] || "";
-  if (!code.includes("function calculate")) {
-    code += "\n\n// Added via self-healing debugger auto-patch\nfunction calculate(x) {\n  const y = ARCH.PHI; // Fixed undefined variable reference\n  return x / y;\n}";
-    vfs["app.js"] = code;
-    saveVFS(vfs);
-    selectFile(activeFile);
-    updateSandboxPreview();
-  }
-
-  routeAgentSwarmMessage('debugger', `[Debugger] Patch successfully applied to active VFS and preview hot-reloaded! Status: STABLE.`);
-  routeAgentSwarmMessage('optimizer', `[Optimizer] Verified patched execution. Monotone convergence restored.`);
-  showBanner("✓ Debugger patch successfully integrated into active VFS sandbox.", "ok");
-};
-
+document.getElementById('connect-btn').addEventListener('click', connectWallet);
 
 // ================================================================
 // INIT
@@ -1521,15 +1042,924 @@ document.addEventListener('DOMContentLoaded', () => {
   updateWalletUI();
   loadMetrics();
 
-  // Initialize modular features
-  setupIDE();
-  setupTerminal();
-  connectTermuxWS();
-
   // If already had a wallet session, show reconnect hint
   if (STATE.wallet) {
     showBanner('Tap CONNECT WALLET to reconnect MetaMask (session refreshed).', 'warn');
     STATE.wallet = null;  // Force fresh connection each load
     saveState();
   }
+});
+
+// ================================================================
+// ADVANCED TERMUX & RENDER SUBSTRATE AGENT ENGINE (TERMINAL & IDE)
+// ================================================================
+let socket = null;
+let substrateTarget = 'local';
+let activeFilepath = null;
+const openTabs = [];
+const terminalHistory = [];
+let terminalHistoryIndex = -1;
+let editorFontSize = 12;
+
+const VFS = {
+  'index.js': `// Sovereign Agentic Node Entry Point
+console.log("=====================================");
+console.log("SIA-v6 Autonomous Substrate Active");
+console.log("=====================================");
+
+const PHI = 1.6180339887;
+console.log("Physical coupling ratio (phi): " + PHI);
+`,
+  'README.md': `# SOVEREIGN AGENT SHELL SUBSTRATE
+This is your localized workspace.
+Feel free to write custom Node.js and client-side scripts here.
+Click files in the sidebar to open them in the multi-tab editor.
+`,
+  'agents.config.json': `{
+  "agent_a": {
+    "entropy_threshold": 0.0,
+    "dt": 0.001
+  },
+  "agent_b": {
+    "persistence_epsilon": 0.25
+  },
+  "agent_c": {
+    "fixed_point": "1/phi"
+  }
+}`
+};
+
+function appendTerminalLine(text, type = 'output') {
+  const body = document.getElementById('terminal-body');
+  if (!body) return;
+  const line = document.createElement('div');
+  line.className = 'tline tline-' + type;
+  line.textContent = text;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+
+function appendConsoleLine(text, type = 'log') {
+  const body = document.getElementById('console-body');
+  if (!body) return;
+  const line = document.createElement('div');
+  line.className = 'cline cline-' + type;
+  line.textContent = text;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+}
+
+async function executeTerminalCommand(cmdText) {
+  cmdText = cmdText.trim();
+  if (!cmdText) return;
+
+  // Echo input
+  appendTerminalLine('$ ' + cmdText, 'input-echo');
+
+  // Push to history
+  terminalHistory.push(cmdText);
+  terminalHistoryIndex = terminalHistory.length;
+
+  const args = cmdText.split(' ');
+  const cmd = args[0].toLowerCase();
+
+  // Local command parsing for general utilities
+  if (cmd === 'clear') {
+    const body = document.getElementById('terminal-body');
+    if (body) body.innerHTML = '';
+    return;
+  }
+  if (cmd === 'help') {
+    appendTerminalLine('Sovereign Agent Shell Terminal - Help', 'success');
+    appendTerminalLine('Available utility commands:', 'info');
+    appendTerminalLine('  help                Show this help menu', 'info');
+    appendTerminalLine('  clear               Clear the screen', 'info');
+    appendTerminalLine('  sysinfo             Display substrate node architecture details', 'info');
+    appendTerminalLine('  ls                  List files in the current directory', 'info');
+    appendTerminalLine('  cat <file>          Show contents of a file', 'info');
+    appendTerminalLine('  write <file> <text> Create or overwrite a file with raw text', 'info');
+    appendTerminalLine('  rm <file>           Delete a file from the workspace', 'info');
+    appendTerminalLine('  run <file>          Run a script file (local JS sandbox or server-side node)', 'info');
+    appendTerminalLine('  theme <color>       Set terminal color theme (green, amber, teal, purple)', 'info');
+    return;
+  }
+  if (cmd === 'theme') {
+    const color = args[1];
+    const root = document.documentElement;
+    if (color === 'amber') {
+      root.style.setProperty('--green', '#FFB800');
+      root.style.setProperty('--green-dim', 'rgba(255,184,0,0.12)');
+      appendTerminalLine('Theme updated to AMBER.', 'success');
+    } else if (color === 'teal') {
+      root.style.setProperty('--green', '#4F98A3');
+      root.style.setProperty('--green-dim', 'rgba(79,152,163,0.12)');
+      appendTerminalLine('Theme updated to TEAL.', 'success');
+    } else if (color === 'purple') {
+      root.style.setProperty('--green', '#a78bfa');
+      root.style.setProperty('--green-dim', 'rgba(167,139,250,0.12)');
+      appendTerminalLine('Theme updated to PURPLE.', 'success');
+    } else {
+      root.style.setProperty('--green', '#00FF88');
+      root.style.setProperty('--green-dim', 'rgba(0,255,136,0.12)');
+      appendTerminalLine('Theme reverted to DEFAULT GREEN.', 'success');
+    }
+    return;
+  }
+  if (cmd === 'sysinfo') {
+    appendTerminalLine('--- SYSTEM STATE ---', 'info');
+    appendTerminalLine('SIA-v6 Sovereign Agent Engine: Live', 'info');
+    appendTerminalLine('Local Wallet: ' + (STATE.wallet ? STATE.wallet.address : 'Disconnected'), 'info');
+    appendTerminalLine('Substrate Mode: ' + substrateTarget.toUpperCase(), 'info');
+    appendTerminalLine('Coupling Phi Constant: ' + ARCH.PHI, 'info');
+    appendTerminalLine('Fixed Point Lambda*: ' + ARCH.LAMBDA_STAR, 'info');
+    appendTerminalLine('Active Agents Ticks: ' + (STATE.agents.a.ticks + STATE.agents.b.ticks + STATE.agents.c.ticks), 'info');
+    appendTerminalLine('--------------------', 'info');
+    return;
+  }
+
+  // If substrate target is local VFS
+  if (substrateTarget === 'local') {
+    if (cmd === 'ls') {
+      const files = Object.keys(VFS);
+      if (files.length === 0) {
+        appendTerminalLine('[No files in workspace]');
+      } else {
+        files.forEach(f => appendTerminalLine('📄  ' + f, 'output'));
+      }
+    } else if (cmd === 'cat') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: cat <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        appendTerminalLine(VFS[fn], 'output');
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else if (cmd === 'write') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: write <filename> <content>', 'error'); return; }
+      const content = args.slice(2).join(' ');
+      VFS[fn] = content;
+      appendTerminalLine('File written successfully.', 'success');
+      refreshFileSystem();
+    } else if (cmd === 'rm') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: rm <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        delete VFS[fn];
+        appendTerminalLine('File deleted.', 'success');
+        refreshFileSystem();
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else if (cmd === 'run') {
+      const fn = args[1];
+      if (!fn) { appendTerminalLine('Usage: run <filename>', 'error'); return; }
+      if (VFS[fn] !== undefined) {
+        appendTerminalLine('Executing ' + fn + ' in client-side local sandbox...', 'info');
+        runJavaScriptSandbox(VFS[fn]);
+      } else {
+        appendTerminalLine('Error: File not found: ' + fn, 'error');
+      }
+    } else {
+      appendTerminalLine('Command not recognized in local emulation. Type help for list of commands.', 'error');
+    }
+    return;
+  }
+
+  // If connected via WebSocket (Termux or Render)
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    appendTerminalLine('Error: Substrate WebSocket disconnected. Please reconnect.', 'error');
+    return;
+  }
+
+  // Map client helper commands to shell commands on the daemon if needed, or pass-through
+  let daemonCmd = cmdText;
+  if (cmd === 'ls' && (substrateTarget === 'termux' || substrateTarget === 'render')) {
+    // just normal pass-through
+  } else if (cmd === 'cat') {
+    const fn = args[1];
+    daemonCmd = 'cat ' + fn;
+  } else if (cmd === 'run') {
+    const fn = args[1];
+    daemonCmd = 'node ' + fn;
+  }
+
+  // Send execution command
+  socket.send(JSON.stringify({
+    type: 'exec',
+    command: daemonCmd
+  }));
+}
+
+function handleExecResponse(data) {
+  if (data.error) {
+    appendTerminalLine('Execution Error: ' + data.error, 'error');
+    appendConsoleLine('Execution Error: ' + data.error, 'error');
+  }
+  if (data.stdout) {
+    appendTerminalLine(data.stdout, 'output');
+    appendConsoleLine(data.stdout, 'log');
+  }
+  if (data.stderr) {
+    appendTerminalLine(data.stderr, 'error');
+    appendConsoleLine(data.stderr, 'error');
+  }
+  if (!data.stdout && !data.stderr && !data.error) {
+    appendTerminalLine('[Command completed with no output]', 'info');
+    appendConsoleLine('[Command completed with no output]', 'info');
+  }
+}
+
+function handleListFilesResponse(data) {
+  if (data.error) {
+    appendTerminalLine('List files error: ' + data.error, 'error');
+    return;
+  }
+  renderFileSystemTree(data.files || []);
+}
+
+function handleReadFileResponse(data) {
+  if (data.error) {
+    showBanner('Read file failed: ' + data.error, 'err');
+    return;
+  }
+  openFileInTab(data.filepath, data.content);
+}
+
+function handleWriteFileResponse(data) {
+  if (data.error) {
+    showBanner('Save file failed: ' + data.error, 'err');
+    document.getElementById('editor-sync-status').textContent = 'Error saving changes';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-red';
+  } else {
+    showBanner('✓ File saved successfully: ' + data.filepath, 'ok');
+    document.getElementById('editor-sync-status').textContent = 'All changes saved';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-green';
+    refreshFileSystem();
+  }
+}
+
+function handleDeleteFileResponse(data) {
+  if (data.error) {
+    showBanner('Delete failed: ' + data.error, 'err');
+  } else {
+    showBanner('✓ Deleted: ' + data.filepath, 'ok');
+    closeFileTab(data.filepath);
+    refreshFileSystem();
+  }
+}
+
+function handleRenameFileResponse(data) {
+  if (data.error) {
+    showBanner('Rename failed: ' + data.error, 'err');
+  } else {
+    showBanner('✓ Renamed to: ' + data.new_filepath, 'ok');
+    renameFileTab(data.filepath, data.new_filepath);
+    refreshFileSystem();
+  }
+}
+
+function refreshFileSystem() {
+  if (substrateTarget === 'local') {
+    const list = Object.keys(VFS).map(name => ({
+      name,
+      isDirectory: false
+    }));
+    renderFileSystemTree(list);
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'list_files' }));
+  } else {
+    renderFileSystemTree([]);
+  }
+}
+
+function renderFileSystemTree(files) {
+  const tree = document.getElementById('file-tree');
+  if (!tree) return;
+  tree.innerHTML = '';
+
+  if (files.length === 0) {
+    tree.innerHTML = '<div style="padding:10px;font-size:11px;color:var(--text3);font-family:var(--mono);">No files found</div>';
+    return;
+  }
+
+  // Sort files
+  files.sort((a,b) => {
+    if (a.isDirectory && !b.isDirectory) return -1;
+    if (!a.isDirectory && b.isDirectory) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  files.forEach(f => {
+    if (f.name === 'node_modules' || f.name === '.git' || f.name === '.gitignore' || f.name === 'package-lock.json') return;
+
+    const div = document.createElement('div');
+    div.className = 'tree-item';
+    if (activeFilepath === f.name) div.classList.add('active');
+
+    const icon = f.isDirectory ? '📁' : '📄';
+    div.innerHTML = `
+      <div class="tree-item-meta">
+        <span class="tree-icon">${icon}</span>
+        <span>${escapeHtml(f.name)}</span>
+      </div>
+    `;
+
+    div.addEventListener('click', () => {
+      openFile(f.name, f.isDirectory);
+    });
+
+    tree.appendChild(div);
+  });
+}
+
+function openFile(filepath, isDirectory) {
+  if (isDirectory) return;
+  activeFilepath = filepath;
+
+  document.querySelectorAll('.tree-item').forEach(el => {
+    const isThis = el.querySelector('.tree-item-meta span:last-child').textContent === filepath;
+    el.classList.toggle('active', isThis);
+  });
+
+  const tabIdx = openTabs.findIndex(t => t.filepath === filepath);
+  if (tabIdx !== -1) {
+    setActiveTab(tabIdx);
+    return;
+  }
+
+  if (substrateTarget === 'local') {
+    const content = VFS[filepath] || '';
+    openFileInTab(filepath, content);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'read_file', filepath }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+}
+
+function openFileInTab(filepath, content) {
+  const tab = { filepath, content, isDirty: false };
+  openTabs.push(tab);
+  setActiveTab(openTabs.length - 1);
+}
+
+function setActiveTab(idx) {
+  const tab = openTabs[idx];
+  if (!tab) {
+    activeFilepath = null;
+    document.getElementById('current-filepath').textContent = 'No File Open';
+    document.getElementById('editor-textarea').value = '';
+    document.getElementById('editor-textarea').disabled = true;
+    updateGutter();
+    renderTabsUI();
+    return;
+  }
+
+  activeFilepath = tab.filepath;
+  document.getElementById('current-filepath').textContent = tab.filepath;
+
+  const textarea = document.getElementById('editor-textarea');
+  textarea.value = tab.content;
+  textarea.disabled = false;
+
+  updateGutter();
+  updateStatusBarMetrics();
+  renderTabsUI();
+}
+
+function renderTabsUI() {
+  const container = document.getElementById('ide-tabs');
+  if (!container) return;
+  container.innerHTML = '';
+
+  openTabs.forEach((tab, i) => {
+    const el = document.createElement('div');
+    el.className = 'ide-tab';
+    if (tab.filepath === activeFilepath) el.classList.add('active');
+
+    const displayName = tab.filepath.split('/').pop() + (tab.isDirty ? ' *' : '');
+    el.innerHTML = `
+      <span>${escapeHtml(displayName)}</span>
+      <span class="ide-tab-close">✕</span>
+    `;
+
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('ide-tab-close')) {
+        e.stopPropagation();
+        closeTabAt(i);
+      } else {
+        setActiveTab(i);
+      }
+    });
+
+    container.appendChild(el);
+  });
+}
+
+function closeTabAt(idx) {
+  const closingActive = (openTabs[idx].filepath === activeFilepath);
+  openTabs.splice(idx, 1);
+
+  if (closingActive) {
+    const nextIdx = Math.max(0, idx - 1);
+    setActiveTab(openTabs.length > 0 ? nextIdx : -1);
+  } else {
+    renderTabsUI();
+  }
+}
+
+function closeFileTab(filepath) {
+  const idx = openTabs.findIndex(t => t.filepath === filepath);
+  if (idx !== -1) closeTabAt(idx);
+}
+
+function renameFileTab(oldFilepath, newFilepath) {
+  const tab = openTabs.find(t => t.filepath === oldFilepath);
+  if (tab) {
+    tab.filepath = newFilepath;
+    if (activeFilepath === oldFilepath) {
+      activeFilepath = newFilepath;
+      document.getElementById('current-filepath').textContent = newFilepath;
+    }
+    renderTabsUI();
+  }
+}
+
+window.updateGutter = function() {
+  const textarea = document.getElementById('editor-textarea');
+  const gutter = document.getElementById('editor-gutter');
+  if (!textarea || !gutter) return;
+
+  const lines = textarea.value.split('\n').length;
+  let gutterHTML = '';
+  for (let i = 1; i <= lines; i++) {
+    gutterHTML += i + '<br>';
+  }
+  gutter.innerHTML = gutterHTML;
+
+  gutter.scrollTop = textarea.scrollTop;
+
+  const activeTab = openTabs.find(t => t.filepath === activeFilepath);
+  if (activeTab && activeTab.content !== textarea.value) {
+    activeTab.content = textarea.value;
+    activeTab.isDirty = true;
+    document.getElementById('editor-sync-status').textContent = 'Unsaved changes';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-amber';
+    renderTabsUI();
+  }
+
+  updateStatusBarMetrics();
+};
+
+document.getElementById('editor-textarea')?.addEventListener('scroll', () => {
+  const gutter = document.getElementById('editor-gutter');
+  const textarea = document.getElementById('editor-textarea');
+  if (gutter && textarea) gutter.scrollTop = textarea.scrollTop;
+});
+
+function updateStatusBarMetrics() {
+  const textarea = document.getElementById('editor-textarea');
+  if (!textarea) return;
+
+  const text = textarea.value;
+  const chars = text.length;
+  const lines = text.split('\n').length;
+
+  document.getElementById('editor-char-count').textContent = chars + ' characters';
+  document.getElementById('editor-line-count').textContent = lines + (lines === 1 ? ' line' : ' lines');
+}
+
+window.editorZoomIn = function() {
+  editorFontSize = Math.min(24, editorFontSize + 1);
+  applyEditorFontSize();
+};
+
+window.editorZoomOut = function() {
+  editorFontSize = Math.max(9, editorFontSize - 1);
+  applyEditorFontSize();
+};
+
+function applyEditorFontSize() {
+  const el = document.getElementById('editor-textarea');
+  const gut = document.getElementById('editor-gutter');
+  const ind = document.getElementById('font-size-val');
+  if (el) el.style.fontSize = editorFontSize + 'px';
+  if (gut) gut.style.fontSize = editorFontSize + 'px';
+  if (ind) ind.textContent = editorFontSize + 'px';
+}
+
+window.saveCurrentFile = function() {
+  const tab = openTabs.find(t => t.filepath === activeFilepath);
+  if (!tab) return showBanner('No file active to save.', 'warn');
+
+  const textarea = document.getElementById('editor-textarea');
+  tab.content = textarea.value;
+  tab.isDirty = false;
+
+  if (substrateTarget === 'local') {
+    VFS[activeFilepath] = tab.content;
+    showBanner('✓ Saved locally to VFS.', 'ok');
+    document.getElementById('editor-sync-status').textContent = 'All changes saved';
+    document.getElementById('editor-sync-status').className = 'editor-status-item text-green';
+    renderTabsUI();
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      document.getElementById('editor-sync-status').textContent = 'Saving changes...';
+      document.getElementById('editor-sync-status').className = 'editor-status-item text-amber';
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: activeFilepath,
+        content: tab.content
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideCreateFile = function() {
+  const name = prompt('Enter name of new file (e.g., config.js):');
+  if (!name) return;
+  const cleanedName = name.trim();
+  if (!cleanedName) return;
+
+  if (substrateTarget === 'local') {
+    if (VFS[cleanedName] !== undefined) return showBanner('File already exists.', 'warn');
+    VFS[cleanedName] = '';
+    showBanner('✓ File created: ' + cleanedName, 'ok');
+    refreshFileSystem();
+    openFile(cleanedName, false);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: cleanedName,
+        content: ''
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideCreateFolder = function() {
+  const name = prompt('Enter folder name:');
+  if (!name) return;
+  const cleanedName = name.trim();
+  if (!cleanedName) return;
+
+  if (substrateTarget === 'local') {
+    showBanner('Folders are emulated via path names (e.g. create file folder/file.js).', 'info');
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'write_file',
+        filepath: cleanedName + '/.placeholder',
+        content: ''
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideRenameSelected = function() {
+  if (!activeFilepath) return showBanner('Select a file to rename.', 'warn');
+  const newName = prompt('Enter new filename for ' + activeFilepath + ':', activeFilepath);
+  if (!newName) return;
+  const cleanedNewName = newName.trim();
+  if (!cleanedNewName || cleanedNewName === activeFilepath) return;
+
+  if (substrateTarget === 'local') {
+    VFS[cleanedNewName] = VFS[activeFilepath];
+    delete VFS[activeFilepath];
+    renameFileTab(activeFilepath, cleanedNewName);
+    showBanner('✓ Renamed to ' + cleanedNewName, 'ok');
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'rename_file',
+        filepath: activeFilepath,
+        new_filepath: cleanedNewName
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.ideDeleteSelected = function() {
+  if (!activeFilepath) return showBanner('Select a file to delete.', 'warn');
+  if (!confirm('Are you sure you want to delete ' + activeFilepath + '?')) return;
+
+  if (substrateTarget === 'local') {
+    delete VFS[activeFilepath];
+    closeFileTab(activeFilepath);
+    showBanner('✓ File deleted.', 'ok');
+    refreshFileSystem();
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'delete_file',
+        filepath: activeFilepath
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.handleIdeFileUpload = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    const name = file.name;
+
+    if (substrateTarget === 'local') {
+      VFS[name] = content;
+      showBanner('✓ Uploaded ' + name + ' locally.', 'ok');
+      refreshFileSystem();
+      openFile(name, false);
+    } else {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+          type: 'write_file',
+          filepath: name,
+          content: content
+        }));
+      } else {
+        showBanner('Error: WebSocket disconnected.', 'err');
+      }
+    }
+  };
+  reader.readAsText(file);
+};
+
+function runJavaScriptSandbox(code) {
+  appendConsoleLine('--- Launching Sandbox Simulator ---', 'info');
+
+  const originalLog = console.log;
+  const originalError = console.error;
+  const captureBuffer = [];
+
+  console.log = (...args) => {
+    captureBuffer.push({ text: args.map(String).join(' '), type: 'log' });
+    originalLog.apply(console, args);
+  };
+  console.error = (...args) => {
+    captureBuffer.push({ text: args.map(String).join(' '), type: 'error' });
+    originalError.apply(console, args);
+  };
+
+  try {
+    const fn = new Function(code);
+    fn();
+    appendConsoleLine('Execution successfully completed.', 'success');
+  } catch (e) {
+    appendConsoleLine('Runtime Error: ' + e.message, 'error');
+  }
+
+  console.log = originalLog;
+  console.error = originalError;
+
+  captureBuffer.forEach(line => appendConsoleLine(line.text, line.type));
+}
+
+window.runConsoleCode = function() {
+  const tab = openTabs.find(t => t.filepath === activeFilepath);
+  if (!tab) return showBanner('Open a file first to run it.', 'warn');
+
+  appendConsoleLine(`Starting execution: ${tab.filepath}...`, 'info');
+
+  if (substrateTarget === 'local') {
+    runJavaScriptSandbox(tab.content);
+  } else {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({
+        type: 'exec',
+        command: `node ${tab.filepath}`
+      }));
+    } else {
+      showBanner('Error: WebSocket disconnected.', 'err');
+    }
+  }
+};
+
+window.killConsoleProcess = function() {
+  appendConsoleLine('Process execution terminated by operator.', 'error');
+};
+
+window.clearConsoleLog = function() {
+  const body = document.getElementById('console-body');
+  if (body) body.innerHTML = '';
+};
+
+window.setSubstrateTarget = function(target) {
+  document.querySelectorAll('.selector-btn').forEach(b => {
+    b.classList.toggle('active', b.id === 'sub-' + target);
+  });
+
+  substrateTarget = target;
+  appendTerminalLine(`Switched substrate target to: ${target.toUpperCase()}`, 'info');
+
+  const titleEl = document.getElementById('terminal-target-title');
+  if (titleEl) titleEl.textContent = `SHELL: ${target.toUpperCase()} SUBSTRATE`;
+
+  const dot = document.getElementById('termux-dot');
+  const label = document.getElementById('termux-label');
+
+  if (socket) {
+    socket.close();
+    socket = null;
+  }
+
+  if (target === 'local') {
+    if (dot) dot.className = 'termux-dot connected';
+    if (label) label.textContent = 'EMULATED (LOCAL)';
+    appendTerminalLine('System utilizing zero-dependency in-browser emulator.', 'success');
+    refreshFileSystem();
+    return;
+  }
+
+  let wsUrl;
+  if (target === 'termux') {
+    wsUrl = 'ws://127.0.0.1:8765';
+    if (dot) dot.className = 'termux-dot connecting';
+    if (label) label.textContent = 'CONNECTING TERMUX...';
+  } else {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl = proto + '//' + location.host + '/ws';
+    if (dot) dot.className = 'termux-dot connecting';
+    if (label) label.textContent = 'CONNECTING RENDER...';
+  }
+
+  appendTerminalLine(`Connecting WebSocket daemon at ${wsUrl}...`, 'info');
+
+  try {
+    socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      appendTerminalLine(`WebSocket link opened with ${target.toUpperCase()} Substrate. Initiating authentication handshake...`, 'info');
+
+      // Load saved token or prompt user (Termux does not require real password unless configured, default is sovereign_secret_token_1337)
+      let savedToken = localStorage.getItem('scc_admin_token');
+      if (!savedToken) {
+        savedToken = prompt(`Enter Authentication Token for ${target.toUpperCase()} Substrate:`);
+        if (savedToken) {
+          localStorage.setItem('scc_admin_token', savedToken);
+        }
+      }
+
+      socket.send(JSON.stringify({
+        type: 'auth',
+        token: savedToken || ''
+      }));
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        // Handle Authentication Response
+        if (data.type === 'auth_response') {
+          if (data.success) {
+            appendTerminalLine(`✓ Authentication successful! Established high-throughput telemetry connection with ${target.toUpperCase()} Substrate.`, 'success');
+            if (dot) dot.className = 'termux-dot connected';
+            if (label) label.textContent = `${target.toUpperCase()}: CONNECTED`;
+            showBanner(`✓ Connected & Authenticated to ${target.toUpperCase()} Substrate`, 'ok');
+            refreshFileSystem();
+          } else {
+            appendTerminalLine(`✗ Authentication failed: ${data.error || 'Invalid Token'}`, 'error');
+            showBanner(`Authentication failed for ${target.toUpperCase()}`, 'err');
+            localStorage.removeItem('scc_admin_token');
+            if (dot) dot.className = 'termux-dot';
+            if (label) label.textContent = `${target.toUpperCase()}: DISCONNECTED`;
+          }
+          return;
+        }
+
+        if (data.type === 'exec_response') {
+          handleExecResponse(data);
+        } else if (data.type === 'list_files_response') {
+          handleListFilesResponse(data);
+        } else if (data.type === 'read_file_response') {
+          handleReadFileResponse(data);
+        } else if (data.type === 'write_file_response') {
+          handleWriteFileResponse(data);
+        } else if (data.type === 'delete_file_response') {
+          handleDeleteFileResponse(data);
+        } else if (data.type === 'rename_file_response') {
+          handleRenameFileResponse(data);
+        } else if (data.type === 'error') {
+          appendTerminalLine('Daemon Error: ' + data.message, 'error');
+        }
+      } catch (e) {
+        appendTerminalLine(event.data, 'output');
+      }
+    };
+
+    socket.onerror = () => {
+      appendTerminalLine(`Connection failure occurred at address ${wsUrl}.`, 'error');
+    };
+
+    socket.onclose = () => {
+      appendTerminalLine(`Telemetry telemetry link closed.`, 'info');
+      if (dot) dot.className = 'termux-dot';
+      if (label) label.textContent = `${target.toUpperCase()}: DISCONNECTED`;
+      if (target === 'termux') {
+        showBanner('Termux agent closed. To run on Android: start python termux_agent.py.', 'warn');
+      }
+    };
+
+  } catch (err) {
+    appendTerminalLine(`WebSocket initialization error: ${err.message}`, 'error');
+  }
+};
+
+window.clearTerminal = function() {
+  const body = document.getElementById('terminal-body');
+  if (body) body.innerHTML = '';
+};
+
+window.resetTerminalEnv = function() {
+  appendTerminalLine('Resetting terminal context environment...', 'info');
+  setSubstrateTarget(substrateTarget);
+};
+
+window.downloadTerminalLog = function() {
+  const body = document.getElementById('terminal-body');
+  if (!body) return;
+  const text = body.textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `terminal_log_${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showBanner('✓ Terminal log saved', 'ok');
+};
+
+document.getElementById('terminal-input')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const input = e.target;
+    const val = input.value;
+    input.value = '';
+    executeTerminalCommand(val);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (terminalHistory.length > 0 && terminalHistoryIndex > 0) {
+      terminalHistoryIndex--;
+      e.target.value = terminalHistory[terminalHistoryIndex];
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (terminalHistoryIndex < terminalHistory.length - 1) {
+      terminalHistoryIndex++;
+      e.target.value = terminalHistory[terminalHistoryIndex];
+    } else {
+      terminalHistoryIndex = terminalHistory.length;
+      e.target.value = '';
+    }
+  } else if (e.key === 'Tab') {
+    e.preventDefault();
+    const val = e.target.value.trim();
+    if (!val) return;
+    const cmdList = ['help', 'clear', 'sysinfo', 'ls', 'cat', 'write', 'rm', 'run', 'theme'];
+    const matches = cmdList.filter(c => c.startsWith(val));
+    if (matches.length === 1) {
+      e.target.value = matches[0] + ' ';
+    } else {
+      const parts = val.split(' ');
+      if (parts.length === 2 && (parts[0] === 'cat' || parts[0] === 'run' || parts[0] === 'rm')) {
+        const cmdWord = parts[0];
+        const fileWord = parts[1];
+        const files = (substrateTarget === 'local') ? Object.keys(VFS) : [];
+        const fileMatches = files.filter(f => f.startsWith(fileWord));
+        if (fileMatches.length === 1) {
+          e.target.value = cmdWord + ' ' + fileMatches[0];
+        }
+      }
+    }
+  }
+});
+
+// Auto-initialize files workspace on content load
+document.addEventListener('DOMContentLoaded', () => {
+  setSubstrateTarget('local');
+  refreshFileSystem();
+  openFile('README.md', false);
 });

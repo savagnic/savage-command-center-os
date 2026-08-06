@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CMD CENTER">
+<meta name="apple-mobile-web-app-title" content="AGENT SHELL">
 <!-- Edge / MS PWA hints -->
 <meta name="msapplication-TileColor" content="#0a0a0a">
 <meta name="msapplication-starturl" content="/">
@@ -34,24 +34,24 @@
         <rect x="18" y="18" width="12" height="12" rx="1" stroke="#00FF88" stroke-width="1.5"/>
         <circle cx="16" cy="16" r="2.5" fill="#4F98A3"/>
       </svg>
-      <span class="topnav__title">AGENT <span class="green">SHELL</span></span>
+      <span class="topnav__title">SOVEREIGN <span class="green">CMD</span></span>
       <span class="topnav__version">v3.0</span>
     </div>
     <div class="topnav__tabs" id="main-tabs">
       <button class="tab active" data-panel="brief">BRIEF</button>
       <button class="tab" data-panel="chain">CHAIN</button>
-      <button class="tab" data-panel="ide">IDE</button>
-      <button class="tab" data-panel="terminal">TERMINAL</button>
       <button class="tab" data-panel="agents">AGENTS</button>
       <button class="tab" data-panel="ops">OPS</button>
       <button class="tab" data-panel="intel">INTEL</button>
       <button class="tab" data-panel="replay">REPLAY</button>
       <button class="tab" data-panel="pressure">PRESSURE</button>
+      <button class="tab" data-panel="shell">SHELL</button>
+      <button class="tab" data-panel="ide">IDE</button>
     </div>
     <div class="topnav__right">
-      <div class="wallet-status" id="termux-nav-status">
-        <div class="wallet-dot error termux-status-dot"></div>
-        <span class="termux-status-label" id="termux-label">TERMUX: DISCONNECTED</span>
+      <div class="termux-status" id="termux-status">
+        <div class="termux-dot" id="termux-dot"></div>
+        <span id="termux-label">TERMUX: DISCONNECTED</span>
       </div>
       <div class="wallet-status" id="wallet-status">
         <div class="wallet-dot" id="wallet-dot"></div>
@@ -175,12 +175,12 @@
         <div class="brief-card__title">DOMAIN STATUS</div>
         <div class="domain-list">
           <div class="domain-row">
-            <span class="domain-name">sia-agent-shell.com</span>
-            <a href="https://sia-agent-shell.com" target="_blank" class="domain-btn">→ DURAK</a>
+            <span class="domain-name">sovereign-ai-studios.com</span>
+            <a href="https://sovereign-ai-studios.com" target="_blank" class="domain-btn">→ DURAK</a>
           </div>
           <div class="domain-row">
-            <span class="domain-name">agentshell.com</span>
-            <a href="https://agentshell.com" target="_blank" class="domain-btn">→ SOVEREIGN</a>
+            <span class="domain-name">sovereignaistudios.com</span>
+            <a href="https://sovereignaistudios.com" target="_blank" class="domain-btn">→ SOVEREIGN</a>
           </div>
         </div>
         <div class="brief-card__title" style="margin-top:16px">ARCHITECTURE CONSTANTS</div>
@@ -346,89 +346,6 @@
     </div>
   </section>
 
-  <!-- ======= IDE ======= -->
-  <section class="panel" id="panel-ide">
-    <div class="panel__header">
-      <span class="panel__index">08</span>
-      <h2 class="panel__title">Virtual IDE</h2>
-      <span class="panel__sub">VFS Editor & Sandbox</span>
-    </div>
-
-    <div class="ide-container">
-      <div class="ide-sidebar">
-        <div class="ide-sidebar__header">
-          <span>VIRTUAL FILES</span>
-        </div>
-        <div class="vfs-controls">
-          <button class="btn btn--sm btn--green" id="vfs-new-file">NEW FILE</button>
-          <button class="btn btn--sm btn--ghost" id="vfs-rename">RENAME</button>
-          <button class="btn btn--sm btn--red" id="vfs-delete">DELETE</button>
-        </div>
-        <div class="vfs-tree" id="vfs-tree">
-          <!-- Files dynamically rendered -->
-        </div>
-      </div>
-
-      <div class="ide-editor">
-        <div class="ide-editor__header">
-          <span class="ide-editor__title" id="ide-active-file-title">index.html</span>
-          <span class="ide-editor__status text-green">LIVE AUTO-RELOAD</span>
-        </div>
-        <div class="ide-editor__body">
-          <pre class="ide-line-numbers" id="ide-line-numbers">1</pre>
-          <textarea class="ide-textarea" id="ide-textarea" spellcheck="false" placeholder="Select or create a file..."></textarea>
-        </div>
-      </div>
-
-      <div class="ide-preview-pane">
-        <div class="ide-preview__header">
-          <span>LIVE PREVIEW</span>
-        </div>
-        <div class="ide-preview__body">
-          <iframe id="ide-preview" title="Sandbox Live Preview"></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======= TERMINAL ======= -->
-  <section class="panel" id="panel-terminal">
-    <div class="panel__header">
-      <span class="panel__index">09</span>
-      <h2 class="panel__title">Secure Terminal</h2>
-      <span class="panel__sub">Termux Substrate Bridge</span>
-    </div>
-
-    <div class="terminal-card">
-      <div class="terminal-header">
-        <div class="terminal-indicator">
-          <div class="wallet-dot error termux-status-dot"></div>
-          <span class="termux-status-label mono">TERMUX: DISCONNECTED</span>
-        </div>
-        <span class="terminal-header__title mono">bash@sia-substrate</span>
-      </div>
-
-      <pre class="terminal-output" id="terminal-output">Sovereign Agent Shell Terminal v3.0
-Type 'help' for local fallback commands or connect Termux to run local host commands.
-</pre>
-
-      <div class="terminal-input-row">
-        <span class="terminal-prompt mono">$</span>
-        <input type="text" class="terminal-input mono" id="terminal-input" placeholder="Type command..." autocomplete="off">
-      </div>
-
-      <div class="terminal-touch-toolbar">
-        <button class="touch-key btn btn--sm btn--ghost" data-key="CTRL">CTRL</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="ALT">ALT</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="TAB">TAB</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="ESC">ESC</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="|">|</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="~">~</button>
-        <button class="touch-key btn btn--sm btn--ghost" data-key="^">^</button>
-      </div>
-    </div>
-  </section>
-
   <!-- ======= AGENTS ======= -->
   <section class="panel" id="panel-agents">
     <div class="panel__header">
@@ -520,77 +437,6 @@ Type 'help' for local fallback commands or connect Termux to run local host comm
         <button class="btn btn--sm btn--amber" onclick="runOracle(1)">RUN 1</button>
         <button class="btn btn--sm btn--amber" onclick="runOracle(5)">RUN 5</button>
         <button class="btn btn--sm btn--red" onclick="resetOracle()">RESET</button>
-      </div>
-    </div>
-
-    <!-- Cognitive Multi-Agent Swarm -->
-    <div class="section-header" style="margin-top:24px">
-      <span class="section-header__title">COGNITIVE MULTI-AGENT SWARM</span>
-    </div>
-    <div class="ide-agents-container">
-      <div class="agent-persona-card" id="agent-architect">
-        <div class="agent-persona-header">
-          <div class="agent-dot green-dot pulse"></div>
-          <span class="agent-persona-name">Architect Agent</span>
-        </div>
-        <div class="agent-persona-status">Role: Structural isolation & architecture mapping</div>
-        <div class="agent-persona-log" id="architect-log">
-          <div>[Architect] System topology verified. All 23 conservation laws mapped.</div>
-        </div>
-      </div>
-
-      <div class="agent-persona-card" id="agent-coder">
-        <div class="agent-persona-header">
-          <div class="agent-dot green-dot pulse"></div>
-          <span class="agent-persona-name">Coder Agent</span>
-        </div>
-        <div class="agent-persona-status">Role: Automated state patching & IDE generation</div>
-        <div class="agent-persona-log" id="coder-log">
-          <div>[Coder] Listening to VFS changes. Live sandbox synchronizer active.</div>
-        </div>
-      </div>
-
-      <div class="agent-persona-card" id="agent-debugger">
-        <div class="agent-persona-header">
-          <div class="agent-dot green-dot"></div>
-          <span class="agent-persona-name">Debugger Agent</span>
-        </div>
-        <div class="agent-persona-status" id="debugger-status">Role: Self-healing error trap & diagnostics</div>
-        <div class="agent-persona-log" id="debugger-log">
-          <div>[Debugger] Standard exception hooks compiled. Standing by.</div>
-        </div>
-      </div>
-
-      <div class="agent-persona-card" id="agent-optimizer">
-        <div class="agent-persona-header">
-          <div class="agent-dot green-dot pulse"></div>
-          <span class="agent-persona-name">Optimizer Agent</span>
-        </div>
-        <div class="agent-persona-status">Role: Renormalization flow convergence validation</div>
-        <div class="agent-persona-log" id="optimizer-log">
-          <div>[Optimizer] RG distance tracking optimized. Latency target: 0.113ms.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Self-Healing Simulator -->
-    <div class="self-healing-card">
-      <div class="self-healing-header">
-        <div class="agent-dot red-dot"></div>
-        <span class="self-healing-title">RUNTIME SELF-HEALING SIMULATOR</span>
-      </div>
-      <p class="self-healing-desc">
-        Simulate a runtime script exception to verify the self-healing loop. The stack trace will be automatically caught by the <strong>Debugger Agent</strong>, which will isolate the root cause and generate an auto-patch diff in the editor.
-      </p>
-      <div class="self-healing-controls">
-        <button class="btn btn--red" onclick="simulateRuntimeException()">🔴 TRIGGER RUNTIME EXCEPTION</button>
-      </div>
-      <div class="self-healing-patch" id="self-healing-patch-box" style="display:none">
-        <div class="patch-header">
-          <span class="patch-title text-red">🚨 AUTO-PATCH GENERATED BY DEBUGGER AGENT</span>
-          <button class="btn btn--sm btn--green" onclick="applyDebuggerPatch()">✓ APPLY PATCH TO VFS</button>
-        </div>
-        <pre class="patch-diff" id="patch-diff-output"></pre>
       </div>
     </div>
   </section>
@@ -880,6 +726,129 @@ Type 'help' for local fallback commands or connect Termux to run local host comm
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ======= SHELL & TERMINAL ======= -->
+  <section class="panel" id="panel-shell">
+    <div class="panel__header">
+      <span class="panel__index">08</span>
+      <h2 class="panel__title">Substrate Shell</h2>
+      <span class="panel__sub">Autonomous OS Node Substrate</span>
+    </div>
+
+    <!-- Connection / Target Selection -->
+    <div class="substrate-selector">
+      <span class="selector-label">SUBSTRATE TARGET:</span>
+      <button class="selector-btn active" id="sub-local" onclick="setSubstrateTarget('local')">LOCAL EMULATOR</button>
+      <button class="selector-btn" id="sub-termux" onclick="setSubstrateTarget('termux')">LOCAL TERMUX</button>
+      <button class="selector-btn" id="sub-render" onclick="setSubstrateTarget('render')">RENDER REMOTE</button>
+    </div>
+
+    <!-- Terminal Window -->
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="tdot tdot-red"></span>
+          <span class="tdot tdot-yellow"></span>
+          <span class="tdot tdot-green"></span>
+        </div>
+        <span class="terminal-title" id="terminal-target-title">SHELL: LOCAL SANDBOX</span>
+        <div class="terminal-actions">
+          <button class="tbtn" onclick="clearTerminal()">CLEAR</button>
+          <button class="tbtn" onclick="resetTerminalEnv()">RESET</button>
+          <button class="tbtn" onclick="downloadTerminalLog()">LOG 💾</button>
+        </div>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="tline tline-info">Sovereign Sovereign Substrate Interface Loaded.</div>
+        <div class="tline tline-info">Type 'help' to view available operations, or execute arbitrary bash/JS commands.</div>
+      </div>
+      <div class="terminal-input-row">
+        <span class="terminal-prompt" id="terminal-prompt-char">$</span>
+        <input type="text" class="terminal-input" id="terminal-input" placeholder="Execute command..." autofocus autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= SOVEREIGN IDE WORKSPACE ======= -->
+  <section class="panel" id="panel-ide">
+    <div class="panel__header">
+      <span class="panel__index">09</span>
+      <h2 class="panel__title">Sovereign IDE Workspace</h2>
+      <span class="panel__sub">Dynamic File System & Execution Environment</span>
+    </div>
+
+    <div class="ide-workspace">
+      <!-- File Explorer Sidebar -->
+      <aside class="ide-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">FILE SYSTEM</span>
+          <div class="sidebar-actions">
+            <button class="sibtn" onclick="ideCreateFile()" title="Create File">📄+</button>
+            <button class="sibtn" onclick="ideCreateFolder()" title="Create Folder">📁+</button>
+            <button class="sibtn" onclick="ideRenameSelected()" title="Rename File">✏️</button>
+            <button class="sibtn" onclick="ideDeleteSelected()" title="Delete File">🗑️</button>
+            <button class="sibtn" onclick="refreshFileSystem()" title="Refresh">↻</button>
+          </div>
+        </div>
+        <div class="file-tree" id="file-tree">
+          <!-- Tree list will populate here -->
+        </div>
+        <div class="sidebar-footer">
+          <input type="file" id="ide-file-upload-input" style="display:none" onchange="handleIdeFileUpload(this)">
+          <button class="btn btn--ghost btn--sm btn-full" onclick="document.getElementById('ide-file-upload-input').click()">UPLOAD FILE</button>
+        </div>
+      </aside>
+
+      <!-- Code Editor Workspace -->
+      <div class="ide-editor-container">
+        <!-- Tabbed Multi-file editing header -->
+        <div class="ide-tabs" id="ide-tabs">
+          <!-- Tab items go here dynamically -->
+        </div>
+
+        <!-- Editor Toolbar -->
+        <div class="ide-editor-toolbar">
+          <div class="toolbar-left">
+            <span class="current-filepath" id="current-filepath">No File Open</span>
+          </div>
+          <div class="toolbar-right">
+            <button class="sibtn" onclick="editorZoomOut()" title="Zoom Out font">-</button>
+            <span class="font-size-indicator" id="font-size-val">12px</span>
+            <button class="sibtn" onclick="editorZoomIn()" title="Zoom In font">+</button>
+            <button class="btn btn--green btn--sm" onclick="saveCurrentFile()">SAVE FILE</button>
+          </div>
+        </div>
+
+        <!-- Editor Body (Gutter + TextArea) -->
+        <div class="editor-main-layout">
+          <div class="editor-gutter" id="editor-gutter">1</div>
+          <textarea class="editor-textarea" id="editor-textarea" spellcheck="false" autocomplete="off" oninput="updateGutter()"></textarea>
+        </div>
+
+        <!-- Editor Status bar -->
+        <div class="editor-status-bar">
+          <span class="editor-status-item" id="editor-char-count">0 characters</span>
+          <span class="editor-status-item" id="editor-line-count">1 line</span>
+          <span class="editor-status-item text-green" id="editor-sync-status">All changes saved</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDE Lower Execution Console -->
+    <div class="ide-console">
+      <div class="console-header">
+        <span class="console-title">CODE EXECUTION CONSOLE</span>
+        <div class="console-actions">
+          <button class="btn btn--green btn--sm" onclick="runConsoleCode()">RUN CODE</button>
+          <button class="btn btn--red btn--sm" onclick="killConsoleProcess()">KILL</button>
+          <button class="btn btn--ghost btn--sm" onclick="clearConsoleLog()">CLEAR</button>
+        </div>
+      </div>
+      <div class="console-body" id="console-body">
+        <div class="cline cline-info">Sovereign code execution sandbox initialized. Support Node.js scripting in remote environment.</div>
+      </div>
     </div>
   </section>
 
