@@ -1,5 +1,5 @@
 {
-  "name": "savage-command-center",
+  "name": "agent-shell",
   "version": "3.1.0",
   "description": "Sovereign Control Interface & PWA Dashboard for SIA-v6, featuring an advanced integrated Shell and IDE",
   "main": "server.js",

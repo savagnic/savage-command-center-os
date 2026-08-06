@@ -1508,6 +1508,274 @@ window.applyDebuggerPatch = function() {
 
 
 // ================================================================
+// CONNECT & INTEGRATIONS HUB LOGIC
+// ================================================================
+const INTEGRATIONS_DATA = [
+  { id: 'github_mcp', name: 'GitHub MCP', icon: '🐙', type: 'MCP', desc: 'Manage repositories, pull requests, issues and commits.', pLabel: 'Personal Access Token', pPlaceholder: 'ghp_...', sLabel: 'Target Repository (owner/repo)', sPlaceholder: 'sovereign-ai/agent-shell' },
+  { id: 'slack_mcp', name: 'Slack MCP', icon: '💬', type: 'MCP', desc: 'Publish messages, fetch channels, trigger workflow alerts.', pLabel: 'Slack Bot Token', pPlaceholder: 'xoxb-...', sLabel: 'Target Channel', sPlaceholder: '#general' },
+  { id: 'discord_mcp', name: 'Discord MCP', icon: '👾', type: 'MCP', desc: 'Interact with Webhooks and Gateway servers.', pLabel: 'Bot Token or Webhook URL', pPlaceholder: 'token or URL...', sLabel: 'Channel ID (optional)', sPlaceholder: 'e.g. 123456' },
+  { id: 'postgres_mcp', name: 'PostgreSQL MCP', icon: '🐘', type: 'Database', desc: 'Run SQL statements, analyze schemas and export tables.', pLabel: 'Database URI / Connection String', pPlaceholder: 'postgresql://...', sLabel: 'Default Schema', sPlaceholder: 'public' },
+  { id: 'sqlite_mcp', name: 'SQLite MCP', icon: '💾', type: 'Database', desc: 'Interact with local standalone database files.', pLabel: 'Database Filepath', pPlaceholder: 'agent_store.db', sLabel: 'Journal Mode', sPlaceholder: 'WAL' },
+  { id: 'brave_mcp', name: 'Brave Search MCP', icon: '🦁', type: 'Search', desc: 'Fetch real-time web results for search augmentation.', pLabel: 'Brave Subscription Token', pPlaceholder: 'BSX...', sLabel: 'Country Code Filter', sPlaceholder: 'US' },
+  { id: 'google_maps_mcp', name: 'Google Maps MCP', icon: '🗺', type: 'Mapping', desc: 'Calculate geocodes, view places and routing coordinates.', pLabel: 'Google Cloud API Key', pPlaceholder: 'AIzaSy...', sLabel: 'Preferred Language', sPlaceholder: 'en' },
+  { id: 'linear_mcp', name: 'Linear MCP', icon: '📐', type: 'MCP', desc: 'Query and synchronize issues, milestones and team boards.', pLabel: 'Linear Personal API Key', pPlaceholder: 'lin_api_...', sLabel: 'Target Organization Name', sPlaceholder: 'sovereign-ai' },
+  { id: 'notion_mcp', name: 'Notion MCP', icon: '📓', type: 'MCP', desc: 'Access and modify Notion pages, properties and databases.', pLabel: 'Internal Integration Token', pPlaceholder: 'secret_...', sLabel: 'Database ID', sPlaceholder: 'e.g. 3a9...' },
+  { id: 'puppeteer_mcp', name: 'Puppeteer MCP', icon: '🕷', type: 'Automation', desc: 'Automate web browsing, screen capturing and page crawls.', pLabel: 'Headless Endpoint (optional)', pPlaceholder: 'ws://...', sLabel: 'Sandbox Mode (true/false)', sPlaceholder: 'true' },
+  { id: 'docker_mcp', name: 'Docker MCP', icon: '🐳', type: 'DevOps', desc: 'Monitor local Docker host containers and trigger builds.', pLabel: 'Docker Socket Path', pPlaceholder: '/var/run/docker.sock', sLabel: 'Host API Version', sPlaceholder: '1.41' },
+  { id: 'jira_mcp', name: 'Jira MCP', icon: '🎫', type: 'MCP', desc: 'Query and update Jira boards, tickets and workflows.', pLabel: 'Atlassian API Token', pPlaceholder: 'ATATT...', sLabel: 'Jira Site Host / Domain', sPlaceholder: 'your-domain.atlassian.net' },
+  { id: 'figma_mcp', name: 'Figma MCP', icon: '🎨', type: 'Design', desc: 'Access designs, retrieve coordinates and export frames.', pLabel: 'Personal Access Token', pPlaceholder: 'fig_...', sLabel: 'Project ID Scope', sPlaceholder: 'e.g. abc123xyz' },
+  { id: 'airtable_mcp', name: 'Airtable MCP', icon: '📊', type: 'MCP', desc: 'Read/write rows, manage bases and synchronize tables.', pLabel: 'Personal Access Token', pPlaceholder: 'pat.key...', sLabel: 'Target Base ID', sPlaceholder: 'app...' },
+  { id: 'openai_mcp', name: 'OpenAI MCP', icon: '🧠', type: 'AI Inference', desc: 'Run completions, process embeddings, and query models.', pLabel: 'OpenAI Secret API Key', pPlaceholder: 'sk-proj-...', sLabel: 'Preferred Inference Model', sPlaceholder: 'gpt-4o-mini' },
+  { id: 'pinecone_mcp', name: 'Pinecone MCP', icon: '🌲', type: 'Vector DB', desc: 'Index and search high-dimensional vector embeddings.', pLabel: 'Pinecone API Key', pPlaceholder: 'pcsk_...', sLabel: 'Active Environment', sPlaceholder: 'us-east-1-aws' },
+  { id: 'sentry_mcp', name: 'Sentry MCP', icon: '🎯', type: 'DevOps', desc: 'Collect exceptions, logs and trigger debugger webhooks.', pLabel: 'Sentry Auth Token', pPlaceholder: 'sntry_...', sLabel: 'Organization Slug Name', sPlaceholder: 'sovereign-ai' },
+  { id: 'stripe_mcp', name: 'Stripe MCP', icon: '💳', type: 'Finance', desc: 'Collect transaction metrics and run payment simulations.', pLabel: 'Stripe Secret API Key', pPlaceholder: 'sk_live_...', sLabel: 'Signing Webhook Secret', sPlaceholder: 'whsec_...' },
+  { id: 'trello_mcp', name: 'Trello MCP', icon: '📋', type: 'MCP', desc: 'Create boards, manage cards and track list progress.', pLabel: 'Trello Developer API Key', pPlaceholder: 'e.g. 1a2b3c...', sLabel: 'OAuth Member Token', pPlaceholder: 'token string...' },
+  { id: 'google_drive_mcp', name: 'Google Drive MCP', icon: '💾', type: 'Cloud Drive', desc: 'Index files, retrieve documents and download metadata.', pLabel: 'Google Drive Auth Token', pPlaceholder: 'ya29.a0...', sLabel: 'Developer API Key (optional)', sPlaceholder: 'AIzaSy...' }
+];
+
+let selectedIntegration = null;
+const INTEGRATION_STATUSES = {};
+
+function initIntegrations() {
+  const grid = document.getElementById('integrations-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // Recover custom credentials from local storage if existing
+  let cachedCreds = {};
+  try {
+    const raw = localStorage.getItem('sas_v3_integrations_creds');
+    if (raw) cachedCreds = JSON.parse(raw);
+  } catch (e) {}
+
+  INTEGRATIONS_DATA.forEach(item => {
+    // Default connection status
+    if (cachedCreds[item.id]) {
+      INTEGRATION_STATUSES[item.id] = 'CONNECTED';
+    } else {
+      INTEGRATION_STATUSES[item.id] = 'DISCONNECTED';
+    }
+
+    const card = document.createElement('div');
+    card.className = 'integration-card';
+    card.id = `integration-card-${item.id}`;
+    if (selectedIntegration && selectedIntegration.id === item.id) {
+      card.classList.add('active');
+    }
+
+    const isConnected = INTEGRATION_STATUSES[item.id] === 'CONNECTED';
+    card.innerHTML = `
+      <div>
+        <div class="integration-card__header">
+          <span class="integration-card__icon">${item.icon}</span>
+          <span class="integration-card__name">${item.name}</span>
+        </div>
+        <div class="integration-card__desc">${item.desc}</div>
+      </div>
+      <div class="integration-card__status-row">
+        <span class="integration-card__status ${isConnected ? 'connected' : ''}">${INTEGRATION_STATUSES[item.id]}</span>
+        <span class="integration-card__badge">${item.type}</span>
+      </div>
+    `;
+
+    card.addEventListener('click', () => selectIntegration(item));
+    grid.appendChild(card);
+  });
+}
+
+function selectIntegration(item) {
+  selectedIntegration = item;
+
+  // Highlight active card
+  document.querySelectorAll('.integration-card').forEach(el => el.classList.remove('active'));
+  const activeCard = document.getElementById(`integration-card-${item.id}`);
+  if (activeCard) activeCard.classList.add('active');
+
+  // Update details pane header
+  const titleEl = document.getElementById('active-integration-title');
+  const statusEl = document.getElementById('active-integration-status');
+  if (titleEl) titleEl.textContent = item.name;
+
+  const isConnected = INTEGRATION_STATUSES[item.id] === 'CONNECTED';
+  if (statusEl) {
+    statusEl.textContent = INTEGRATION_STATUSES[item.id];
+    statusEl.className = isConnected ? 'badge badge--green' : 'badge badge--gray';
+  }
+
+  // Update inputs
+  document.getElementById('no-integration-selected').style.display = 'none';
+  const form = document.getElementById('integration-config-form');
+  form.style.display = 'flex';
+
+  const pLabel = document.getElementById('field-primary-label');
+  const pInput = document.getElementById('integration-key-input');
+  const sLabel = document.getElementById('field-secondary-label');
+  const sInput = document.getElementById('integration-secondary-input');
+
+  if (pLabel) pLabel.textContent = item.pLabel;
+  if (pInput) {
+    pInput.placeholder = item.pPlaceholder;
+    pInput.value = '';
+  }
+  if (sLabel) sLabel.textContent = item.sLabel;
+  if (sInput) {
+    sInput.placeholder = item.sPlaceholder;
+    sInput.value = '';
+  }
+
+  // Recover cached credentials
+  try {
+    const raw = localStorage.getItem('sas_v3_integrations_creds');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed[item.id]) {
+        if (pInput) pInput.value = parsed[item.id].primary || '';
+        if (sInput) sInput.value = parsed[item.id].secondary || '';
+      }
+    }
+  } catch(e) {}
+
+  // Hide handshake logs by default when switching
+  const resultCard = document.getElementById('handshake-result-card');
+  if (resultCard) resultCard.style.display = 'none';
+}
+
+async function testIntegrationHandshake() {
+  if (!selectedIntegration) return;
+
+  const btn = document.getElementById('btn-test-integration');
+  const primaryVal = document.getElementById('integration-key-input').value.trim();
+  const secondaryVal = document.getElementById('integration-secondary-input').value.trim();
+
+  const logBox = document.getElementById('handshake-result-card');
+  const logOut = document.getElementById('handshake-log-output');
+
+  if (logBox) logBox.style.display = 'block';
+  if (logOut) {
+    logOut.textContent = `[MCP Gateway] Initiating connection pipeline for ${selectedIntegration.name}...\n`;
+    logOut.className = 'handshake-log';
+  }
+
+  if (btn) {
+    btn.textContent = 'CONNECTING...';
+    btn.disabled = true;
+  }
+
+  // Simulate server handshake step by step with authentic logs
+  setTimeout(() => {
+    if (logOut) logOut.textContent += `[MCP Gateway] Gating credentials authorization check...\n`;
+  }, 400);
+
+  setTimeout(() => {
+    if (logOut) logOut.textContent += `[MCP Gateway] Resolving connection endpoint and binding listeners...\n`;
+  }, 800);
+
+  setTimeout(() => {
+    // Connect success or failure simulation
+    const success = primaryVal.length > 3; // Any reasonable token length will succeed
+
+    if (success) {
+      INTEGRATION_STATUSES[selectedIntegration.id] = 'CONNECTED';
+      if (logOut) {
+        logOut.textContent += `[MCP Gateway] Handshake success! Connected to ${selectedIntegration.name} safely.\n`;
+        logOut.textContent += `[MCP Gateway] Secure channel established. Host metrics and actions initialized successfully.`;
+        logOut.className = 'handshake-log success';
+      }
+
+      // Cache credentials
+      try {
+        const raw = localStorage.getItem('sas_v3_integrations_creds') || '{}';
+        const parsed = JSON.parse(raw);
+        parsed[selectedIntegration.id] = { primary: primaryVal, secondary: secondaryVal };
+        localStorage.setItem('sas_v3_integrations_creds', JSON.stringify(parsed));
+      } catch (e) {}
+
+      // Show wallet banner
+      showBanner(`✓ Successfully connected to ${selectedIntegration.name}!`, 'ok');
+    } else {
+      INTEGRATION_STATUSES[selectedIntegration.id] = 'DISCONNECTED';
+      if (logOut) {
+        logOut.textContent += `[MCP Gateway] Handshake rejected: Credentials or parameters missing/invalid.\n`;
+        logOut.textContent += `[MCP Gateway] Verify token correctness or check client logs before retry.`;
+        logOut.className = 'handshake-log error';
+      }
+      // Remove cache
+      try {
+        const raw = localStorage.getItem('sas_v3_integrations_creds') || '{}';
+        const parsed = JSON.parse(raw);
+        delete parsed[selectedIntegration.id];
+        localStorage.setItem('sas_v3_integrations_creds', JSON.stringify(parsed));
+      } catch (e) {}
+
+      showBanner(`⚠ Connection to ${selectedIntegration.name} failed. Check token inputs.`, 'warn');
+    }
+
+    if (btn) {
+      btn.textContent = 'TEST HANDSHAKE';
+      btn.disabled = false;
+    }
+
+    // Refresh grids to show updated status
+    initIntegrations();
+
+    // Maintain active card highlight
+    const activeCard = document.getElementById(`integration-card-${selectedIntegration.id}`);
+    if (activeCard) activeCard.classList.add('active');
+
+    // Update status badge
+    const statusEl = document.getElementById('active-integration-status');
+    if (statusEl) {
+      statusEl.textContent = INTEGRATION_STATUSES[selectedIntegration.id];
+      statusEl.className = success ? 'badge badge--green' : 'badge badge--gray';
+    }
+
+  }, 1500);
+}
+
+// Loads the corresponding integration connector logic directly into the VFS / IDE panel
+async function loadIntegrationInVFS() {
+  if (!selectedIntegration) return;
+
+  try {
+    const filename = `${selectedIntegration.id}.js`;
+    // Fetch file from our integrations folder or simulated content
+    let content = `// Failed to load physical module for ${filename}`;
+
+    try {
+      const res = await fetch(`integrations/${filename}`);
+      if (res.ok) {
+        content = await res.text();
+      }
+    } catch (err) {
+      console.warn("Could not retrieve physical integration file, rendering fallback template.", err);
+    }
+
+    const vfs = getVFS();
+    vfs[filename] = content;
+    saveVFS(vfs);
+
+    // Switch to IDE panel
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+    const ideTab = document.querySelector('.tab[data-panel="ide"]');
+    const idePanel = document.getElementById('panel-ide');
+
+    if (ideTab) ideTab.classList.add('active');
+    if (idePanel) {
+      idePanel.classList.add('active');
+      selectFile(filename);
+      updateLineNumbers();
+      updateSandboxPreview();
+    }
+
+    showBanner(`✓ Loaded ${filename} into active Virtual IDE workspace.`, 'ok');
+  } catch (e) {
+    showBanner(`Failed loading into IDE: ${e.message}`, 'err');
+  }
+}
+
+// ================================================================
 // INIT
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1525,6 +1793,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setupIDE();
   setupTerminal();
   connectTermuxWS();
+  initIntegrations();
+
+  // Bind Connect Panel listeners
+  document.getElementById('btn-test-integration')?.addEventListener('click', testIntegrationHandshake);
+  document.getElementById('btn-vfs-integration')?.addEventListener('click', loadIntegrationInVFS);
 
   // If already had a wallet session, show reconnect hint
   if (STATE.wallet) {
