@@ -471,7 +471,8 @@ function tickAgentC(state) {
 
 // --- PROOF HASH: SHA-256 of agent state ---
 async function proofHash(obj) {
-  const data = new TextEncoder().encode(JSON.stringify(obj) + Date.now());
+  // Deterministic: no Date.now() seed, so replay produces identical hashes.
+  const data = new TextEncoder().encode(JSON.stringify(obj));
   const buf = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);
 }
@@ -707,6 +708,10 @@ window.loadMetrics = async function() {
     const ts = new Date().toISOString();
     if (tsEl) tsEl.textContent = 'Failed: ' + ts;
     if (orgEl) { orgEl.textContent = 'OFFLINE'; orgEl.className = 'cockpit-card__value red'; }
+    if (hlEl) hlEl.textContent = '—';
+    if (agEl) agEl.textContent = '—';
+    if (enEl) enEl.textContent = '—';
+    if (rvEl) rvEl.textContent = '—';
     const msg = e.name === 'TimeoutError' ? 'TIMEOUT — enable GCP billing to activate endpoint' : e.message;
     if (rawEl) rawEl.textContent = 'Error: ' + msg;
   } finally {
@@ -748,20 +753,20 @@ window.fetchDecisions = async function() {
     replayDecisions.length = 0;
     decisions.forEach(d => replayDecisions.push(d));
 
-    if (status) status.textContent = decisions.length + ' decision(s) loaded from CEROS';
-    renderDecisionGrid(decisions);
+    const countLabel = decisions.length === 0 ? '0 decisions' : decisions.length + ' decision(s)';
+    if (status) status.textContent = countLabel + ' loaded from CEROS';
+    renderDecisionGrid(decisions, null);
 
   } catch (e) {
-    const msg = e.name === 'TimeoutError' ? 'TIMEOUT — endpoint offline' : e.message;
-    if (status) status.textContent = 'Error: ' + msg + ' — showing local history';
-    // Render empty state with clear error
-    renderDecisionGrid([]);
+    const msg = e.name === 'TimeoutError' ? 'TIMEOUT' : e.message;
+    if (status) status.textContent = 'Error: no response from CEROS (' + msg + ')';
+    renderDecisionGrid([], 'no response from CEROS (' + msg + ')');
   } finally {
     if (btn) { btn.textContent = '↻ FETCH DECISIONS'; btn.disabled = false; }
   }
 };
 
-function renderDecisionGrid(decisions) {
+function renderDecisionGrid(decisions, errorMsg) {
   const grid  = document.getElementById('replay-grid');
   const empty = document.getElementById('replay-empty');
   if (!grid) return;
@@ -770,7 +775,19 @@ function renderDecisionGrid(decisions) {
   Array.from(grid.querySelectorAll('.replay-card')).forEach(el => el.remove());
 
   if (decisions.length === 0) {
-    if (empty) empty.style.display = 'flex';
+    if (empty) {
+      empty.style.display = 'flex';
+      const textSpan = empty.querySelector('span:not(.replay-empty__icon)');
+      if (textSpan) {
+        if (errorMsg) {
+          textSpan.textContent = 'Error: ' + errorMsg + ' — please check connection status.';
+          textSpan.style.color = 'var(--red)';
+        } else {
+          textSpan.textContent = 'No decisions recorded yet — run an organism cycle and return.';
+          textSpan.style.color = 'var(--text-dim)';
+        }
+      }
+    }
     return;
   }
   if (empty) empty.style.display = 'none';
@@ -857,9 +874,17 @@ window.loadPressureBoard = async function() {
 
   } catch (e) {
     const ts = new Date().toISOString();
-    if (tsEl) tsEl.textContent = 'Offline: ' + ts;
-    const poStatus = document.getElementById('po-status');
-    if (poStatus) { poStatus.textContent = 'OFFLINE'; poStatus.className = 'pressure-field__val red'; }
+    if (tsEl) tsEl.textContent = 'Last updated: ' + ts + ' (offline)';
+    const poStatus  = document.getElementById('po-status');
+    const poHealth  = document.getElementById('po-health');
+    const poAgents  = document.getElementById('po-agents');
+    const poEntropy = document.getElementById('po-entropy');
+    const poRevenue = document.getElementById('po-revenue');
+    if (poStatus)  { poStatus.textContent  = 'OFFLINE'; poStatus.className = 'pressure-field__val red'; }
+    if (poHealth)  poHealth.textContent  = '—';
+    if (poAgents)  poAgents.textContent  = '—';
+    if (poEntropy) poEntropy.textContent = '—';
+    if (poRevenue) poRevenue.textContent = '—';
   } finally {
     if (btn) { btn.textContent = '↻ REFRESH'; btn.disabled = false; }
   }
