@@ -1332,6 +1332,21 @@ document.addEventListener('DOMContentLoaded', () => {
 // ADVANCED TERMUX & RENDER SUBSTRATE AGENT ENGINE (TERMINAL & IDE)
 // ================================================================
 let socket = null;
+
+// Every privileged substrate message must carry a fresh nonce + timestamp
+// (validated server-side by the nonce ledger to block replay attacks).
+function substrateNonce() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  const buf = new Uint8Array(16);
+  (window.crypto || {}).getRandomValues ? crypto.getRandomValues(buf) : null;
+  return Array.from(buf, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function substrateSend(payload) {
+  if (!socket || socket.readyState !== WebSocket.OPEN) return false;
+  socket.send(JSON.stringify(Object.assign({}, payload, { nonce: substrateNonce(), ts: Date.now() })));
+  return true;
+}
 let substrateTarget = 'local';
 let activeFilepath = null;
 const openTabs = [];
@@ -1523,10 +1538,10 @@ async function executeTerminalCommand(cmdText) {
   }
 
   // Send execution command
-  socket.send(JSON.stringify({
+  substrateSend({
     type: 'exec',
     command: daemonCmd
-  }));
+  });
 }
 
 function handleExecResponse(data) {
@@ -1608,7 +1623,7 @@ function refreshFileSystem() {
   }
 
   if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type: 'list_files' }));
+    substrateSend({ type: 'list_files' });
   } else {
     renderFileSystemTree([]);
   }
@@ -1674,7 +1689,7 @@ function openFile(filepath, isDirectory) {
     openFileInTab(filepath, content);
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: 'read_file', filepath }));
+      substrateSend({ type: 'read_file', filepath });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1851,11 +1866,11 @@ window.saveCurrentFile = function() {
     if (socket && socket.readyState === WebSocket.OPEN) {
       document.getElementById('editor-sync-status').textContent = 'Saving changes...';
       document.getElementById('editor-sync-status').className = 'editor-status-item text-amber';
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'write_file',
         filepath: activeFilepath,
         content: tab.content
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1876,11 +1891,11 @@ window.ideCreateFile = function() {
     openFile(cleanedName, false);
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'write_file',
         filepath: cleanedName,
         content: ''
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1897,11 +1912,11 @@ window.ideCreateFolder = function() {
     showBanner('Folders are emulated via path names (e.g. create file folder/file.js).', 'info');
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'write_file',
         filepath: cleanedName + '/.placeholder',
         content: ''
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1923,11 +1938,11 @@ window.ideRenameSelected = function() {
     refreshFileSystem();
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'rename_file',
         filepath: activeFilepath,
         new_filepath: cleanedNewName
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1945,10 +1960,10 @@ window.ideDeleteSelected = function() {
     refreshFileSystem();
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'delete_file',
         filepath: activeFilepath
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
@@ -1971,11 +1986,11 @@ window.handleIdeFileUpload = function(input) {
       openFile(name, false);
     } else {
       if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
+        substrateSend({
           type: 'write_file',
           filepath: name,
           content: content
-        }));
+        });
       } else {
         showBanner('Error: WebSocket disconnected.', 'err');
       }
@@ -2024,10 +2039,10 @@ window.runConsoleCode = function() {
     runJavaScriptSandbox(tab.content);
   } else {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
+      substrateSend({
         type: 'exec',
         command: `node ${tab.filepath}`
-      }));
+      });
     } else {
       showBanner('Error: WebSocket disconnected.', 'err');
     }
