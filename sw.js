@@ -1,5 +1,5 @@
 // Sovereign Agent Shell — Service Worker v3
-const CACHE = 'agent-shell-v3';
+const CACHE = 'sovereign-cmd-v3';
 const ASSETS = ['/', '/index.html', '/app.js', '/style.css', '/manifest.json'];
 
 self.addEventListener('install', e => {

@@ -1,6 +1,6 @@
 # SOVEREIGN AGENT SHELL — ANDROID OS REPLACEMENT GUIDE
 
-This guide explains how to fully replace your Android shell with the Sovereign Agent Shell, turning your device into an autonomous agent node.
+This guide explains how to fully replace your Android shell with the Sovereign Agentic Agent Shell, turning your device into an autonomous agent node.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ This guide explains how to fully replace your Android shell with the Sovereign A
 
 ## Step 2: Configure the Termux Substrate Agent
 
-The Sovereign Agent Shell web interface is designed to communicate with a local Termux daemon running on your device via WebSockets.
+The Agent Shell web interface is designed to communicate with a local Termux daemon running on your device via WebSockets.
 
 1. Open **Termux**.
 2. Install Python and the WebSockets library:
@@ -32,7 +32,7 @@ The Sovereign Agent Shell web interface is designed to communicate with a local 
    ```bash
    python termux_agent.py
    ```
-   *You should see "Listening on ws://127.0.0.1:8765..."*
+   *You should see "Listening on ws://127.0.0.1:8080..."*
 
 ## Step 3: Initialize the Link
 
