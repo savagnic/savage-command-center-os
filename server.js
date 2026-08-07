@@ -24,6 +24,9 @@ const WebSocket = require('ws');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
+const crypto = require('crypto');
+const { CapabilityGateway } = require('./security/capability-gateway.js');
+const { NonceLedger } = require('./security/nonce-ledger.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -51,6 +54,35 @@ const AUTH_TIMEOUT_MS = parseInt(process.env.AUTH_TIMEOUT_MS || '10000', 10);
 const MAX_AUTH_FAILURES = parseInt(process.env.MAX_AUTH_FAILURES || '5', 10);
 const LOCKOUT_WINDOW_MS = parseInt(process.env.LOCKOUT_WINDOW_MS || '60000', 10);
 const MAX_WRITE_BYTES = parseInt(process.env.MAX_WRITE_BYTES || String(2 * 1024 * 1024), 10); // 2MB default
+const GRANT_TTL_MS = parseInt(process.env.GRANT_TTL_MS || String(15 * 60 * 1000), 10); // 15 min capability grants
+const NONCE_WINDOW_MS = parseInt(process.env.NONCE_WINDOW_MS || '5000', 10);
+
+// ================================================================
+// CAPABILITY GATEWAY + NONCE LEDGER — wired into the live WS path
+// (previously specified in security/*.ts but never enforced)
+// ================================================================
+const gateway = new CapabilityGateway();
+const nonceLedger = new NonceLedger(NONCE_WINDOW_MS);
+
+// Which capability each privileged action requires
+const ACTION_CAPABILITIES = Object.freeze({
+  test_mcp_connection: 'exec_sandboxed',
+  exec: 'exec_privileged',
+  list_files: 'list_files',
+  read_file: 'read_file',
+  write_file: 'write_file',
+  delete_file: 'delete_file',
+  rename_file: 'write_file',
+});
+
+function defaultCapabilities() {
+  const caps = ['read_file', 'list_files', 'write_file', 'delete_file', 'exec_sandboxed'];
+  if (EXEC_ENABLED) caps.push('exec_privileged');
+  return caps;
+}
+
+// Periodic sweep so expired grants do not accumulate
+setInterval(() => gateway.sweepExpired(), 60 * 1000).unref();
 
 if (!ADMIN_TOKEN) {
   console.warn('====================================================');
@@ -156,8 +188,12 @@ wss.on('connection', (ws, request) => {
           ws.authenticated = true;
           clearTimeout(authTimer);
           clearAuthFailures(remoteIp);
-          ws.send(JSON.stringify({ type: 'auth_response', success: true }));
-          auditLog('auth_success', { ip: remoteIp });
+          // Issue a session-scoped, time-boxed capability grant instead of
+          // treating the static token as unlimited standing privilege.
+          ws.sessionId = crypto.randomUUID();
+          gateway.grant(ws.sessionId, defaultCapabilities(), GRANT_TTL_MS);
+          ws.send(JSON.stringify({ type: 'auth_response', success: true, session_id: ws.sessionId, grant_ttl_ms: GRANT_TTL_MS }));
+          auditLog('auth_success', { ip: remoteIp, sessionId: ws.sessionId });
           console.log('Client authenticated successfully.');
         } else {
           recordAuthFailure(remoteIp);
@@ -173,6 +209,21 @@ wss.on('connection', (ws, request) => {
       if (!ws.authenticated) {
         ws.send(JSON.stringify({ type: 'error', message: 'Authentication required. Exiting...' }));
         ws.close();
+        return;
+      }
+
+      // ── Anti-replay: every privileged message must carry a fresh nonce + ts ──
+      if (!nonceLedger.verify(data.nonce, data.ts)) {
+        auditLog('nonce_rejected', { ip: remoteIp, sessionId: ws.sessionId || null, action: data.type });
+        ws.send(JSON.stringify({ type: 'error', code: 'NONCE_REJECTED', message: 'Message rejected: missing, stale, or replayed nonce/ts.' }));
+        return;
+      }
+
+      // ── Capability check: the action must be covered by this session's grant ──
+      const requiredCap = ACTION_CAPABILITIES[data.type];
+      if (requiredCap && !gateway.authorize(ws.sessionId, requiredCap)) {
+        auditLog('capability_denied', { ip: remoteIp, sessionId: ws.sessionId || null, action: data.type, capability: requiredCap });
+        ws.send(JSON.stringify({ type: 'error', code: 'CAPABILITY_DENIED', message: `Denied: session lacks '${requiredCap}' (grant may have expired — re-authenticate).` }));
         return;
       }
 
@@ -386,6 +437,7 @@ wss.on('connection', (ws, request) => {
 
   ws.on('close', () => {
     clearTimeout(authTimer);
+    if (ws.sessionId) gateway.revoke(ws.sessionId);
     console.log('Client disconnected from Render Substrate Agent.');
   });
 });
