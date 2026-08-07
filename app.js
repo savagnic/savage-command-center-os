@@ -43,14 +43,14 @@ let STATE = {
 
 function loadState() {
   try {
-    const s = localStorage.getItem("sas_v3_state");
+    const s = localStorage.getItem("scc_v3_state");
     if (s) { const parsed = JSON.parse(s); STATE = Object.assign({}, STATE, parsed); }
   } catch(e) {}
 }
 
 function saveState() {
   try {
-    localStorage.setItem('sas_v3_state', JSON.stringify({
+    localStorage.setItem('scc_v3_state', JSON.stringify({
       checklist: STATE.checklist,
       txStatus: STATE.txStatus,
       agents: STATE.agents,
@@ -68,14 +68,7 @@ document.querySelectorAll('.tab').forEach(btn => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     const panel = document.getElementById('panel-' + btn.dataset.panel);
-    if (panel) {
-      panel.classList.add('active');
-      // If we switched to IDE, update layout and line numbers
-      if (btn.dataset.panel === 'ide') {
-        updateLineNumbers();
-        updateSandboxPreview();
-      }
-    }
+    if (panel) panel.classList.add('active');
   });
 });
 
@@ -169,20 +162,18 @@ function updateWalletUI() {
   const connectBtn = document.getElementById('connect-btn');
 
   if (!STATE.wallet) {
-    if (dot) dot.className = 'wallet-dot';
-    if (label) label.textContent = 'NOT CONNECTED';
+    dot.className = 'wallet-dot';
+    label.textContent = 'NOT CONNECTED';
     if (info) info.style.display = 'none';
     if (switcher) switcher.style.display = 'none';
     return;
   }
 
   const { address, chainId, balance, type, browser } = STATE.wallet;
-  if (dot) dot.className = 'wallet-dot connected';
-  if (label) label.textContent = address.slice(0,6) + '...' + address.slice(-4);
-  if (connectBtn) {
-    connectBtn.textContent = '✓ CONNECTED';
-    connectBtn.disabled = true;
-  }
+  dot.className = 'wallet-dot connected';
+  label.textContent = address.slice(0,6) + '...' + address.slice(-4);
+  connectBtn.textContent = '✓ CONNECTED';
+  connectBtn.disabled = true;
 
   if (info) {
     info.style.display = 'block';
@@ -290,7 +281,7 @@ window.signTX = async function(num, chainId, hexData) {
 
     status.textContent = 'SIGNED ✓';
     status.className = 'tx-card__status signed';
-    if (card) card.classList.add('signed');
+    card.classList.add('signed');
     btn.textContent = '✓ SIGNED';
 
     const explorer = chainId === '0xe708'
@@ -501,13 +492,11 @@ window.dispatchAgent = async function(id, n) {
     else s.rejected++;
 
     const logEl = document.getElementById(id + '-log');
-    if (logEl) {
-      const line = document.createElement('div');
-      line.className = result.accepted ? 'log-ok' : 'log-reject';
-      line.textContent = '[' + s.ticks + '] ' + result.log;
-      logEl.appendChild(line);
-      logEl.scrollTop = logEl.scrollHeight;
-    }
+    const line = document.createElement('div');
+    line.className = result.accepted ? 'log-ok' : 'log-reject';
+    line.textContent = '[' + s.ticks + '] ' + result.log;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
   }
 
   // Generate proof hash from final state
@@ -515,20 +504,12 @@ window.dispatchAgent = async function(id, n) {
   s.lastHash = h;
 
   // Update UI
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-
-  if (ticksEl) ticksEl.textContent = s.ticks;
-  if (acceptEl) acceptEl.textContent = s.accepted;
-  if (rejectEl) rejectEl.textContent = s.rejected;
-  if (hashEl) hashEl.textContent = h;
-  if (barEl) {
-    const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
-    barEl.style.width = pct + '%';
-  }
+  document.getElementById(id + '-ticks').textContent = s.ticks;
+  document.getElementById(id + '-accept').textContent = s.accepted;
+  document.getElementById(id + '-reject').textContent = s.rejected;
+  document.getElementById(id + '-hash').textContent = h;
+  const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
+  document.getElementById(id + '-bar').style.width = pct + '%';
 
   saveState();
 };
@@ -537,21 +518,12 @@ window.resetAgent = function(id) {
   STATE.agents[id] = { ticks: 0, accepted: 0, rejected: 0, entropy: 0, lastHash: null };
   liveAgents[id] = { x: 0.5, p: 0.1, entropy: 0, lastBetti: 1, lambda: 1.0, lambdaDist: 1.0 };
   if (id === 'b') pathBCloud = [];
-
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-  const logEl = document.getElementById(id + '-log');
-
-  if (ticksEl) ticksEl.textContent = 0;
-  if (acceptEl) acceptEl.textContent = 0;
-  if (rejectEl) rejectEl.textContent = 0;
-  if (hashEl) hashEl.textContent = '—';
-  if (barEl) barEl.style.width = '0%';
-  if (logEl) logEl.innerHTML = '';
-
+  document.getElementById(id + '-ticks').textContent = 0;
+  document.getElementById(id + '-accept').textContent = 0;
+  document.getElementById(id + '-reject').textContent = 0;
+  document.getElementById(id + '-hash').textContent = '—';
+  document.getElementById(id + '-bar').style.width = '0%';
+  document.getElementById(id + '-log').innerHTML = '';
   saveState();
 };
 
@@ -583,40 +555,29 @@ window.runOracle = async function(n) {
     if (converged) s.converged++;
     s.lastLambda = dist;
 
-    if (log) {
-      const line = document.createElement('div');
-      line.className = converged ? 'log-ok' : 'log-info';
-      line.textContent = '[' + s.cycles + '] PathA:' + (ra.accepted?'✓':'✗')
-        + ' PathB:' + (rb.accepted?'✓':'✗')
-        + ' PathC:' + (rc.accepted?'✓':'✗')
-        + '  |λ-λ*|=' + dist.toExponential(2)
-        + (converged ? '  ← CONVERGED' : '');
-      log.appendChild(line);
-      log.scrollTop = log.scrollHeight;
-    }
+    const line = document.createElement('div');
+    line.className = converged ? 'log-ok' : 'log-info';
+    line.textContent = '[' + s.cycles + '] PathA:' + (ra.accepted?'✓':'✗')
+      + ' PathB:' + (rb.accepted?'✓':'✗')
+      + ' PathC:' + (rc.accepted?'✓':'✗')
+      + '  |λ-λ*|=' + dist.toExponential(2)
+      + (converged ? '  ← CONVERGED' : '');
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
   }
 
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-
-  if (cyclesEl) cyclesEl.textContent = s.cycles;
-  if (convEl) convEl.textContent = s.converged;
-  if (lambdaEl) lambdaEl.textContent = s.lastLambda.toExponential(3);
+  document.getElementById('oracle-cycles').textContent = s.cycles;
+  document.getElementById('oracle-conv').textContent = s.converged;
+  document.getElementById('oracle-lambda').textContent = s.lastLambda.toExponential(3);
   saveState();
 };
 
 window.resetOracle = function() {
   STATE.oracle = { cycles: 0, converged: 0, lastLambda: 1.0 };
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-  const log = document.getElementById('oracle-log');
-
-  if (cyclesEl) cyclesEl.textContent = 0;
-  if (convEl) convEl.textContent = 0;
-  if (lambdaEl) lambdaEl.textContent = '—';
-  if (log) log.innerHTML = '';
+  document.getElementById('oracle-cycles').textContent = 0;
+  document.getElementById('oracle-conv').textContent = 0;
+  document.getElementById('oracle-lambda').textContent = '—';
+  document.getElementById('oracle-log').innerHTML = '';
   saveState();
 };
 
@@ -637,18 +598,14 @@ window.pingEndpoint = async function(btn, path) {
   try {
     const r = await fetch(TOLLBOOTH_BASE + path, { method: 'GET', signal: AbortSignal.timeout(5000) });
     const ms = Date.now() - t0;
-    if (resp) {
-      resp.style.display = 'block';
-      resp.textContent = path + '  →  HTTP ' + r.status + '  (' + ms + 'ms)';
-      resp.style.color = r.ok ? 'var(--green)' : 'var(--amber)';
-    }
+    resp.style.display = 'block';
+    resp.textContent = path + '  →  HTTP ' + r.status + '  (' + ms + 'ms)';
+    resp.style.color = r.ok ? 'var(--green)' : 'var(--amber)';
   } catch(e) {
     const ms = Date.now() - t0;
-    if (resp) {
-      resp.style.display = 'block';
-      resp.textContent = path + '  →  ' + (e.name === 'TimeoutError' ? 'TIMEOUT' : e.message) + '  (' + ms + 'ms)';
-      resp.style.color = 'var(--red)';
-    }
+    resp.style.display = 'block';
+    resp.textContent = path + '  →  ' + (e.name === 'TimeoutError' ? 'TIMEOUT' : e.message) + '  (' + ms + 'ms)';
+    resp.style.color = 'var(--red)';
   }
   btn.textContent = 'PING';
   btn.disabled = false;
@@ -849,7 +806,7 @@ window.loadPressureBoard = async function() {
     });
 
     const ts = new Date().toISOString();
-    if (tsEl) tsEl.textContent = 'Updated: ' + ts;
+    if (tsEl) tsEl.textContent = 'Last updated: ' + ts;
 
     if (r.ok) {
       let data;
@@ -960,7 +917,6 @@ window.copyText = function(id) {
 // ================================================================
 function showBanner(msg, type) {
   const b = document.getElementById('wallet-banner');
-  if (!b) return;
   b.textContent = msg;
   b.className = 'banner banner--' + (type || 'ok');
   b.style.display = 'flex';
@@ -1030,20 +986,12 @@ if ('serviceWorker' in navigator) {
 function restoreAgentUI(id) {
   const s = STATE.agents[id];
   if (!s) return;
-  const ticksEl = document.getElementById(id + '-ticks');
-  const acceptEl = document.getElementById(id + '-accept');
-  const rejectEl = document.getElementById(id + '-reject');
-  const hashEl = document.getElementById(id + '-hash');
-  const barEl = document.getElementById(id + '-bar');
-
-  if (ticksEl) ticksEl.textContent = s.ticks;
-  if (acceptEl) acceptEl.textContent = s.accepted;
-  if (rejectEl) rejectEl.textContent = s.rejected;
-  if (hashEl) hashEl.textContent = s.lastHash || '—';
-  if (barEl) {
-    const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
-    barEl.style.width = pct + '%';
-  }
+  document.getElementById(id + '-ticks').textContent = s.ticks;
+  document.getElementById(id + '-accept').textContent = s.accepted;
+  document.getElementById(id + '-reject').textContent = s.rejected;
+  document.getElementById(id + '-hash').textContent = s.lastHash || '—';
+  const pct = Math.min(100, (s.accepted / Math.max(1, s.ticks)) * 100);
+  document.getElementById(id + '-bar').style.width = pct + '%';
 }
 
 function restoreTXStatus() {
@@ -1070,467 +1018,15 @@ function restoreTXStatus() {
 
 function restoreOracleUI() {
   const s = STATE.oracle;
-  const cyclesEl = document.getElementById('oracle-cycles');
-  const convEl = document.getElementById('oracle-conv');
-  const lambdaEl = document.getElementById('oracle-lambda');
-
-  if (cyclesEl) cyclesEl.textContent = s.cycles;
-  if (convEl) convEl.textContent = s.converged;
-  if (lambdaEl) lambdaEl.textContent = s.lastLambda ? s.lastLambda.toExponential(3) : '—';
+  document.getElementById('oracle-cycles').textContent = s.cycles;
+  document.getElementById('oracle-conv').textContent = s.converged;
+  document.getElementById('oracle-lambda').textContent = s.lastLambda ? s.lastLambda.toExponential(3) : '—';
 }
 
 // ================================================================
 // CONNECT BUTTON
 // ================================================================
-document.getElementById('connect-btn')?.addEventListener('click', connectWallet);
-
-
-// ================================================================
-// VIRTUAL FILE SYSTEM & IDE logic
-// ================================================================
-const VFS_DEFAULT = {
-  "index.html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <title>Sovereign Sandbox Preview</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Sovereign Sandbox Live Preview</h1>\n    <p>Modify HTML, CSS, or JS in the Virtual IDE to see live auto-reloading in real-time.</p>\n    <button id=\"action-btn\" class=\"btn\">EXECUTE SANDBOX ACTION</button>\n  </div>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
-  "style.css": "body {\n  background-color: #070709;\n  color: #e8e8f0;\n  font-family: sans-serif;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 100vh;\n  margin: 0;\n}\n.container {\n  text-align: center;\n  background: #0f0f12;\n  border: 1px solid #2a2a35;\n  padding: 30px;\n  border-radius: 8px;\n  box-shadow: 0 4px 12px rgba(0,0,0,0.5);\n}\nh1 {\n  color: #00ff88;\n  margin-bottom: 10px;\n}\n.btn {\n  background: rgba(0,255,136,0.1);\n  border: 1px solid #00ff88;\n  color: #00ff88;\n  padding: 10px 20px;\n  cursor: pointer;\n  border-radius: 4px;\n  font-weight: bold;\n}",
-  "app.js": "// Live script sandbox action\ndocument.getElementById('action-btn')?.addEventListener('click', () => {\n  alert('Sovereign Sandbox action executed successfully!');\n});"
-};
-
-let activeFile = 'index.html';
-
-function getVFS() {
-  try {
-    const raw = localStorage.getItem("sas_v3_vfs");
-    if (!raw) return VFS_DEFAULT;
-    const parsed = JSON.parse(raw);
-    if (typeof parsed !== 'object' || parsed === null) return VFS_DEFAULT;
-    return parsed;
-  } catch(e) {
-    console.warn("VFS JSON corrupt, rolling back gracefully to default schema.", e);
-    return VFS_DEFAULT;
-  }
-}
-
-function saveVFS(vfs) {
-  try {
-    localStorage.setItem("sas_v3_vfs", JSON.stringify(vfs));
-  } catch(e) {
-    console.error("Failed to save VFS to localStorage.", e);
-  }
-}
-
-function renderVFSTree() {
-  const tree = document.getElementById('vfs-tree');
-  if (!tree) return;
-  tree.innerHTML = '';
-  const vfs = getVFS();
-
-  Object.keys(vfs).forEach(filename => {
-    const div = document.createElement('div');
-    div.className = 'vfs-item' + (filename === activeFile ? ' active' : '');
-    div.innerHTML = `<span class="vfs-item-name">📄 ${filename}</span>`;
-    div.addEventListener('click', () => {
-      selectFile(filename);
-    });
-    tree.appendChild(div);
-  });
-}
-
-function selectFile(filename) {
-  const vfs = getVFS();
-  if (vfs[filename] === undefined) return;
-  activeFile = filename;
-
-  const title = document.getElementById('ide-active-file-title');
-  const textarea = document.getElementById('ide-textarea');
-
-  if (title) title.textContent = filename;
-  if (textarea) {
-    textarea.value = vfs[filename];
-  }
-
-  renderVFSTree();
-  updateLineNumbers();
-}
-
-function updateLineNumbers() {
-  const textarea = document.getElementById('ide-textarea');
-  const lineNumbers = document.getElementById('ide-line-numbers');
-  if (!textarea || !lineNumbers) return;
-
-  const lines = textarea.value.split('\n').length;
-  let numStr = '';
-  for (let i = 1; i <= lines; i++) {
-    numStr += i + '\n';
-  }
-  lineNumbers.textContent = numStr;
-  lineNumbers.scrollTop = textarea.scrollTop;
-}
-
-function updateSandboxPreview() {
-  const vfs = getVFS();
-  const iframe = document.getElementById('ide-preview');
-  if (!iframe) return;
-
-  const html = vfs["index.html"] || "<h1>No index.html</h1>";
-  const css = vfs["style.css"] || "";
-  const js = vfs["app.js"] || "";
-
-  let combined = html;
-
-  // Inject style sheet
-  if (combined.includes('</head>')) {
-    combined = combined.replace('</head>', `<style>${css}</style></head>`);
-  } else {
-    combined = `<style>${css}</style>` + combined;
-  }
-
-  // Inject script sheet
-  if (combined.includes('</body>')) {
-    combined = combined.replace('</body>', `<script>${js}</script></body>`);
-  } else {
-    combined = combined + `<script>${js}</script>`;
-  }
-
-  iframe.srcdoc = combined;
-}
-
-function setupIDE() {
-  const textarea = document.getElementById('ide-textarea');
-  const newFileBtn = document.getElementById('vfs-new-file');
-  const renameFileBtn = document.getElementById('vfs-rename');
-  const deleteFileBtn = document.getElementById('vfs-delete');
-
-  if (textarea) {
-    textarea.addEventListener('input', () => {
-      const vfs = getVFS();
-      vfs[activeFile] = textarea.value;
-      saveVFS(vfs);
-      updateLineNumbers();
-      updateSandboxPreview();
-
-      // Trigger Coder Swarm message routing update
-      routeAgentSwarmMessage('coder', `[Coder] Output updated on ${activeFile}. Synchronization triggered.`);
-    });
-
-    textarea.addEventListener('scroll', () => {
-      const lineNumbers = document.getElementById('ide-line-numbers');
-      if (lineNumbers) lineNumbers.scrollTop = textarea.scrollTop;
-    });
-  }
-
-  if (newFileBtn) {
-    newFileBtn.addEventListener('click', () => {
-      const name = prompt("Enter new filename:");
-      if (!name) return;
-      const vfs = getVFS();
-      if (vfs[name] !== undefined) {
-        alert("File already exists!");
-        return;
-      }
-      vfs[name] = "// New workspace file";
-      saveVFS(vfs);
-      selectFile(name);
-      routeAgentSwarmMessage('architect', `[Architect] Designed and allocated new module: ${name}`);
-    });
-  }
-
-  if (renameFileBtn) {
-    renameFileBtn.addEventListener('click', () => {
-      const name = prompt("Rename current file to:", activeFile);
-      if (!name || name === activeFile) return;
-      const vfs = getVFS();
-      vfs[name] = vfs[activeFile];
-      delete vfs[activeFile];
-      saveVFS(vfs);
-      selectFile(name);
-      routeAgentSwarmMessage('architect', `[Architect] Restructured pipeline. Refactored ${activeFile} to ${name}`);
-    });
-  }
-
-  if (deleteFileBtn) {
-    deleteFileBtn.addEventListener('click', () => {
-      if (['index.html', 'style.css', 'app.js'].includes(activeFile)) {
-        alert("Protected file! Cannot delete system defaults.");
-        return;
-      }
-      if (!confirm(`Are you sure you want to delete ${activeFile}?`)) return;
-      const vfs = getVFS();
-      delete vfs[activeFile];
-      saveVFS(vfs);
-      selectFile('index.html');
-      routeAgentSwarmMessage('architect', `[Architect] Cleaned workspace. Deleted file: ${activeFile}`);
-    });
-  }
-
-  // Initial load
-  selectFile(activeFile);
-}
-
-
-// ================================================================
-// SECURE TERMINAL & RECONNECTION PIPELINE (EXPONENTIAL BACKOFF)
-// ================================================================
-let termuxWS = null;
-let reconnectDelay = 1000;
-const maxReconnectDelay = 30000;
-let isWSAnyway = false; // set to true on successful connection to control reconnect triggers
-
-function connectTermuxWS() {
-  termuxWS = new WebSocket('ws://127.0.0.1:8765');
-
-  termuxWS.onopen = () => {
-    reconnectDelay = 1000;
-    updateTermuxStatus(true);
-    appendTerminalOutput("✓ WebSocket connection to Termux Agent established.\n");
-  };
-
-  termuxWS.onmessage = (event) => {
-    appendTerminalOutput(event.data);
-  };
-
-  termuxWS.onclose = () => {
-    updateTermuxStatus(false);
-    // Try reconnect
-    setTimeout(() => {
-      reconnectDelay = Math.min(reconnectDelay * 2, maxReconnectDelay);
-      connectTermuxWS();
-    }, reconnectDelay);
-  };
-
-  termuxWS.onerror = () => {
-    termuxWS.close();
-  };
-}
-
-function updateTermuxStatus(connected) {
-  const statusLabels = document.querySelectorAll('.termux-status-label');
-  const statusDots = document.querySelectorAll('.termux-status-dot');
-
-  statusLabels.forEach(lbl => {
-    lbl.textContent = connected ? 'TERMUX: CONNECTED' : 'TERMUX: DISCONNECTED';
-    lbl.className = 'termux-status-label mono ' + (connected ? 'green' : 'amber');
-  });
-
-  statusDots.forEach(dot => {
-    dot.className = 'wallet-dot ' + (connected ? 'connected' : 'error');
-  });
-}
-
-function appendTerminalOutput(text) {
-  const out = document.getElementById('terminal-output');
-  if (!out) return;
-  out.textContent += text + "\n";
-  out.scrollTop = out.scrollHeight;
-}
-
-function setupTerminal() {
-  const input = document.getElementById('terminal-input');
-  if (input) {
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = input.value.trim();
-        if (!cmd) return;
-
-        appendTerminalOutput(`$ ${cmd}`);
-        input.value = '';
-
-        if (termuxWS && termuxWS.readyState === WebSocket.OPEN) {
-          termuxWS.send(cmd);
-        } else {
-          // Local fallback execution engine
-          executeLocalCommand(cmd);
-        }
-      }
-    });
-  }
-
-  // Touch key mappings
-  document.querySelectorAll('.touch-key').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const keyChar = btn.dataset.key;
-      const input = document.getElementById('terminal-input');
-      if (!input) return;
-
-      input.focus();
-
-      if (['CTRL', 'ALT', 'ESC'].includes(keyChar)) {
-        const event = new KeyboardEvent('keydown', {
-          key: keyChar,
-          code: keyChar,
-          bubbles: true,
-          cancelable: true
-        });
-        input.dispatchEvent(event);
-        appendTerminalOutput(`[Touch Key Emulated: ${keyChar}]`);
-      } else if (keyChar === 'TAB') {
-        // Simple autocomplete
-        const val = input.value.trim().toLowerCase();
-        const vfs = getVFS();
-        const files = Object.keys(vfs);
-        const match = files.find(f => f.startsWith(val));
-        if (match) {
-          input.value = match;
-        }
-      } else {
-        // Character insert
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        const text = input.value;
-        input.value = text.substring(0, start) + keyChar + text.substring(end);
-        input.selectionStart = input.selectionEnd = start + keyChar.length;
-      }
-    });
-  });
-}
-
-function executeLocalCommand(cmdStr) {
-  const args = cmdStr.trim().split(/\s+/);
-  const cmd = args[0].toLowerCase();
-
-  if (cmd === 'clear') {
-    const out = document.getElementById('terminal-output');
-    if (out) out.innerHTML = '';
-    return;
-  }
-
-  if (cmd === 'help') {
-    appendTerminalOutput(
-      '--- Local Fallback Shell Commands ---\n' +
-      '  ls               - List files in virtual file system (VFS)\n' +
-      '  cat <file>       - Display contents of a virtual file\n' +
-      '  python <file>    - Mock-execute a virtual file\n' +
-      '  clear            - Clear terminal screen\n' +
-      '  help             - Show this help menu\n' +
-      '\n' +
-      '*Note: Connect Termux Agent at ws://127.0.0.1:8765 for real OS access.*'
-    );
-    return;
-  }
-
-  if (cmd === 'ls') {
-    const vfs = getVFS();
-    const files = Object.keys(vfs);
-    if (files.length === 0) {
-      appendTerminalOutput('[Empty VFS]');
-    } else {
-      appendTerminalOutput(files.join('\n'));
-    }
-    return;
-  }
-
-  if (cmd === 'cat') {
-    const filename = args[1];
-    if (!filename) {
-      appendTerminalOutput('Usage: cat <filename>');
-      return;
-    }
-    const vfs = getVFS();
-    if (vfs[filename] !== undefined) {
-      appendTerminalOutput(vfs[filename]);
-    } else {
-      appendTerminalOutput(`cat: ${filename}: No such file or directory`);
-    }
-    return;
-  }
-
-  if (cmd === 'python') {
-    const filename = args[1];
-    if (!filename) {
-      appendTerminalOutput('Usage: python <filename>');
-      return;
-    }
-    const vfs = getVFS();
-    if (vfs[filename] !== undefined) {
-      appendTerminalOutput(`[Python Sandbox Execution of ${filename}]\nExecuting script...`);
-      try {
-        appendTerminalOutput(`SUCCESS: Code of ${filename} evaluated in offline sandbox environment safely.`);
-      } catch(e) {
-        appendTerminalOutput(`Error: ${e.message}`);
-      }
-    } else {
-      appendTerminalOutput(`python: can't open file '${filename}': [Errno 2] No such file or directory`);
-    }
-    return;
-  }
-
-  // Default warning
-  appendTerminalOutput(`Command not found: ${cmdStr}. (Termux offline, local fallback only supports ls, cat, python, clear, help)`);
-}
-
-
-// ================================================================
-// COGNITIVE SWARM & SELF-HEALING ENGINE
-// ================================================================
-function routeAgentSwarmMessage(personaId, msg) {
-  const logEl = document.getElementById(personaId + '-log');
-  if (!logEl) return;
-  const div = document.createElement('div');
-  div.textContent = msg;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-window.simulateRuntimeException = function() {
-  const coderLog = document.getElementById('coder-log');
-  const debugLog = document.getElementById('debugger-log');
-  const debuggerStatus = document.getElementById('debugger-status');
-  const patchBox = document.getElementById('self-healing-patch-box');
-  const patchOutput = document.getElementById('patch-diff-output');
-
-  if (debuggerStatus) {
-    debuggerStatus.textContent = '🚨 HEALING IN PROGRESS...';
-    debuggerStatus.className = 'agent-persona-status text-red';
-  }
-
-  // Append logs
-  routeAgentSwarmMessage('coder', `[Coder] Uncaught ReferenceError on index.html:32. Core execution stalled.`);
-  routeAgentSwarmMessage('debugger', `[Debugger] Trapped script exception! Parsing stack trace...`);
-  routeAgentSwarmMessage('debugger', `[Debugger] Isolated bug: 'calculate' calls undefined variable 'y'. Generating git diff patch...`);
-
-  // Show auto-patch diff output
-  if (patchBox && patchOutput) {
-    patchOutput.textContent = `<<<<<<< SEARCH
-function calculate(x) {
-  return x / y; // y is undefined!
-}
-=======
-function calculate(x) {
-  const y = ARCH.PHI; // Fixed undefined variable reference
-  return x / y;
-}
->>>>>>> REPLACE`;
-    patchBox.style.display = 'block';
-    patchBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-};
-
-window.applyDebuggerPatch = function() {
-  const patchBox = document.getElementById('self-healing-patch-box');
-  const debuggerStatus = document.getElementById('debugger-status');
-
-  if (patchBox) patchBox.style.display = 'none';
-  if (debuggerStatus) {
-    debuggerStatus.textContent = 'Role: Self-healing error trap & diagnostics';
-    debuggerStatus.className = 'agent-persona-status';
-  }
-
-  // Modifying VFS file active file
-  const vfs = getVFS();
-  // We mock adding the calculated fix function inside app.js virtual file
-  let code = vfs["app.js"] || "";
-  if (!code.includes("function calculate")) {
-    code += "\n\n// Added via self-healing debugger auto-patch\nfunction calculate(x) {\n  const y = ARCH.PHI; // Fixed undefined variable reference\n  return x / y;\n}";
-    vfs["app.js"] = code;
-    saveVFS(vfs);
-    selectFile(activeFile);
-    updateSandboxPreview();
-  }
-
-  routeAgentSwarmMessage('debugger', `[Debugger] Patch successfully applied to active VFS and preview hot-reloaded! Status: STABLE.`);
-  routeAgentSwarmMessage('optimizer', `[Optimizer] Verified patched execution. Monotone convergence restored.`);
-  showBanner("✓ Debugger patch successfully integrated into active VFS sandbox.", "ok");
-};
-
+document.getElementById('connect-btn').addEventListener('click', connectWallet);
 
 // ================================================================
 // CONNECT & INTEGRATIONS HUB LOGIC
@@ -1803,7 +1299,7 @@ async function loadIntegrationInVFS() {
 // ================================================================
 // INIT
 // ================================================================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadState();
   restoreAgentUI('a');
   restoreAgentUI('b');
@@ -1815,6 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadMetrics();
 
   // Initialize modular features
+  await initIndexedDBVFS();
   setupIDE();
   setupTerminal();
   connectTermuxWS();
@@ -1831,3 +1328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveState();
   }
 });
+
+// ================================================================
+// ADVANCED TERMUX & RENDER SUBSTRATE AGENT ENGINE (TERMINAL & IDE)
+// =========================================================
