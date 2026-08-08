@@ -2105,18 +2105,13 @@ window.setSubstrateTarget = function(target) {
     socket.onopen = () => {
       appendTerminalLine(`WebSocket link opened with ${target.toUpperCase()} Substrate. Initiating authentication handshake...`, 'info');
 
-      // Load saved token or prompt user (Termux does not require real password unless configured, default is sovereign_secret_token_1337)
-      let savedToken = localStorage.getItem('scc_admin_token');
-      if (!savedToken) {
-        savedToken = prompt(`Enter Authentication Token for ${target.toUpperCase()} Substrate:`);
-        if (savedToken) {
-          localStorage.setItem('scc_admin_token', savedToken);
-        }
-      }
+      // Prompt per session — token is NEVER stored in localStorage to
+      // prevent it being retrieved by XSS or malicious scripts.
+      const sessionToken = prompt(`Enter Authentication Token for ${target.toUpperCase()} Substrate:`);
 
       socket.send(JSON.stringify({
         type: 'auth',
-        token: savedToken || ''
+        token: sessionToken || ''
       }));
     };
 
@@ -2135,7 +2130,6 @@ window.setSubstrateTarget = function(target) {
           } else {
             appendTerminalLine(`✗ Authentication failed: ${data.error || 'Invalid Token'}`, 'error');
             showBanner(`Authentication failed for ${target.toUpperCase()}`, 'err');
-            localStorage.removeItem('scc_admin_token');
             if (dot) dot.className = 'termux-dot';
             if (label) label.textContent = `${target.toUpperCase()}: DISCONNECTED`;
           }

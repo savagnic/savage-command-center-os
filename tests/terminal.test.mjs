@@ -25,20 +25,12 @@ test('Terminal Suite - Primary WebSocket Connection Success', async () => {
   assert.equal(socket.readyState, 1);
 });
 
-test('Terminal Suite - Sub-50ms WebAssembly Failover on Disconnect', async () => {
-  let isWasmFallbackActive = false;
-  const start = performance.now();
-
-  const failoverTrigger = () => {
-    isWasmFallbackActive = true;
-    return performance.now() - start;
-  };
-
-  // Simulate abrupt socket drop
-  const socket = new MockWebSocket('ws://127.0.0.1:9999'); // invalid port
+// NOTE: WebAssembly failover does not exist in this codebase.
+// This test validates only that the mock socket reaches CLOSED state
+// on connection failure — it does NOT test any real WebAssembly path.
+test('Terminal Suite - Mock socket reaches CLOSED state on connection failure [NO REAL WASM]', async () => {
+  const socket = new MockWebSocket('ws://invalid-host:9999');
   await new Promise(resolve => setTimeout(resolve, 25));
-
-  const failoverTime = failoverTrigger();
-  assert.ok(isWasmFallbackActive);
-  assert.ok(failoverTime < 50, `Failover latency must be < 50ms (took ${failoverTime.toFixed(2)}ms)`);
+  // The mock closes (readyState 3) on error — no WebAssembly is involved
+  assert.equal(socket.readyState, 3, 'socket should be in CLOSED state after failed connection');
 });

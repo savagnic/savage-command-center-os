@@ -15,6 +15,17 @@
  *    remote address within the lockout window, further attempts are rejected
  *    without even checking the token (basic brute-force mitigation).
  *  - write_file now enforces a MAX_WRITE_BYTES cap to prevent disk-fill abuse.
+ *
+ * PHASE 2 HARDENING:
+ *  - safeWorkspacePath() — rejects sibling-prefix traversal (e.g. /app-evil when
+ *    workspace is /app) by requiring resolved path starts with workspaceRoot + '/'.
+ *  - Connector loading whitelists connectorId to safe filename characters only;
+ *    returns success:false when no real connector module exists (no fake fallbacks).
+ *  - Static serving blocked for: security/, server.js, *.py, and arbitrary workspace
+ *    files — only the UI asset allowlist is served publicly.
+ *  - Admin token is never persisted to localStorage by the server; the client is
+ *    responsible for prompt-per-session.
+ *  - Missing testConnection on a loaded connector returns success:false, not true.
  */
 'use strict';
 
@@ -31,13 +42,99 @@ const { NonceLedger } = require('./security/nonce-ledger.js');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Serve static files directly from the repository root
-app.use(express.static(__dirname));
+// ================================================================
+// SAFE WORKSPACE PATH HELPER
+// Resolves a caller-supplied relative path against the workspace
+// root and returns the absolute path ONLY if it is strictly inside
+// the workspace.  Sibling-prefix traversal (/app-evil when root is
+// /app) is caught because we require startsWith(root + '/') — the
+// root itself is also allowed as an exact match.
+// Returns null and does NOT throw if the path escapes the workspace.
+// ================================================================
+const WORKSPACE_ROOT = __dirname;
+const WORKSPACE_PREFIX = WORKSPACE_ROOT + path.sep; // e.g. "/app/"
 
-// Custom healthcheck endpoint for Render / GCP uptime monitors
+function safeWorkspacePath(relOrAbs) {
+  const resolved = path.resolve(WORKSPACE_ROOT, relOrAbs);
+  // Accept the root itself or any strict descendant
+  if (resolved !== WORKSPACE_ROOT && !resolved.startsWith(WORKSPACE_PREFIX)) {
+    return null; // escape attempt
+  }
+  return resolved;
+}
+
+// ================================================================
+// CONNECTOR ID WHITELIST
+// Only lowercase letters, digits, and underscores are allowed.
+// This prevents path-injection via connector_id.
+// ================================================================
+const SAFE_CONNECTOR_ID_RE = /^[a-z0-9_]{1,64}$/;
+
+function safeConnectorPath(connectorId) {
+  if (!SAFE_CONNECTOR_ID_RE.test(connectorId)) return null;
+  return path.join(WORKSPACE_ROOT, 'integrations', connectorId + '.js');
+}
+
+// ================================================================
+// STATIC SERVING — allowlist-based, not directory-open
+// Only known UI assets are served. server.js, security/, *.py, and
+// all other workspace files are NOT reachable via HTTP.
+// ================================================================
+const STATIC_ALLOWED = new Set([
+  'index.html',
+  'app.js',
+  'style.css',
+  'sw.js',
+  'manifest.json',
+  'favicon.ico',
+]);
+
+// Custom healthcheck endpoint for Render / GCP uptime monitors — registered
+// BEFORE the static-security gate so it is never intercepted by it.
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
+
+// Static-security gate: only allowlisted top-level UI assets may be served.
+// API routes (starting with /api, /health, etc.) are already handled above
+// and will never reach this middleware.
+app.use((req, res, next) => {
+  // Strip leading slash; normalize the path
+  const normalized = req.path.replace(/^\//, '');
+
+  // Root → serve index.html
+  if (normalized === '') return next();
+
+  // Any subdirectory request (path contains /) is blocked — this covers
+  // security/audit.log, node_modules/..., and similar directory traversal
+  // via URL path.
+  if (normalized.includes('/')) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  // Top-level name only from here
+  const rawName = normalized.split('?')[0];
+
+  // If the name has an extension it is a file request — enforce allowlist
+  if (rawName.includes('.')) {
+    if (!STATIC_ALLOWED.has(rawName)) {
+      // Block: security files, server.js, *.py, and anything else not allowlisted
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    return next(); // allowed asset — pass to express.static below
+  }
+
+  // No extension: could be an API or navigation route — pass through
+  next();
+});
+
+// After the security gate, let express.static handle only allowlisted assets
+// (it will naturally skip anything that doesn't exist as a file).
+app.use(express.static(__dirname, {
+  index: 'index.html',
+  // Dotfiles and hidden paths should never be served
+  dotfiles: 'deny',
+}));
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -228,53 +325,66 @@ wss.on('connection', (ws, request) => {
       }
 
       switch (data.type) {
-        case 'test_mcp_connection':
-          // Securely dry-run an MCP/REST connection test or require target
+        case 'test_mcp_connection': {
+          // Securely dry-run an MCP/REST connection test.
+          // connectorId is whitelisted to safe characters to prevent path injection.
           const connectorId = data.connector_id;
           const primaryToken = data.primary;
           const secondaryVal = data.secondary;
 
           if (!connectorId) {
-            ws.send(JSON.stringify({ type: 'test_mcp_connection_response', error: 'Missing integration connector id' }));
+            ws.send(JSON.stringify({ type: 'test_mcp_connection_response', success: false, error: 'Missing integration connector id' }));
             break;
           }
 
-          // Dynamically try to load physical modules on the server-side as well
-          try {
-            const connectorPath = path.resolve(__dirname, 'integrations', `${connectorId}.js`);
-            if (fs.existsSync(connectorPath)) {
-              const ConnectorClass = require(connectorPath);
-              const connector = new ConnectorClass({
-                token: primaryToken,
-                apiKey: primaryToken,
-                connectionString: primaryToken,
-                repo: secondaryVal,
-                host: secondaryVal,
-                baseId: secondaryVal
-              });
+          const connectorPath = safeConnectorPath(connectorId);
+          if (!connectorPath) {
+            auditLog('connector_id_rejected', { ip: remoteIp, connectorId });
+            ws.send(JSON.stringify({
+              type: 'test_mcp_connection_response',
+              success: false,
+              error: `Invalid connector id: must match [a-z0-9_]{1,64}`
+            }));
+            break;
+          }
 
-              if (typeof connector.testConnection === 'function') {
-                const res = await connector.testConnection();
-                ws.send(JSON.stringify({
-                  type: 'test_mcp_connection_response',
-                  connector_id: connectorId,
-                  success: res.success,
-                  message: res.message
-                }));
-              } else {
-                ws.send(JSON.stringify({
-                  type: 'test_mcp_connection_response',
-                  connector_id: connectorId,
-                  success: true,
-                  message: `Module loaded. No testConnection function available for ${connectorId}`
-                }));
-              }
-            } else {
+          try {
+            if (!fs.existsSync(connectorPath)) {
+              // No real module — never claim a fallback was loaded
               ws.send(JSON.stringify({
                 type: 'test_mcp_connection_response',
                 connector_id: connectorId,
-                success: true,
-                message: `Dynamic connector file loaded from fallback configurations on Render substrate.`
+                success: false,
+                error: `No connector module found for '${connectorId}'. Deploy the integration file to enable testing.`
+              }));
+              break;
+            }
+
+            const ConnectorClass = require(connectorPath);
+            const connector = new ConnectorClass({
+              token: primaryToken,
+              apiKey: primaryToken,
+              connectionString: primaryToken,
+              repo: secondaryVal,
+              host: secondaryVal,
+              baseId: secondaryVal
+            });
+
+            if (typeof connector.testConnection === 'function') {
+              const res = await connector.testConnection();
+              ws.send(JSON.stringify({
+                type: 'test_mcp_connection_response',
+                connector_id: connectorId,
+                success: res.success,
+                message: res.message
+              }));
+            } else {
+              // Module loaded but no testConnection — cannot verify, report honestly
+              ws.send(JSON.stringify({
+                type: 'test_mcp_connection_response',
+                connector_id: connectorId,
+                success: false,
+                error: `Connector module loaded but does not implement testConnection() for '${connectorId}'`
               }));
             }
           } catch (e) {
@@ -286,6 +396,7 @@ wss.on('connection', (ws, request) => {
             }));
           }
           break;
+        }
 
         case 'exec':
           // Execute arbitrary shell commands on the server host (sandbox container).
@@ -331,10 +442,11 @@ wss.on('connection', (ws, request) => {
           break;
 
         case 'read_file': {
-          // Securely read file content
-          const readPath = path.resolve(__dirname, data.filepath);
-          if (!readPath.startsWith(__dirname)) {
-            ws.send(JSON.stringify({ type: 'read_file_response', error: 'Access denied: Out of workspace bounds' }));
+          // Securely read file content — sibling-prefix traversal blocked by safeWorkspacePath
+          const readPath = safeWorkspacePath(data.filepath);
+          if (!readPath) {
+            auditLog('path_traversal_attempt', { ip: remoteIp, filepath: data.filepath, action: 'read_file' });
+            ws.send(JSON.stringify({ type: 'read_file_response', error: 'Access denied: path escapes workspace' }));
             break;
           }
 
@@ -350,9 +462,10 @@ wss.on('connection', (ws, request) => {
 
         case 'write_file': {
           // Securely write file content, capped to prevent disk-fill abuse
-          const writePath = path.resolve(__dirname, data.filepath);
-          if (!writePath.startsWith(__dirname)) {
-            ws.send(JSON.stringify({ type: 'write_file_response', error: 'Access denied: Out of workspace bounds' }));
+          const writePath = safeWorkspacePath(data.filepath);
+          if (!writePath) {
+            auditLog('path_traversal_attempt', { ip: remoteIp, filepath: data.filepath, action: 'write_file' });
+            ws.send(JSON.stringify({ type: 'write_file_response', error: 'Access denied: path escapes workspace' }));
             break;
           }
 
@@ -384,10 +497,11 @@ wss.on('connection', (ws, request) => {
         }
 
         case 'delete_file': {
-          // Securely delete file or directory
-          const deletePath = path.resolve(__dirname, data.filepath);
-          if (!deletePath.startsWith(__dirname)) {
-            ws.send(JSON.stringify({ type: 'delete_file_response', error: 'Access denied: Out of workspace bounds' }));
+          // Securely delete file or directory — sibling-prefix traversal blocked
+          const deletePath = safeWorkspacePath(data.filepath);
+          if (!deletePath) {
+            auditLog('path_traversal_attempt', { ip: remoteIp, filepath: data.filepath, action: 'delete_file' });
+            ws.send(JSON.stringify({ type: 'delete_file_response', error: 'Access denied: path escapes workspace' }));
             break;
           }
 
@@ -403,11 +517,12 @@ wss.on('connection', (ws, request) => {
         }
 
         case 'rename_file': {
-          // Securely rename file
-          const oldPath = path.resolve(__dirname, data.filepath);
-          const newPath = path.resolve(__dirname, data.new_filepath);
-          if (!oldPath.startsWith(__dirname) || !newPath.startsWith(__dirname)) {
-            ws.send(JSON.stringify({ type: 'rename_file_response', error: 'Access denied: Out of workspace bounds' }));
+          // Securely rename file — both paths checked against workspace
+          const oldPath = safeWorkspacePath(data.filepath);
+          const newPath = safeWorkspacePath(data.new_filepath);
+          if (!oldPath || !newPath) {
+            auditLog('path_traversal_attempt', { ip: remoteIp, filepath: data.filepath, new_filepath: data.new_filepath, action: 'rename_file' });
+            ws.send(JSON.stringify({ type: 'rename_file_response', error: 'Access denied: path escapes workspace' }));
             break;
           }
 
@@ -442,13 +557,20 @@ wss.on('connection', (ws, request) => {
   });
 });
 
-// Start the server
-server.listen(port, () => {
-  console.log(`====================================================`);
-  console.log(`SOVEREIGN AGENT SHELL SERVER ACTIVE`);
-  console.log(`Port: http://localhost:${port}`);
-  console.log(`WebSocket Substrate: ws://localhost:${port}`);
-  console.log(`ADMIN_TOKEN configured: ${ADMIN_TOKEN ? 'yes' : 'NO (auth disabled)'}`);
-  console.log(`exec enabled: ${EXEC_ENABLED}`);
-  console.log(`====================================================`);
-});
+// Export helpers for unit testing BEFORE starting the server.
+// When required as a module (e.g. by tests), the server does not listen —
+// only the exported utility functions are available.
+module.exports = { safeWorkspacePath, safeConnectorPath, WORKSPACE_ROOT };
+
+// Only bind and listen when executed directly (not when require()'d by tests)
+if (require.main === module) {
+  server.listen(port, () => {
+    console.log(`====================================================`);
+    console.log(`SOVEREIGN AGENT SHELL SERVER ACTIVE`);
+    console.log(`Port: http://localhost:${port}`);
+    console.log(`WebSocket Substrate: ws://localhost:${port}`);
+    console.log(`ADMIN_TOKEN configured: ${ADMIN_TOKEN ? 'yes' : 'NO (auth disabled)'}`);
+    console.log(`exec enabled: ${EXEC_ENABLED}`);
+    console.log(`====================================================`);
+  });
+}
