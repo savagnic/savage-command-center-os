@@ -30,7 +30,16 @@ def audit_report(results: list) -> str:
 
 
 if __name__ == "__main__":
-    # Placeholder harness runner; wire real authorize()/requestAction() bindings
-    # from the Node service via a subprocess/HTTP test hook before CI gating.
-    print("security_audit_harness.py loaded. Wire real bindings before CI use.")
-    sys.exit(0)
+      # FAIL CLOSED: this harness has no real authorize()/requestAction() bindings
+      # wired yet. Until the Node service exposes a subprocess/HTTP test hook and
+      # the fuzz functions above run against it, this harness must NOT report PASS.
+      # Exit non-zero so any CI gate using it blocks the deploy instead of
+      # silently green-lighting unverified security.
+      print(
+          "security_audit_harness.py: FAIL (no real bindings wired). "
+          "Wire authorize()/requestAction() from the Node service before this "
+          "harness can pass.",
+          file=sys.stderr,
+      )
+      sys.exit(1)
+    
