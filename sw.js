@@ -1,6 +1,7 @@
 // Sovereign Agent Shell — Service Worker v3
 const CACHE = 'sovereign-cmd-v3';
-const ASSETS = ['/', '/index.html', '/app.js', '/style.css', '/manifest.json'];
+// Paths are relative to the service worker's scope (works under any sub-path)
+const ASSETS = ['./index.html', './app.js', './manifest.json', './sovereign.css'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
@@ -19,6 +20,6 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('/index.html')))
+    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html')))
   );
 });

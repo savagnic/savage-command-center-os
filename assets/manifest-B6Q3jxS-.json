@@ -2,20 +2,21 @@
   "name": "Sovereign Agent Shell",
   "short_name": "AGENT SHELL",
   "description": "Sovereign AI Studios — Sovereign Control Interface",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#00FF88",
   "orientation": "any",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -27,13 +28,13 @@
       "name": "Chain & Sign",
       "short_name": "Sign TX",
       "description": "Open wallet signing panel",
-      "url": "/#chain"
+      "url": "./#chain"
     },
     {
       "name": "Agent Control",
       "short_name": "Agents",
       "description": "Three-path agent dashboard",
-      "url": "/#agents"
+      "url": "./#agents"
     }
   ]
 }

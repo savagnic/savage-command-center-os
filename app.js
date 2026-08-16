@@ -27,6 +27,13 @@ const ARCH = {
 };
 
 // ================================================================
+// API BASE (must be declared before any fetch calls)
+// ================================================================
+// Empty string = same origin; override to a full URL for cross-origin deploys
+const CEROS_BASE = '';
+const TOLLBOOTH_BASE = CEROS_BASE;
+
+// ================================================================
 // STATE (in-memory, resets on reload)
 // ================================================================
 let STATE = {
@@ -598,11 +605,7 @@ window.resetOracle = function() {
 // ================================================================
 // OPS — PING ENDPOINTS (fetch to real tollbooth base URL)
 // ================================================================
-// Tollbooth pings now route to the local API server
-const TOLLBOOTH_BASE = CEROS_BASE;
-
-// CEROS base — now served by the local API server at /api
-const CEROS_BASE = '';
+// CEROS_BASE and TOLLBOOTH_BASE are declared near the top of this file.
 
 window.pingEndpoint = async function(btn, path) {
   const resp = document.getElementById('ping-response');
