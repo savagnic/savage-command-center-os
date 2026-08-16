@@ -61,24 +61,21 @@ module.exports = async (req, res) => {
       // repo might not be accessible, skip silently
     }
 
-    // Fetch repos list
-    if (GITHUB_TOKEN) {
-      const reposResp = await ghFetch('/user/repos?sort=pushed&per_page=20');
-      if (reposResp.ok) {
-        const repos = await reposResp.json();
-        payload.repos = (repos || []).slice(0, 10).map(r => ({
-          name: r.name,
-          full_name: r.full_name,
-          language: r.language,
-          stargazers_count: r.stargazers_count,
-          pushed_at: r.pushed_at,
-          private: r.private,
-        }));
-      }
+    // Fetch public repos only — never expose private repo metadata via an unauthenticated endpoint
+    const reposResp = await ghFetch(`/users/${GITHUB_OWNER}/repos?sort=pushed&per_page=20&type=public`);
+    if (reposResp.ok) {
+      const repos = await reposResp.json();
+      payload.repos = (repos || []).slice(0, 10).map(r => ({
+        name: r.name,
+        full_name: r.full_name,
+        language: r.language,
+        stargazers_count: r.stargazers_count,
+        pushed_at: r.pushed_at,
+      }));
     }
 
-    // Public fallback: fetch public events for the owner
-    if (!GITHUB_TOKEN && !payload.commits) {
+    // Public fallback for commits: fetch public events for the owner
+    if (!payload.commits) {
       try {
         const eventsResp = await ghFetch(`/users/${GITHUB_OWNER}/events/public?per_page=10`);
         if (eventsResp.ok) {
