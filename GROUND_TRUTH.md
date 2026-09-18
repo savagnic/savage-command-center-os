@@ -25,7 +25,7 @@ Implemented operator/UI donor for Savage Command Center and owned internal socia
 - Publication is truth-locked: until official provider publishing adapters are configured, publish attempts produce blocked/connector-ready receipts and do not claim a platform post occurred.
 - The canonical Video Studio launch slate was verified at savagnic/savage-video-studio/artifacts/video-studio/launch-slate.json with source blob d197942595ac3007ab0f226c6fa72cf0939885ab.
 - That source contains 450 total briefs and a first wave of exactly 50 briefs: 10 each for YouTube, Instagram, X, Reddit, and LinkedIn.
-- A portable copy of only those 50 canonical first-wave briefs is embedded at data/social-first-wave.json, and /api/social/imports/first-wave imports them idempotently into the owned queue.
+- A portable copy of only those 50 canonical first-wave briefs is embedded at data/social-first-wave.json. The control plane now auto-seeds those briefs idempotently into an empty queue on startup, and /api/social/imports/first-wave remains available for explicit re-import.
 - The growth-math engine supports hold, completion, rewatch, share, save, comment, follow, click, and revenue rates with editable normalized weights.
 - Derived internal diagnostics include depth, signal density, commercial score, overall Savage Growth Score, and scale / iterate / test / cut decision bands.
 - These decision bands are internal operating rules, not external benchmark claims.
@@ -48,7 +48,7 @@ CODED, TESTED, PLATFORM-BUILT/DEPLOYED, LIVE/OBSERVED, CUSTOMER-USED, and REVENU
 - Add the real platform application credentials and redirect URIs for the existing Savage AI Studios Instagram, YouTube, and X identities.
 - Complete official provider publishing adapters after OAuth authorization succeeds.
 - Add LinkedIn and Reddit OAuth/publishing adapters after account creation/authorization.
-- Run /api/social/imports/first-wave in the deployed runtime and verify all 50 records are present in the owned queue.
+- Verify the deployed runtime exposes all 50 auto-seeded first-wave records after the next master deployment.
 - Connect platform analytics ingestion so raw metrics are collected automatically rather than entered through the API.
 - Verify deployed dashboard/runtime behavior and record live publication receipts before claiming automated publication.
 - Reconcile documentation when it disagrees with current source/runtime evidence.
