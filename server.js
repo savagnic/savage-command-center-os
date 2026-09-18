@@ -94,6 +94,9 @@ const STATIC_ALLOWED = new Set([
   'sw.js',
   'manifest.json',
   'favicon.ico',
+  'social.html',
+  'social.css',
+  'social.js',
 ]);
 
 // Custom healthcheck endpoint for Render / GCP uptime monitors — registered
