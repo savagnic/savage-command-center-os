@@ -5,6 +5,7 @@ const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
 const { DEFAULT_WEIGHTS, evaluateCreative, normalizeWeights } = require('./social-metrics.js');
+const { buildAuthorizationUrl, verifyState, exchangeCode, createTokenStore } = require('./social-oauth.js');
 
 const NETWORKS = Object.freeze(['instagram','youtube','x','linkedin','reddit']);
 const DEFAULT_STATE = Object.freeze({ version: 1, accounts: [], posts: [], receipts: [], metricWeights: DEFAULT_WEIGHTS, metrics: [] });
@@ -46,6 +47,55 @@ function createSocialControlPlane(options = {}) {
   const statePath = options.statePath || process.env.SOCIAL_STATE_PATH || path.join(__dirname, 'data', 'social-control-plane.json');
   const store = createStore(statePath);
   const router = express.Router();
+
+  router.get('/oauth/:network/connect', (req, res) => {
+    const network = String(req.params.network || '').toLowerCase();
+    if (!NETWORKS.includes(network)) return res.status(400).json({ error: 'unsupported network' });
+    try {
+      const auth = buildAuthorizationUrl(network);
+      if (!auth.ready) return res.status(409).json({ error: 'oauth_not_configured', missing: auth.missing });
+      return res.redirect(auth.url);
+    } catch (error) {
+      return res.status(500).json({ error: 'oauth_start_failed', message: error.message });
+    }
+  });
+
+  router.get('/oauth/:network/callback', async (req, res) => {
+    const network = String(req.params.network || '').toLowerCase();
+    if (!NETWORKS.includes(network)) return res.status(400).send('Unsupported network');
+    const state = verifyState(req.query.state);
+    if (!state || state.network !== network) return res.status(400).send('Invalid or expired OAuth state');
+    if (!req.query.code) return res.status(400).send('Missing OAuth authorization code');
+
+    try {
+      const tokens = await exchangeCode(network, String(req.query.code));
+      const tokenPath = process.env.SOCIAL_TOKEN_STORE_PATH || path.join(__dirname, 'data', 'social-tokens.json');
+      const tokenStore = createTokenStore(tokenPath);
+      tokenStore.write(network, tokens);
+
+      const stateData = store.read();
+      const matching = stateData.accounts.find((a) => a.network === network);
+      if (matching) {
+        matching.connectionStatus = 'oauth_connected';
+        matching.updatedAt = nowIso();
+      } else {
+        stateData.accounts.push({
+          id: id('acct'),
+          network,
+          label: 'Savage AI Studios',
+          handle: null,
+          loginEmail: null,
+          connectionStatus: 'oauth_connected',
+          createdAt: nowIso(),
+          updatedAt: nowIso()
+        });
+      }
+      store.write(stateData);
+      return res.redirect('/social.html?connected=' + encodeURIComponent(network));
+    } catch (error) {
+      return res.status(error.status || 500).send('OAuth callback failed: ' + error.message);
+    }
+  });
 
   router.get('/status', (_req, res) => {
     const state = store.read();
