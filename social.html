@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Savage Social Control Plane</title>
+<link rel="stylesheet" href="social.css">
+</head>
+<body>
+<main class="shell">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">SAVAGE AI STUDIOS / OWNED DISTRIBUTION</div>
+      <h1>Social Control Plane</h1>
+      <p>Connect once. Queue here. Publish with receipts. No scheduler middleman.</p>
+    </div>
+    <a class="back" href="/">COMMAND CENTER</a>
+  </header>
+
+  <section class="status-grid" id="network-grid" aria-label="Network status"></section>
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">CONNECT ACCOUNTS</div>
+        <h2>Authorize Savage AI Studios</h2>
+      </div>
+    </div>
+    <div class="connect-actions">
+      <a class="connect-link" href="/api/social/oauth/instagram/connect">CONNECT INSTAGRAM</a>
+      <a class="connect-link" href="/api/social/oauth/youtube/connect">CONNECT YOUTUBE</a>
+      <a class="connect-link" href="/api/social/oauth/x/connect">CONNECT X</a>
+    </div>
+    <p class="note">If a provider is not configured yet, the server will tell us exactly which OAuth settings are missing instead of pretending it is connected.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">QUEUE</div>
+        <h2>First-wave distribution</h2>
+      </div>
+      <button id="refresh-btn">REFRESH</button>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <div id="queue" class="queue"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">GROWTH MATH</div>
+        <h2>What matters to us</h2>
+      </div>
+      <button id="save-weights-btn">SAVE WEIGHTS</button>
+    </div>
+    <p class="note">Weights normalize automatically. Change them as we learn what actually drives reach, qualified attention, clicks, and revenue.</p>
+    <div id="weights" class="weights"></div>
+    <div id="growth-summary" class="metrics"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="eyebrow">ACCOUNT ROUTING</div>
+        <h2>Savage AI Studios identities</h2>
+      </div>
+    </div>
+    <p class="note">OAuth credentials remain server-side environment variables. Access tokens are never shown in this interface.</p>
+    <div id="accounts" class="accounts"></div>
+  </section>
+</main>
+<script src="social.js"></script>
+</body>
+</html>

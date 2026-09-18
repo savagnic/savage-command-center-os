@@ -40,6 +40,13 @@ const { CapabilityGateway } = require('./security/capability-gateway.js');
 const { NonceLedger } = require('./security/nonce-ledger.js');
 
 const app = express();
+app.use(express.json({ limit: '2mb' }));
+
+// Savage-owned social distribution control plane.
+// Secrets stay in environment variables; queue state and receipts remain ours.
+const { createSocialControlPlane } = require('./social-control-plane.js');
+const socialControlPlane = createSocialControlPlane();
+app.use('/api/social', socialControlPlane.router);
 const port = process.env.PORT || 3000;
 
 // ================================================================
@@ -87,6 +94,9 @@ const STATIC_ALLOWED = new Set([
   'sw.js',
   'manifest.json',
   'favicon.ico',
+  'social.html',
+  'social.css',
+  'social.js',
 ]);
 
 // Custom healthcheck endpoint for Render / GCP uptime monitors — registered

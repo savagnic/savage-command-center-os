@@ -1,0 +1,4595 @@
+{
+  "schemaVersion": "savage.social-first-wave.v1",
+  "sourceRepo": "savagnic/savage-video-studio",
+  "sourcePath": "artifacts/video-studio/launch-slate.json",
+  "sourceBlobSha": "d197942595ac3007ab0f226c6fa72cf0939885ab",
+  "campaignId": "savage-launch",
+  "generatedFromSchema": "savage.video-launch-slate.v1",
+  "firstWaveCount": 50,
+  "firstWave": [
+    {
+      "id": "brief-cut-05f30322b5fc",
+      "cutId": "cut-05f30322b5fc",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-13e54270d79d",
+      "cutId": "cut-13e54270d79d",
+      "sourceMasterId": "master-684fa70bd7c4",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-review-scraper",
+        "actor:trustpilot-review-scraper",
+        "actor:app-store-review-scraper",
+        "actor:glassdoor-scraper",
+        "actor:text-sentiment-analyzer"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A rating is an opinion. A pattern across sources is a signal."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "A rating is an opinion. A pattern across sources is a signal. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "A rating is an opinion. A pattern across sources is a signal.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-2fc0e1e13d5e",
+      "cutId": "cut-2fc0e1e13d5e",
+      "sourceMasterId": "master-dcc0ca67ab56",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:instagram-profile-scraper",
+        "actor:tiktok-profile-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Audience signals live in comments, channels, profiles and velocity, not one dashboard."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Audience signals live in comments, channels, profiles and velocity, not one dashboard. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Audience signals live in comments, channels, profiles and velocity, not one dashboard.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-01015778b709",
+      "cutId": "cut-01015778b709",
+      "sourceMasterId": "master-dcc0ca67ab56",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 60,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:instagram-profile-scraper",
+        "actor:tiktok-profile-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Audience signals live in comments, channels, profiles and velocity, not one dashboard."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 57,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 57,
+          "endSecond": 60,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Audience signals live in comments, channels, profiles and velocity, not one dashboard. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Audience signals live in comments, channels, profiles and velocity, not one dashboard.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 60s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-0593004c1e64",
+      "cutId": "cut-0593004c1e64",
+      "sourceMasterId": "master-d70b7ce0f98c",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:reddit-post-scraper",
+        "actor:reddit-comment-scraper",
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "The internet leaves signals everywhere. The useful part is organizing them."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "The internet leaves signals everywhere. The useful part is organizing them. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "The internet leaves signals everywhere. The useful part is organizing them.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-17c85a56c41c",
+      "cutId": "cut-17c85a56c41c",
+      "sourceMasterId": "master-8102587d6f5a",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:broken-link-checker",
+        "actor:page-speed-analyzer",
+        "actor:ssl-certificate-checker",
+        "actor:sitemap-extractor",
+        "actor:http-header-analyzer",
+        "actor:dns-records-api",
+        "actor:screenshot-api"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A launch can look perfect and still fail the boring checks."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "A launch can look perfect and still fail the boring checks. This cut is grounded in 7 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "A launch can look perfect and still fail the boring checks.",
+        "7 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 25s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-160e56e0db78",
+      "cutId": "cut-160e56e0db78",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-361805b88bf8",
+      "cutId": "cut-361805b88bf8",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-04eef4e6e93c",
+      "cutId": "cut-04eef4e6e93c",
+      "sourceMasterId": "master-dcc0ca67ab56",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:instagram-profile-scraper",
+        "actor:tiktok-profile-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Audience signals live in comments, channels, profiles and velocity, not one dashboard."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Audience signals live in comments, channels, profiles and velocity, not one dashboard. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Audience signals live in comments, channels, profiles and velocity, not one dashboard.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-287a797f6e71",
+      "cutId": "cut-287a797f6e71",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-19bd385b7662",
+      "cutId": "cut-19bd385b7662",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 6 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-186860580353",
+      "cutId": "cut-186860580353",
+      "sourceMasterId": "master-e3c84cf3c154",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-product-scraper",
+        "actor:amazon-review-scraper",
+        "actor:ebay-listing-scraper",
+        "actor:etsy-product-scraper",
+        "actor:walmart-product-scraper",
+        "actor:shopify-store-scraper",
+        "actor:shopify-theme-detector"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Product data is useful when it arrives structured instead of scattered."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Product data is useful when it arrives structured instead of scattered. This cut is grounded in 7 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Product data is useful when it arrives structured instead of scattered.",
+        "7 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-4eee79460591",
+      "cutId": "cut-4eee79460591",
+      "sourceMasterId": "master-684fa70bd7c4",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-review-scraper",
+        "actor:trustpilot-review-scraper",
+        "actor:app-store-review-scraper",
+        "actor:glassdoor-scraper",
+        "actor:text-sentiment-analyzer"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A rating is an opinion. A pattern across sources is a signal."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "A rating is an opinion. A pattern across sources is a signal. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "A rating is an opinion. A pattern across sources is a signal.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-1117e99e0c39",
+      "cutId": "cut-1117e99e0c39",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-4e8508713ac0",
+      "cutId": "cut-4e8508713ac0",
+      "sourceMasterId": "master-e3c84cf3c154",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-product-scraper",
+        "actor:amazon-review-scraper",
+        "actor:ebay-listing-scraper",
+        "actor:etsy-product-scraper",
+        "actor:walmart-product-scraper",
+        "actor:shopify-store-scraper",
+        "actor:shopify-theme-detector"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Product data is useful when it arrives structured instead of scattered."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Product data is useful when it arrives structured instead of scattered. This cut is grounded in 7 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Product data is useful when it arrives structured instead of scattered.",
+        "7 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-1f52f2fe0872",
+      "cutId": "cut-1f52f2fe0872",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-249b1edde1e4",
+      "cutId": "cut-249b1edde1e4",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-53524372e559",
+      "cutId": "cut-53524372e559",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-1c4c179d9191",
+      "cutId": "cut-1c4c179d9191",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 6 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-5d59b8952442",
+      "cutId": "cut-5d59b8952442",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 6 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-33da366c527c",
+      "cutId": "cut-33da366c527c",
+      "sourceMasterId": "master-8102587d6f5a",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:broken-link-checker",
+        "actor:page-speed-analyzer",
+        "actor:ssl-certificate-checker",
+        "actor:sitemap-extractor",
+        "actor:http-header-analyzer",
+        "actor:dns-records-api",
+        "actor:screenshot-api"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A launch can look perfect and still fail the boring checks."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "A launch can look perfect and still fail the boring checks. This cut is grounded in 7 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "A launch can look perfect and still fail the boring checks.",
+        "7 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-44aaa7ac7ddb",
+      "cutId": "cut-44aaa7ac7ddb",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 25s.",
+          "Proof density 20/20 from 6 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-7c49786b80ae",
+      "cutId": "cut-7c49786b80ae",
+      "sourceMasterId": "master-d70b7ce0f98c",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:reddit-post-scraper",
+        "actor:reddit-comment-scraper",
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "The internet leaves signals everywhere. The useful part is organizing them."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "The internet leaves signals everywhere. The useful part is organizing them. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "The internet leaves signals everywhere. The useful part is organizing them.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-1ca169b9240e",
+      "cutId": "cut-1ca169b9240e",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-7b79d805cf03",
+      "cutId": "cut-7b79d805cf03",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-629d65885760",
+      "cutId": "cut-629d65885760",
+      "sourceMasterId": "master-684fa70bd7c4",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-review-scraper",
+        "actor:trustpilot-review-scraper",
+        "actor:app-store-review-scraper",
+        "actor:glassdoor-scraper",
+        "actor:text-sentiment-analyzer"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A rating is an opinion. A pattern across sources is a signal."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "A rating is an opinion. A pattern across sources is a signal. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "A rating is an opinion. A pattern across sources is a signal.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-54209990ad62",
+      "cutId": "cut-54209990ad62",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 6 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-ba92c733dc18",
+      "cutId": "cut-ba92c733dc18",
+      "sourceMasterId": "master-8102587d6f5a",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:broken-link-checker",
+        "actor:page-speed-analyzer",
+        "actor:ssl-certificate-checker",
+        "actor:sitemap-extractor",
+        "actor:http-header-analyzer",
+        "actor:dns-records-api",
+        "actor:screenshot-api"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A launch can look perfect and still fail the boring checks."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "A launch can look perfect and still fail the boring checks. This cut is grounded in 7 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "A launch can look perfect and still fail the boring checks.",
+        "7 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-2aae4640c09c",
+      "cutId": "cut-2aae4640c09c",
+      "sourceMasterId": "master-e3c84cf3c154",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-product-scraper",
+        "actor:amazon-review-scraper",
+        "actor:ebay-listing-scraper",
+        "actor:etsy-product-scraper",
+        "actor:walmart-product-scraper",
+        "actor:shopify-store-scraper",
+        "actor:shopify-theme-detector"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Product data is useful when it arrives structured instead of scattered."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Product data is useful when it arrives structured instead of scattered. This cut is grounded in 7 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Product data is useful when it arrives structured instead of scattered.",
+        "7 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 7 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-83db747bdd74",
+      "cutId": "cut-83db747bdd74",
+      "sourceMasterId": "master-dcc0ca67ab56",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:instagram-profile-scraper",
+        "actor:tiktok-profile-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Audience signals live in comments, channels, profiles and velocity, not one dashboard."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Audience signals live in comments, channels, profiles and velocity, not one dashboard. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Audience signals live in comments, channels, profiles and velocity, not one dashboard.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-7fef9865402b",
+      "cutId": "cut-7fef9865402b",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-55f67428b27a",
+      "cutId": "cut-55f67428b27a",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-bd5addb50a8f",
+      "cutId": "cut-bd5addb50a8f",
+      "sourceMasterId": "master-e3c84cf3c154",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-product-scraper",
+        "actor:amazon-review-scraper",
+        "actor:ebay-listing-scraper",
+        "actor:etsy-product-scraper",
+        "actor:walmart-product-scraper",
+        "actor:shopify-store-scraper",
+        "actor:shopify-theme-detector"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Product data is useful when it arrives structured instead of scattered."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Product data is useful when it arrives structured instead of scattered. This cut is grounded in 7 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Product data is useful when it arrives structured instead of scattered.",
+        "7 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-2fc908f55995",
+      "cutId": "cut-2fc908f55995",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 60,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 57,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 57,
+          "endSecond": 60,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 60s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-97ee0ca3f4aa",
+      "cutId": "cut-97ee0ca3f4aa",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-86f4026001e9",
+      "cutId": "cut-86f4026001e9",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-74a14b57ffd2",
+      "cutId": "cut-74a14b57ffd2",
+      "sourceMasterId": "master-dcc0ca67ab56",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:instagram-profile-scraper",
+        "actor:tiktok-profile-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Audience signals live in comments, channels, profiles and velocity, not one dashboard."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Audience signals live in comments, channels, profiles and velocity, not one dashboard. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Audience signals live in comments, channels, profiles and velocity, not one dashboard.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-c5dcba6bcc6c",
+      "cutId": "cut-c5dcba6bcc6c",
+      "sourceMasterId": "master-e0174f11a66f",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:ip-geolocation",
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:crypto-price-tracker",
+        "actor:stock-data-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Small utility workflows become valuable when they are reliable enough to chain together."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 6 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Small utility workflows become valuable when they are reliable enough to chain together. This cut is grounded in 6 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Small utility workflows become valuable when they are reliable enough to chain together.",
+        "6 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 6 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-3001ab2efb45",
+      "cutId": "cut-3001ab2efb45",
+      "sourceMasterId": "master-8102587d6f5a",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:broken-link-checker",
+        "actor:page-speed-analyzer",
+        "actor:ssl-certificate-checker",
+        "actor:sitemap-extractor",
+        "actor:http-header-analyzer",
+        "actor:dns-records-api",
+        "actor:screenshot-api"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A launch can look perfect and still fail the boring checks."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "A launch can look perfect and still fail the boring checks. This cut is grounded in 7 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "A launch can look perfect and still fail the boring checks.",
+        "7 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 7 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-afdaef8b4a64",
+      "cutId": "cut-afdaef8b4a64",
+      "sourceMasterId": "master-8102587d6f5a",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:broken-link-checker",
+        "actor:page-speed-analyzer",
+        "actor:ssl-certificate-checker",
+        "actor:sitemap-extractor",
+        "actor:http-header-analyzer",
+        "actor:dns-records-api",
+        "actor:screenshot-api"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A launch can look perfect and still fail the boring checks."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 7 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "A launch can look perfect and still fail the boring checks. This cut is grounded in 7 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "A launch can look perfect and still fail the boring checks.",
+        "7 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 7 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-93d79a4f807d",
+      "cutId": "cut-93d79a4f807d",
+      "sourceMasterId": "master-c2dd10a31547",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:product-hunt-scraper",
+        "actor:github-trending-scraper",
+        "actor:hacker-news-scraper",
+        "actor:google-news-scraper",
+        "actor:news-aggregator-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Trends are not one leaderboard. They are overlapping signals."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "Trends are not one leaderboard. They are overlapping signals. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "Trends are not one leaderboard. They are overlapping signals.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-7c003046aeb6",
+      "cutId": "cut-7c003046aeb6",
+      "sourceMasterId": "master-684fa70bd7c4",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-review-scraper",
+        "actor:trustpilot-review-scraper",
+        "actor:app-store-review-scraper",
+        "actor:glassdoor-scraper",
+        "actor:text-sentiment-analyzer"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A rating is an opinion. A pattern across sources is a signal."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "A rating is an opinion. A pattern across sources is a signal. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "A rating is an opinion. A pattern across sources is a signal.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-f5160a8ed632",
+      "cutId": "cut-f5160a8ed632",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-3044469af131",
+      "cutId": "cut-3044469af131",
+      "sourceMasterId": "master-d7cba08955b1",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 45,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:google-maps-scraper",
+        "actor:yelp-lead-scraper",
+        "actor:yellow-pages-extractor",
+        "actor:company-domain-enricher",
+        "actor:bbb-business-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Start with a market. End with signals you can actually work."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 42,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 42,
+          "endSecond": 45,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Start with a market. End with signals you can actually work. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Start with a market. End with signals you can actually work.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 45s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-e301534e0e03",
+      "cutId": "cut-e301534e0e03",
+      "sourceMasterId": "master-684fa70bd7c4",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:amazon-review-scraper",
+        "actor:trustpilot-review-scraper",
+        "actor:app-store-review-scraper",
+        "actor:glassdoor-scraper",
+        "actor:text-sentiment-analyzer"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "A rating is an opinion. A pattern across sources is a signal."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "A rating is an opinion. A pattern across sources is a signal. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "A rating is an opinion. A pattern across sources is a signal.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-9420ce83922a",
+      "cutId": "cut-9420ce83922a",
+      "sourceMasterId": "master-d70b7ce0f98c",
+      "platform": "youtube",
+      "postingMode": "native-short-form",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:reddit-post-scraper",
+        "actor:reddit-comment-scraper",
+        "actor:youtube-channel-scraper",
+        "actor:youtube-comment-scraper",
+        "actor:pinterest-pin-scraper"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "The internet leaves signals everywhere. The useful part is organizing them."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Watch the workflow move from repository proof to a structured output."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow to break down."
+        }
+      ],
+      "voiceover": "The internet leaves signals everywhere. The useful part is organizing them. This cut is grounded in 5 verified repository sources. Watch the workflow move from repository proof to a structured output. Pick the next workflow to break down.",
+      "overlays": [
+        "The internet leaves signals everywhere. The useful part is organizing them.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow to break down."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow to break down.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for youtube at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-8f25f0558b3d",
+      "cutId": "cut-8f25f0558b3d",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "instagram",
+      "postingMode": "original-reel",
+      "durationSeconds": 25,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "No fake dashboard: show the workflow, the evidence, and the output."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Save this and name the next workflow to unpack."
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. No fake dashboard: show the workflow, the evidence, and the output. Save this and name the next workflow to unpack.",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "Save this and name the next workflow to unpack."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Save this and name the next workflow to unpack.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for instagram at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-3a09dd5214ae",
+      "cutId": "cut-3a09dd5214ae",
+      "sourceMasterId": "master-7a350575b64b",
+      "platform": "x",
+      "postingMode": "native-vertical-video",
+      "durationSeconds": 15,
+      "aspectRatio": "9:16",
+      "resolution": "1080x1920",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:dns-records-api",
+        "actor:ssl-certificate-checker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Domains fail quietly long before a customer reports them."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 12,
+          "purpose": "workflow",
+          "direction": "Fast proof: source, transformation, result."
+        },
+        {
+          "startSecond": 12,
+          "endSecond": 15,
+          "purpose": "payoff",
+          "direction": "Pick the next workflow."
+        }
+      ],
+      "voiceover": "Domains fail quietly long before a customer reports them. This cut is grounded in 5 verified repository sources. Fast proof: source, transformation, result. Pick the next workflow.",
+      "overlays": [
+        "Domains fail quietly long before a customer reports them.",
+        "5 VERIFIED REPO SOURCES",
+        "Pick the next workflow."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Pick the next workflow.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 98,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 9
+        },
+        "reasons": [
+          "Platform fit 20/20 for x at 15s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-4b6573fd933d",
+      "cutId": "cut-4b6573fd933d",
+      "sourceMasterId": "master-a88882610920",
+      "platform": "reddit",
+      "postingMode": "community-native-discussion",
+      "durationSeconds": 60,
+      "aspectRatio": "16:9",
+      "resolution": "1920x1080",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:company-domain-enricher",
+        "actor:linkedin-company-scraper",
+        "actor:indeed-job-scraper",
+        "actor:job-board-aggregator",
+        "actor:startup-funding-tracker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Hiring, funding, domains and company presence tell different parts of the same story."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 57,
+          "purpose": "workflow",
+          "direction": "Here is the build logic, what it proves, and what it still does not prove."
+        },
+        {
+          "startSecond": 57,
+          "endSecond": 60,
+          "purpose": "payoff",
+          "direction": "What would you test or challenge in this workflow?"
+        }
+      ],
+      "voiceover": "Hiring, funding, domains and company presence tell different parts of the same story. This cut is grounded in 5 verified repository sources. Here is the build logic, what it proves, and what it still does not prove. What would you test or challenge in this workflow?",
+      "overlays": [
+        "Hiring, funding, domains and company presence tell different parts of the same story.",
+        "5 VERIFIED REPO SOURCES",
+        "What would you test or challenge in this workflow?"
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "What would you test or challenge in this workflow?",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 99,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 10
+        },
+        "reasons": [
+          "Platform fit 20/20 for reddit at 60s.",
+          "Proof density 20/20 from 5 source reference(s).",
+          "Package as a community-native process or discussion post; do not mass-post duplicated promotion."
+        ],
+        "label": "priority"
+      }
+    },
+    {
+      "id": "brief-cut-3dbebea3c189",
+      "cutId": "cut-3dbebea3c189",
+      "sourceMasterId": "master-7a350575b64b",
+      "platform": "linkedin",
+      "postingMode": "proof-led-professional",
+      "durationSeconds": 25,
+      "aspectRatio": "4:5",
+      "resolution": "1080x1350",
+      "brand": {
+        "name": "Savage AI Studios",
+        "marketplace": "Savage Marketplace",
+        "palette": {
+          "gunmetal": "#101417",
+          "seafoam": "#67FFD6",
+          "purple": "#8B5CFF"
+        },
+        "rules": {
+          "dominantAccent": "seafoam",
+          "purpleUsage": "restrained",
+          "finish": "metallic-industrial-cinematic",
+          "avoid": [
+            "generic-ai-robots",
+            "pastel-saas",
+            "fake-dashboards",
+            "fake-customer-logos"
+          ]
+        }
+      },
+      "proofRefs": [
+        "actor:whois-lookup",
+        "actor:domain-availability-checker",
+        "actor:domain-expiry-monitor",
+        "actor:dns-records-api",
+        "actor:ssl-certificate-checker"
+      ],
+      "openingFrame": "Metallic gunmetal near-black frame; neon seafoam data edge slashes into motion; a tiny restrained neon-purple accent appears only as depth.",
+      "timeline": [
+        {
+          "startSecond": 0,
+          "endSecond": 1,
+          "purpose": "hook",
+          "direction": "Domains fail quietly long before a customer reports them."
+        },
+        {
+          "startSecond": 1,
+          "endSecond": 3,
+          "purpose": "proof",
+          "direction": "Flash 5 verified repository proof reference(s)."
+        },
+        {
+          "startSecond": 3,
+          "endSecond": 22,
+          "purpose": "workflow",
+          "direction": "The operational value is repeatability: defined input, structured output, visible proof."
+        },
+        {
+          "startSecond": 22,
+          "endSecond": 25,
+          "purpose": "payoff",
+          "direction": "Choose a workflow to evaluate or pilot."
+        }
+      ],
+      "voiceover": "Domains fail quietly long before a customer reports them. This cut is grounded in 5 verified repository sources. The operational value is repeatability: defined input, structured output, visible proof. Choose a workflow to evaluate or pilot.",
+      "overlays": [
+        "Domains fail quietly long before a customer reports them.",
+        "5 VERIFIED REPO SOURCES",
+        "Choose a workflow to evaluate or pilot."
+      ],
+      "visualDirection": "Expensive industrial intelligence. Kinetic typography, real product/output surfaces when available, sharp macro detail, controlled camera movement, high contrast, no fantasy SaaS art.",
+      "audioDirection": "Tight mechanical transient, low sub pulse, restrained cinematic pressure, clean voice channel, no generic corporate uplift.",
+      "cta": "Choose a workflow to evaluate or pilot.",
+      "negativePrompt": "No generic AI robots. No pastel SaaS blobs. No fake customer logos. No fake revenue charts. No fake certification seals. No fake platform endorsement. No unreadable UI. No cheesy cyberpunk city. No stock handshake footage.",
+      "score": {
+        "total": 98,
+        "dimensions": {
+          "hookStrength": 20,
+          "proofDensity": 20,
+          "platformFit": 20,
+          "clarity": 10,
+          "visualChange": 9,
+          "originality": 10,
+          "remixability": 9
+        },
+        "reasons": [
+          "Platform fit 20/20 for linkedin at 25s.",
+          "Proof density 20/20 from 5 source reference(s)."
+        ],
+        "label": "priority"
+      }
+    }
+  ]
+}
