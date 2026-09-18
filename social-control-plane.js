@@ -4,9 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
+const { DEFAULT_WEIGHTS, evaluateCreative, normalizeWeights } = require('./social-metrics.js');
 
 const NETWORKS = Object.freeze(['instagram','youtube','x','linkedin','reddit']);
-const DEFAULT_STATE = Object.freeze({ version: 1, accounts: [], posts: [], receipts: [] });
+const DEFAULT_STATE = Object.freeze({ version: 1, accounts: [], posts: [], receipts: [], metricWeights: DEFAULT_WEIGHTS, metrics: [] });
 
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
 function nowIso() { return new Date().toISOString(); }
@@ -140,6 +141,43 @@ function createSocialControlPlane(options = {}) {
     post.updatedAt = nowIso();
     store.write(state);
     res.status(missing.length ? 409 : 202).json(receipt);
+  });
+
+  router.get('/metrics/config', (_req, res) => {
+    const state = store.read();
+    res.json({ weights: normalizeWeights(state.metricWeights || DEFAULT_WEIGHTS) });
+  });
+
+  router.put('/metrics/config', (req, res) => {
+    const state = store.read();
+    state.metricWeights = normalizeWeights(req.body?.weights || {});
+    store.write(state);
+    res.json({ weights: state.metricWeights });
+  });
+
+  router.post('/metrics', (req, res) => {
+    const state = store.read();
+    const postId = String(req.body?.postId || '');
+    const post = state.posts.find((p) => p.id === postId);
+    if (!post) return res.status(404).json({ error: 'post not found' });
+    const evaluation = evaluateCreative(req.body?.metrics || {}, state.metricWeights || DEFAULT_WEIGHTS);
+    const record = {
+      id: id('metric'),
+      postId,
+      network: req.body?.network ? String(req.body.network).toLowerCase() : null,
+      capturedAt: nowIso(),
+      evaluation
+    };
+    state.metrics = Array.isArray(state.metrics) ? state.metrics : [];
+    state.metrics.push(record);
+    store.write(state);
+    res.status(201).json(record);
+  });
+
+  router.get('/metrics', (_req, res) => {
+    const state = store.read();
+    const items = Array.isArray(state.metrics) ? state.metrics : [];
+    res.json(items);
   });
 
   router.get('/receipts', (_req, res) => res.json(store.read().receipts));
