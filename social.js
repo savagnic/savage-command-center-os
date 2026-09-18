@@ -10,6 +10,10 @@ async function saveWeights(){
   if(!r.ok) throw new Error(await r.text());
   await load();
 }
+function showConnectedBanner(){
+  const p=new URLSearchParams(location.search); const n=p.get('connected');
+  if(n){document.querySelector('.hero p').textContent='Connected '+n.toUpperCase()+'. Queue and metrics remain under Savage control.';}
+}
 async function load(){
   const [status,accounts,posts,metricConfig,metrics]=await Promise.all([api('/status'),api('/accounts'),api('/posts'),api('/metrics/config'),api('/metrics')]);
   document.getElementById('network-grid').innerHTML=status.networks.map(networkCard).join('');
@@ -34,3 +38,5 @@ async function load(){
 document.getElementById('refresh-btn').addEventListener('click',load);load().catch(e=>{document.body.insertAdjacentHTML('beforeend','<pre>'+esc(e.message)+'</pre>')});
 
 document.getElementById('save-weights-btn').addEventListener('click',()=>saveWeights().catch(e=>alert(e.message)));
+
+showConnectedBanner();
