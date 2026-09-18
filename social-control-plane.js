@@ -84,6 +84,52 @@ function createSocialControlPlane(options = {}) {
     res.status(201).json(account);
   });
 
+  router.post('/imports/first-wave', (_req, res) => {
+    const seedPath = path.join(__dirname, 'data', 'social-first-wave.json');
+    if (!fs.existsSync(seedPath)) return res.status(404).json({ error: 'first-wave seed not found' });
+    const seed = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+    const firstWave = Array.isArray(seed.firstWave) ? seed.firstWave : [];
+    const state = store.read();
+    const existing = new Set(state.posts.map((p) => p.sourceId).filter(Boolean));
+    let imported = 0;
+    for (const brief of firstWave) {
+      if (!brief?.id || existing.has(brief.id)) continue;
+      const network = String(brief.platform || '').toLowerCase();
+      if (!NETWORKS.includes(network)) continue;
+      state.posts.push({
+        id: id('post'),
+        sourceId: brief.id,
+        title: brief.cutId || brief.id,
+        text: String(brief.voiceover || ''),
+        media: [],
+        networks: [network],
+        scheduledFor: null,
+        status: 'queued',
+        source: 'savage-video-studio:firstWave',
+        creative: {
+          durationSeconds: brief.durationSeconds ?? null,
+          aspectRatio: brief.aspectRatio ?? null,
+          resolution: brief.resolution ?? null,
+          overlays: Array.isArray(brief.overlays) ? brief.overlays : [],
+          cta: brief.cta || null,
+          proofRefs: Array.isArray(brief.proofRefs) ? brief.proofRefs : [],
+          score: brief.score || null
+        },
+        createdAt: nowIso(),
+        updatedAt: nowIso()
+      });
+      existing.add(brief.id);
+      imported++;
+    }
+    store.write(state);
+    res.json({
+      imported,
+      firstWaveCount: firstWave.length,
+      queueSize: state.posts.length,
+      sourceBlobSha: seed.sourceBlobSha || null
+    });
+  });
+
   router.get('/posts', (_req, res) => res.json(store.read().posts));
 
   router.post('/posts', (req, res) => {
