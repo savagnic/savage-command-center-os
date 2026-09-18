@@ -12,14 +12,18 @@ Implemented operator/UI donor for Savage Command Center and owned internal socia
 
 ## Current verified state
 
-- This is the implemented operator/UI donor and is distinct from the Savage-Command-Center specification repository.
-- The working branch now contains a Savage-owned social control-plane module mounted at /api/social.
-- The social slice persists an internal account registry, post queue, schedule state, and evidence receipts without requiring a paid scheduler as the source of truth.
+- This is the implemented operator/UI donor and remains distinct from the Savage-Command-Center specification repository.
+- The working branch contains a Savage-owned social control plane mounted at /api/social.
+- The social slice persists an internal account registry, post queue, schedule state, configurable growth-metric weights, raw metric observations, and evidence receipts without requiring a paid scheduler as the source of truth.
 - Supported destination slots are Instagram, YouTube, X, LinkedIn, and Reddit.
+- A dedicated Savage-styled dashboard is present at /social.html using the parent gunmetal / seafoam / restrained-purple visual system.
 - OAuth client IDs/secrets are environment-only; passwords, access tokens, and refresh tokens are not committed.
 - Publication is truth-locked: until official provider OAuth adapters are configured, publish attempts produce blocked/connector-ready receipts and do not claim a platform post occurred.
-- Tests cover persistence, secret-free provider configuration, and the five-network destination contract.
-- Use this repository as the operational UI source where current code evidence supports it.
+- A Video Studio first-wave importer is present for ingesting launch-slate.json into the owned queue.
+- The growth-math engine currently supports hold, completion, rewatch, share, save, comment, follow, click, and revenue rates with editable normalized weights.
+- Derived internal diagnostics include depth, signal density, commercial score, overall Savage Growth Score, and scale / iterate / test / cut decision bands.
+- These decision bands are internal operating rules, not external benchmark claims.
+- Tests cover social-state persistence, secret-free provider configuration, supported networks, deterministic bounded growth scoring, weight normalization, decision bands, and composite score exposure.
 
 ## Brand inheritance
 
@@ -27,7 +31,7 @@ This repository inherits the Savage AI Studios parent brand authority from savag
 
 ## Commercial / deployment state
 
-Internal/operator product surface. The social control plane is an internal cost-reduction and distribution capability, not a newly declared customer-facing product.
+Internal/operator product surface. The social control plane is an internal cost-reduction, owned-distribution, and growth-instrumentation capability, not a newly declared customer-facing product.
 
 ## Claim boundary
 
@@ -35,11 +39,11 @@ CODED, TESTED, PLATFORM-BUILT/DEPLOYED, LIVE/OBSERVED, CUSTOMER-USED, and REVENU
 
 ## Open work
 
-- Add official OAuth flows and provider adapters for the existing Savage AI Studios Instagram, YouTube, and X identities first.
+- Complete official OAuth flows and provider adapters for the existing Savage AI Studios Instagram, YouTube, and X identities.
 - Add LinkedIn and Reddit adapters after account creation/authorization.
-- Import the Video Studio first-wave 50-post slate into the owned queue.
-- Add a dedicated Savage-styled social dashboard panel to the Command Center UI.
-- Verify deployment/runtime behavior and record live receipts before claiming automated publication.
+- Import and verify the Video Studio first-wave 50-post slate into the owned queue in a runtime environment where both repositories are available.
+- Connect platform analytics ingestion so raw metrics are collected automatically rather than entered through the API.
+- Verify deployed dashboard/runtime behavior and record live publication receipts before claiming automated publication.
 - Reconcile documentation when it disagrees with current source/runtime evidence.
 
 ## Estate hard rule
