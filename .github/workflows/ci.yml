@@ -25,7 +25,7 @@ jobs:
         run: npm install -g htmlhint
 
       - name: Validate HTML
-        run: htmlhint index.html --config .htmlhintrc || true
+        run: htmlhint index.html --config .htmlhintrc
 
       - name: Check for Math.random() outside test files
         run: |
@@ -66,20 +66,33 @@ jobs:
             exit 1
           fi
 
-      - name: Verify Decision Replay Theater exists
+      - name: Verify DOM-to-JS selector binding (Replay Theater, Pressure Board, Terminal, Cockpit)
         run: |
-          if grep -q "panel-replay" index.html && grep -q "panel-replay" app.js; then
-            echo "✅ Decision Replay Theater panel exists"
-          else
-            echo "❌ Decision Replay Theater not implemented"
-            exit 1
-          fi
+          node -e "
+          const fs = require('fs');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const js = fs.readFileSync('app.js', 'utf8');
+          ['panel-ide', 'panel-replay', 'panel-pressure', 'terminal-input', 'terminal-body', 'metrics-refresh-btn', 'cockpit-organism'].forEach(id => {
+            if (!html.includes(id)) throw new Error('Missing DOM element #' + id);
+            if (!js.includes(id)) throw new Error('Unbound JS reference #' + id);
+          });
+          console.log('✅ DOM & JS IDs 100% synchronized');
+          "
 
-      - name: Verify Founder Pressure Board exists
-        run: |
-          if grep -q "panel-pressure" index.html && grep -q "panel-pressure" app.js; then
-            echo "✅ Founder Pressure Board panel exists"
-          else
-            echo "❌ Founder Pressure Board not implemented"
-            exit 1
-          fi
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test suite
+        run: npm test
