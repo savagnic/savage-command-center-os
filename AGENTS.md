@@ -1,29 +1,31 @@
-# AGENTS.md — Agent Show Production-Ready Governance Contract
+# AGENTS.md — Agent Shell Production-Ready Governance Contract
 
 ## MISSION STATEMENT
-Transform 'Agent Show' into a hyper-performant, next-generation mobile development platform that completely surpasses Termux, Replit, Emergence, and Lovable across all native execution, VFS synchronization, and agentic self-healing capabilities.
+Agent Shell is the flagship product of the Savage Command Center ecosystem: a sovereign control interface and integrated Shell/IDE for the SIA-v6 ecosystem. Every session must leave it more real — no fabricated data, no dead gates, no unverifiable claims. Build only what is meant to be built, and prove it runs.
 
 ---
 
 ## 1. MANDATORY EXECUTION & GATEKEEPING RULES
-Jules MUST NOT mark a session complete, close a pull request, or hand off execution until ALL criteria in this document pass without a single failure or warning.
+An agent MUST NOT mark a session complete, close a pull request, or hand off execution until ALL criteria in this document pass without a single failure or warning.
 
 ### A. Zero-Tolerance Code Cleanliness
-- **Syntax Verification:** `node --check app.js` MUST execute with zero exit code errors.
-- **Rebrand Integrity:** Running `grep -rnE -i "savage|command center" .` MUST return zero occurrences across all files (`.html`, `.js`, `.css`, `.json`, `.md`).
+- **Syntax Verification:** `node --check app.js && node --check server.js` MUST execute with zero exit code errors.
+- **Test Suite:** `npm test` MUST pass with zero failures.
+- **Brand Integrity:** "Savage Command Center" is the intentional ecosystem brand and MUST NOT be purged or renamed away. (The previous rule banning `savage|command center` was removed — it conflicted with the product identity and could never pass.)
+- **No Fabricated Data:** Production code MUST NOT seed, hardcode, or invent metrics. When a real value is unavailable, report unavailability explicitly (e.g. HTTP 503 "not computed", an OFFLINE UI state) — never present invented numbers as live data. `Math.random()` is banned in production code (enforced in CI).
 - **Scope Leakage:** Zero undeclared global variables or stray console debugging statements allowed in production builds.
 
 ### B. Functional Benchmarks (Pass/Fail)
-1. **Terminal POSIX / WebSocket Bridge:**
-   - `#panel-terminal` must connect to `ws://127.0.0.1:8080`.
-   - On disconnect, execution MUST fall back to local WebAssembly/JS in `< 50ms`.
-   - `.terminal-touch-toolbar` sticky inputs (`CTRL`, `ALT`, `ESC`, `TAB`, `|`, `~`) MUST dispatch synthesize keyboard events directly into `#terminal-input`.
-2. **VFS & Sandbox Synchronization:**
-   - `getVFS()` and `saveVFSFile()` MUST persist cleanly with IndexedDB.
-   - Code edits in `#ide-textarea` MUST debounce and update active DOM preview iframes in `< 300ms`.
-3. **Closed-Loop Self-Healing Engine:**
-   - Standard Error logs from non-zero process exits (`exit code != 0`) MUST automatically forward to the **Debugger Agent** in `.ide-agents-container`.
-   - The Debugger Agent MUST generate a patch diff, write it to the local VFS file, and re-trigger execution automatically.
+1. **Terminal / WebSocket Bridge:**
+   - `#terminal-input` and `#terminal-body` exist in `index.html` and are wired in `app.js`.
+   - WebSocket and terminal behavior is covered by `tests/substrate_ws.test.mjs` and `tests/terminal.test.mjs`.
+2. **Revenue Cockpit (CEROS):**
+   - `loadMetrics()` fetches `CEROS_BASE + '/api/organism-status'` and renders `#cockpit-organism` plus the cockpit value cards.
+   - When the endpoint is unreachable or reports "not computed" (503), the UI MUST show the OFFLINE/error state — never placeholder numbers.
+3. **Decision Replay & Founder Pressure Board:**
+   - `#panel-replay` and `#panel-pressure` exist in `index.html` and are implemented in `app.js`.
+4. **Security Model:**
+   - Capability gateway, nonce replay protection, and admin-token gates are covered by `tests/capability_security.test.mjs` and `tests/security_regression.test.mjs`.
 
 ---
 
@@ -32,17 +34,17 @@ Before submitting any task, execute the following verification loop sequentially
 
 ```bash
 # Step 1: Syntax check
-node --check app.js
+node --check app.js && node --check server.js
 
-# Step 2: Branding purge check
-! grep -rnE -i "savage|command center" .
+# Step 2: Full test suite
+npm test
 
 # Step 3: DOM-to-JS Selector Binding Verification
 node -e "
 const fs = require('fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const js = fs.readFileSync('app.js', 'utf8');
-['ide-textarea', 'ide-line-numbers', 'panel-terminal', 'terminal-output', 'terminal-input', 'vfs-tree'].forEach(id => {
+['panel-ide', 'panel-replay', 'panel-pressure', 'terminal-input', 'terminal-body', 'metrics-refresh-btn', 'cockpit-organism'].forEach(id => {
   if (!html.includes(id)) throw new Error('Missing DOM element #' + id);
   if (!js.includes(id)) throw new Error('Unbound JS reference #' + id);
 });
