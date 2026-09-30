@@ -72,8 +72,8 @@ This is not just "better." This is **categorically different**.
 
 ### Installation
 ```bash
-git clone https://github.com/NS-SIAV6-OS/savage-command-center.git
-cd savage-command-center
+git clone https://github.com/savagnic/savage-command-center-os.git
+cd savage-command-center-os
 npm install
 ```
 
